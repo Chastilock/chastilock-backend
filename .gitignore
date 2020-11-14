@@ -105,3 +105,9 @@ dist
 
 #Kube folder
 kube/
+
+#.old files
+*.old
+
+#config folder
+config/
