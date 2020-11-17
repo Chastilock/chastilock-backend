@@ -98,7 +98,7 @@ module.exports = (sequelize) => {
     );
 
     CreatedLock.associate = (models) => {
-      CreatedLock.hasOne(models.User, {foreignKey: "User_ID"});
+      CreatedLock.belongsTo(models.User, {foreignKey: "User_ID"});
     };
 
     return CreatedLock;
