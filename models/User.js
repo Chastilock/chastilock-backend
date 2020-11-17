@@ -27,7 +27,20 @@ module.exports = (sequelize) => {
       Username: {
         type: Sequelize.STRING,
         allowNull: true
-      }
+      },
+      Created: {
+        type: Sequelize.TIME,
+        allowNull: true
+      },
+      Keyholder: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Lockee: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+
     }, {sequelize}
     );
 
