@@ -1,5 +1,6 @@
 const CreatedLock = require("../models/CreatedLock");
 
+
 const resolvers = {
   Query: {     
     async allUsers (root, args, { models }) {
@@ -12,6 +13,11 @@ const resolvers = {
       return models.CreatedLock.findByPk(id)
     }
   },
+
+  /* Mutations: {
+
+  }, */
+
   User: {
     async CreatedLocks (user) {
       return user.getCreatedLocks()
