@@ -7,9 +7,9 @@ const typeDefs = gql`
     Email: String
     Password: String
     Username: String
-    Locks: [Lock]!
+    CreatedLocks: [CreatedLock]!
   }
-  type Lock {
+  type CreatedLock {
     Lock_ID: ID!
     User: User!
     Lock_Type: Int!
@@ -38,8 +38,8 @@ const typeDefs = gql`
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     allUsers: [User!]!
-    allLocks: [Lock!]!
-    lock(id: Int!): Lock
+    allCreatedLocks: [CreatedLock!]!
+    createdLock(id: Int!): CreatedLock
   }
 `;
 

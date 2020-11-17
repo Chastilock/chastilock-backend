@@ -1,23 +1,25 @@
+const CreatedLock = require("../models/CreatedLock");
+
 const resolvers = {
   Query: {     
     async allUsers (root, args, { models }) {
       return models.User.findAll();
     },
-    async allLocks (root, args, { models }) {
-      return models.Lock.findAll();
+    async allCreatedLocks (root, args, { models }) {
+      return models.CreatedLock.findAll();
     },
-    async lock (root, { id }, { models }) {
-      return models.Lock.findByPk(id)
+    async createdLock (root, { id }, { models }) {
+      return models.CreatedLock.findByPk(id)
     }
   },
   User: {
-    async Locks (user) {
-      return user.getLocks()
+    async CreatedLocks (user) {
+      return user.getCreatedLocks()
     }
   },
-  Lock: {
-    async User (lock) {
-      return lock.getUser()
+  CreatedLock: {
+    async User (CreatedLock) {
+      return CreatedLock.getUser()
     }
   }
 }

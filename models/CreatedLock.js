@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    class Lock extends Sequelize.Model {}
-    Lock.init({
+    class CreatedLock extends Sequelize.Model {}
+    CreatedLock.init({
       
       Lock_ID: {
         type: Sequelize.INTEGER,
@@ -97,9 +97,9 @@ module.exports = (sequelize) => {
     }, {sequelize}
     );
 
-    Lock.associate = (models) => {
-      Lock.hasOne(models.User, {foreignKey: "User_ID"});
+    CreatedLock.associate = (models) => {
+      CreatedLock.hasOne(models.User, {foreignKey: "User_ID"});
     };
 
-    return Lock;
+    return CreatedLock;
   }
