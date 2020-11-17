@@ -1,4 +1,5 @@
 const CreatedLock = require("../models/CreatedLock");
+const CreateUser = require('../mutations/createUser');
 
 
 const resolvers = {
@@ -14,9 +15,11 @@ const resolvers = {
     }
   },
 
-  /* Mutations: {
-
-  }, */
+  Mutation: {
+    async createUser(root, args, { models }){
+      return CreateUser(args);
+    }
+  },
 
   User: {
     async CreatedLocks (user) {

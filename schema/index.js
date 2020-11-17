@@ -41,6 +41,10 @@ const typeDefs = gql`
     allCreatedLocks: [CreatedLock!]!
     createdLock(id: Int!): CreatedLock
   }
+
+  type Mutation {
+    createUser(APIKey: String!, APISecret: String!, Email: String!, Password: String!, Username: String!): String!
+  }
 `;
 
 module.exports = typeDefs
