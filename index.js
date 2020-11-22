@@ -1,4 +1,5 @@
-const port = 4000;
+require('dotenv').config();
+const port = process.env.PORT || 4000;
 
 //These are our DB models. They are exposed from models/index.js
 const models = require('./models');
@@ -6,8 +7,6 @@ const models = require('./models');
 const { ApolloServer } = require('apollo-server');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
-
-
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.

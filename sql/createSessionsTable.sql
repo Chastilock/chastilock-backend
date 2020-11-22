@@ -1,0 +1,10 @@
+CREATE TABLE `Sessions` (
+	`Session_ID` INT(10) NOT NULL AUTO_INCREMENT,
+  `User_ID` INT(10) NOT NULL,
+	`Token` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`App_ID` INT(10) NOT NULL,
+	PRIMARY KEY (`Session_ID`) USING BTREE
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+;

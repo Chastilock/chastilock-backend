@@ -1,6 +1,5 @@
-const CreatedLock = require("../models/CreatedLock");
 const CreateUser = require('../mutations/createUser');
-
+const CreateUserAnon = require('../mutations/createUserAnon');
 
 const resolvers = {
   Query: {     
@@ -17,7 +16,10 @@ const resolvers = {
 
   Mutation: {
     async createUser(root, args, { models }){
-      return CreateUser(args);
+      return CreateUser(args, models);
+    },
+    async createUserAnon(root, args, { models }) {
+      return CreateUserAnon(args, models);
     }
   },
 

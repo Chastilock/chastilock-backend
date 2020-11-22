@@ -26,9 +26,9 @@ module.exports = (sequelize) => {
     }, {sequelize}
     );
 
-    /* CreatedLock.associate = (models) => {
-      CreatedLock.belongsTo(models.User, {foreignKey: "User_ID"});
-    }; */
+    App.associate = (models) => {
+      App.hasMany(models.Session, {foreignKey: "App_ID"});
+    };
 
     return App;
   }

@@ -8,6 +8,7 @@ const typeDefs = gql`
     Password: String
     Username: String
     CreatedLocks: [CreatedLock]!
+    Sessions: [Session]!
   }
   type CreatedLock {
     Lock_ID: ID!
@@ -32,6 +33,19 @@ const typeDefs = gql`
     Variable_Min_RemoveRed: Int
     Variable_Min_RandomRed: Int
   }
+  type App {
+    App_ID: Int
+    Name: String
+    API_Key: String
+    API_Secret: String
+  }
+
+  type Session {
+    Session_ID: Int
+    User: User!
+    Token: String
+    App: App!
+  }
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -43,7 +57,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(APIKey: String!, APISecret: String!, Email: String!, Password: String!, Username: String!): String!
+    createUser(APIKey: String!, APISecret: String!, Email: String!, Password: String!, Username: String!): User!
+    createUserAnon(APIKey: String!, APISecret: String!): User!
   }
 `;
 
