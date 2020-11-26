@@ -1,5 +1,7 @@
 const CreateUser = require('../mutations/createUser');
 const CreateUserAnon = require('../mutations/createUserAnon');
+const LoginAnon = require('../mutations/loginAnon');
+
 
 const resolvers = {
   Query: {     
@@ -20,6 +22,9 @@ const resolvers = {
     },
     async createUserAnon(root, args, { models }) {
       return CreateUserAnon(args, models);
+    },
+    async loginAnon(root, args, { models }) {
+      return LoginAnon(args, models)
     }
   },
 

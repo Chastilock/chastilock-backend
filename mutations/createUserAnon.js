@@ -1,6 +1,6 @@
 const { createSourceEventStream } = require('graphql');
-const {App} = require('../models');
 const { v4: uuidv4 } = require('uuid');
+const {checkAppTokens} = require("../helpers/authentication");
 
 async function createUserAnon({ APIKey, APISecret }, models) {
 
@@ -8,12 +8,7 @@ async function createUserAnon({ APIKey, APISecret }, models) {
 
   //First we need to check if the APIKey and APISecret exist in our database
   console.log("Searching for App Key and Secret");
-  const AppSearch = await App.findOne({
-    where: {
-      API_Key: APIKey,
-      API_Secret: APISecret
-    }
-  })
+  const AppSearch = await checkAppTokens(APIKey, APISecret);
 
   if (AppSearch) {
     console.log("App found");
@@ -22,11 +17,9 @@ async function createUserAnon({ APIKey, APISecret }, models) {
     return "Not found";
   }
 
-  
   const UUID = uuidv4();
   const Created = Math.floor(Date.now() / 1000)
   return models.User.create({UUID, Created});
-
 }
 
 module.exports = createUserAnon

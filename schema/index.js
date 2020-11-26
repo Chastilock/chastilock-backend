@@ -41,9 +41,9 @@ const typeDefs = gql`
   }
 
   type Session {
-    Session_ID: Int
+    Session_ID: Int!
     User: User!
-    Token: String
+    Token: String!
     App: App!
   }
 
@@ -59,6 +59,8 @@ const typeDefs = gql`
   type Mutation {
     createUser(APIKey: String!, APISecret: String!, Email: String!, Password: String!, Username: String!): User!
     createUserAnon(APIKey: String!, APISecret: String!): User!
+    loginAnon(APIKey: String!, APISecret: String!, UUID: String!): Session!
+    login(APIKey: String!, APISecret: String!, Username: String!, Password: String!): Session!
   }
 `;
 
