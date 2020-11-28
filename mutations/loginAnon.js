@@ -1,4 +1,6 @@
 const authHelpers = require('../helpers/authentication');
+const {AuthenticationError} = require('apollo-server');
+
 
 async function loginAnon({ APIKey, APISecret, UUID }, models) {
 console.log("Searching for App Key and Secret");
@@ -12,7 +14,7 @@ console.log("Searching for App Key and Secret");
   if (appSearch) {
     console.log("App found");
   } else {
-    console.log("Unauthorised");
+    throw new AuthenticationError('App does not exist')
   }
 
   const UserSearch = await models.User.findOne({
