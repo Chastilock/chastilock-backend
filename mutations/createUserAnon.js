@@ -1,6 +1,7 @@
 const { createSourceEventStream } = require('graphql');
 const { v4: uuidv4 } = require('uuid');
 const {checkAppTokens} = require("../helpers/authentication");
+const { AuthenticationError } = require('apollo-server');
 
 async function createUserAnon({ APIKey, APISecret }, models) {
 
@@ -14,7 +15,7 @@ async function createUserAnon({ APIKey, APISecret }, models) {
     console.log("App found");
   } else {
     console.log("Unauthorised");
-    return "Not found";
+    throw new AuthenticationError("App does not exist");
   }
 
   const UUID = uuidv4();
