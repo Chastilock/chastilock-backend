@@ -1,8 +1,8 @@
-const { AuthenticationError, UserInputError } = require('apollo-server');
+const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server');
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { checkAppTokens } = require("../helpers/authentication");
-const { ValidateEmail } = require("../helpers/validation");
+const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
 
 async function createUser(inputs, models) {
 console.log("Create user init");
@@ -35,6 +35,14 @@ if(ValidationErrors.length) {
   throw new UserInputError("Form inputs are invalid!", {
     invalidArgs: ValidationErrors
   });
+}
+
+if(await CheckUsernameAvailable(inputs.Username) === false) {
+  throw new ApolloError("Username Already Taken", 400);
+}
+
+if(await CheckEmailAvailable(inputs.Email) === false) {
+  throw new ApolloError("Email Already Taken", 400);
 }
 
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
