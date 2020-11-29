@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {App} = require('../models');
+const { App, User } = require('../models');
 
 function generateJWT(UserUUID) {
   var token = jwt.sign({ UserUUID }, process.env.JWT_SECRET);
@@ -18,7 +18,24 @@ async function checkAppTokens(APIKey, APISecret) {
   } else {
     return false;
   }
-
 }
+
+async function CheckUserPasswordEnabled(UserUUID) {
+  const UserSearch = await User.findOne({
+    where: {
+      UUID: UserUUID
+    }
+  });
+  if(UserSearch.Email && UserSearch.Password) {
+    console.log("true")
+    return true;
+  } else {
+    console.log("false")
+    return false;
+  }
+}
+
 module.exports.checkAppTokens = checkAppTokens;
 module.exports.generateJWT = generateJWT;
+module.exports.CheckUserPasswordEnabled = CheckUserPasswordEnabled;
+//console.log(CheckUserPasswordEnabled("4704bcff-ed32-4c89-9a4f-db7e08d6fde8"));

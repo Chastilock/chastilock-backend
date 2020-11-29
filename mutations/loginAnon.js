@@ -1,6 +1,5 @@
-const authHelpers = require('../helpers/authentication');
-const {AuthenticationError} = require('apollo-server');
-
+const { generateJWT, CheckUserPasswordEnabled } = require('../helpers/authentication');
+const {AuthenticationError, ForbiddenError} = require('apollo-server');
 
 async function loginAnon({ APIKey, APISecret, UUID }, models) {
 console.log("Searching for App Key and Secret");
@@ -23,14 +22,17 @@ console.log("Searching for App Key and Secret");
     }
   });
 
+  //Validation
+  if(await CheckUserPasswordEnabled(UUID)) {
+    throw new ForbiddenError("You are not permitted to login with UUID");
+  }
+
   if(UserSearch) {
     return models.Session.create({
       User_ID: UserSearch.User_ID,
-      Token: authHelpers.generateJWT(UUID),
+      Token: generateJWT(UUID),
       App_ID: appSearch.App_ID
     });
   }
-
-
 }
 module.exports = loginAnon;
