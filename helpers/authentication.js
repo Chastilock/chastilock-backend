@@ -2,8 +2,12 @@ const jwt = require('jsonwebtoken');
 const { App, User } = require('../models');
 
 function generateJWT(UserUUID) {
-  var token = jwt.sign({ UserUUID }, process.env.JWT_SECRET);
+  const token = jwt.sign({ UserUUID }, process.env.JWT_SECRET);
   return token;
+}
+
+async function verifyJWT(Token) {
+  
 }
 
 async function checkAppTokens(APIKey, APISecret) {
@@ -38,4 +42,3 @@ async function CheckUserPasswordEnabled(UserUUID) {
 module.exports.checkAppTokens = checkAppTokens;
 module.exports.generateJWT = generateJWT;
 module.exports.CheckUserPasswordEnabled = CheckUserPasswordEnabled;
-//console.log(CheckUserPasswordEnabled("4704bcff-ed32-4c89-9a4f-db7e08d6fde8"));

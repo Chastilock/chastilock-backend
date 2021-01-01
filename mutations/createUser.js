@@ -14,7 +14,7 @@ const AppSearch = await checkAppTokens(inputs.APIKey, inputs.APISecret);
 if (AppSearch) {
   console.log("App found");
 } else {
-  throw new AuthenticationError("App does not exist")
+  throw new AuthenticationError("App does not exist");
 }
 
 const ValidationErrors = [];

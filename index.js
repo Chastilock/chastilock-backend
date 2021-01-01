@@ -10,7 +10,17 @@ const typeDefs = require('./schema');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers, context: {models} });
+const server = new ApolloServer({ 
+  typeDefs,
+  resolvers,
+  context: {models},
+  subscriptions: {
+    onConnect: (connectionParams, webSocket) => {
+      if(connectionParams.authToken) {
+        
+      }
+    }
+  } });
 
 // The `listen` method launches a web server.
 server.listen(port).then(({ url }) => {
