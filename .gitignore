@@ -110,4 +110,4 @@ kube/
 *.old
 
 #config folder
-config/
+#config/
