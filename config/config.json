@@ -1,3 +1,5 @@
 {
-    "use_env_variables": true
+    "development": {
+        "use_env_variable": "DATABASE"
+    }
 }
