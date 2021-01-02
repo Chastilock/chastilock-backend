@@ -5,3 +5,8 @@ This is a GraphQL API for the Chastilock App. This will be used for the App at f
 ## Running it in development environment
 The easiest way to run it in a development environment is using docker compose. You will need to have Docker and Docker compose installed on your system. That way
 you don't have to manually install a database (MySQL / MariaDB).
+
+To run it inside docker compose, simply execute:
+```bash
+docker-compose up
+```
