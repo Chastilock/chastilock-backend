@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  nodejs:
+  chastilock-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nodejs
-    container_name: nodejs
+    image: chastilock-backend
+    container_name: chastilock-backend
     restart: unless-stopped
     environment:
       - DATABASE=mysql://mysql_user:mysql_password@db/chastilock
@@ -19,13 +19,15 @@ services:
       - app-network
   db:
     image: mysql:8
-    container_name: db
+    container_name: chastilock-backend-db
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=chastilock
       - MYSQL_USER=mysql_user
       - MYSQL_PASSWORD=mysql_password
       - MYSQL_ROOT_PASSWORD=mysql_root_password
+    ports:
+      - "13306:3306"
     volumes:
       - dbdata:/var/lib/mysql
     networks:
