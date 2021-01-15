@@ -34,8 +34,10 @@ async function CheckEmailAvailable(Email) {
   }
 }
 
-module.exports.ValidateEmail = ValidateEmail;
-module.exports.CheckUsernameAvailable = CheckUsernameAvailable;
-module.exports.CheckEmailAvailable = CheckEmailAvailable;
+module.exports = {
+  ValidateEmail,
+  CheckUsernameAvailable,
+  CheckEmailAvailable
+};
 
 
