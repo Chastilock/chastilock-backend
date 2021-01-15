@@ -13,7 +13,7 @@ console.log("Searching for App Key and Secret");
   if (appSearch) {
     console.log("App found");
   } else {
-    throw new AuthenticationError('App does not exist')
+    throw new AuthenticationError('App does not exist');
   }
 
   const UserSearch = await models.User.findOne({
