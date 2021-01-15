@@ -9,9 +9,9 @@ function generateJWT(UserUUID) {
 async function verifyJWT(Token) {
   try {
     const decoded = jwt.verify(Token, process.env.JWT_SECRET);
-    console.log(decoded.UserUUID);
+    return decoded.UserUUID;
   } catch (e) {
-    return false;
+    return null;
   }
 }
 
