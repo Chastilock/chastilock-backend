@@ -24,14 +24,14 @@ console.log("Searching for App Key and Secret");
   });
 
   if(!userSearch) {
-    throw new AuthenticationError("Username or password is incorrect - USERNAME");
+    throw new AuthenticationError("Username or password is incorrect");
   }
 
   const hash = userSearch.Password;
 
   //Check Password
   if(Bcypt.compareSync(Password, hash) === false) {
-    throw new AuthenticationError("Username or password is incorrect - PASSWORD");
+    throw new AuthenticationError("Username or password is incorrect");
   }
   
   return models.Session.create({

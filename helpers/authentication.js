@@ -36,15 +36,29 @@ async function CheckUserPasswordEnabled(UserUUID) {
     }
   });
   if(UserSearch.Email && UserSearch.Password) {
-    console.log("true")
     return true;
   } else {
-    console.log("false")
     return false;
   }
 }
 
-module.exports.checkAppTokens = checkAppTokens;
-module.exports.generateJWT = generateJWT;
-module.exports.CheckUserPasswordEnabled = CheckUserPasswordEnabled;
-module.exports.verifyJWT = verifyJWT;
+async function TranslateUUID(UUID) {
+  const userSearch = await models.User.findOne({
+    where: {
+      UUID: UUID
+    }
+  });
+  if(userSearch) {
+    return userSearch.User_ID;
+  } else {
+    return null
+  }
+}
+
+module.exports = {
+  checkAppTokens,
+  generateJWT,
+  CheckUserPasswordEnabled,
+  verifyJWT,
+  TranslateUUID
+};

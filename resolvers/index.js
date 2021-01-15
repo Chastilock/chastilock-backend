@@ -3,7 +3,6 @@ const CreateUserAnon = require('../mutations/createUserAnon');
 const LoginAnon = require('../mutations/loginAnon');
 const Login = require('../mutations/login');
 
-
 const resolvers = {
   Query: {     
     async allUsers (root, args, { models }) {
