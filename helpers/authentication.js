@@ -7,7 +7,12 @@ function generateJWT(UserUUID) {
 }
 
 async function verifyJWT(Token) {
-  
+  try {
+    const decoded = jwt.verify(Token, process.env.JWT_SECRET);
+    console.log(decoded.UserUUID);
+  } catch (e) {
+    return false;
+  }
 }
 
 async function checkAppTokens(APIKey, APISecret) {
@@ -42,3 +47,4 @@ async function CheckUserPasswordEnabled(UserUUID) {
 module.exports.checkAppTokens = checkAppTokens;
 module.exports.generateJWT = generateJWT;
 module.exports.CheckUserPasswordEnabled = CheckUserPasswordEnabled;
+module.exports.verifyJWT = verifyJWT;
