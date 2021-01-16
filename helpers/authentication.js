@@ -1,5 +1,6 @@
+const { AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
-const { App, User } = require('../models');
+const { App, User, Session } = require('../models');
 
 function generateJWT(UserUUID) {
   const token = jwt.sign({ UserUUID }, process.env.JWT_SECRET);
@@ -55,10 +56,49 @@ async function TranslateUUID(UUID) {
   }
 }
 
+async function CheckSession(Token) {
+  //First, check that the JWT is valid  
+  const CheckToken = verifyJWT(Token);
+  
+  if(CheckToken === null) {
+    throw new AuthenticationError("Invalid Session");
+  }
+
+  const UUIDFromToken = CheckToken.UserUUID;
+   
+  //We will check the session hasn't been voided
+  const SessionSearch = Session.findOne({
+    where: {
+      Token: Token
+    }
+  });
+  if(!SessionSearch) { //Session has been voided
+    throw new AuthenticationError("Invalid Session");
+  }
+  const UserIDFromSession = SessionSearch.User_ID;
+
+  const UserSearch = User.findOne({
+    where: {
+      UUID: UUIDFromToken
+    }
+  });
+
+  if(!UserSearch) {
+    throw new AuthenticationError("Invalid Session");
+  }
+
+  if(UserSearch.User_ID === UserIDFromSession) {
+    return UserIDFromSession;
+  } else {
+    throw new AuthenticationError("Invalid Session");
+  }
+}
+
 module.exports = {
   checkAppTokens,
   generateJWT,
   CheckUserPasswordEnabled,
   verifyJWT,
-  TranslateUUID
+  TranslateUUID,
+  CheckSession
 };
