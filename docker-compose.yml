@@ -4,7 +4,7 @@ services:
   chastilock-backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     image: chastilock-backend
     container_name: chastilock-backend
     restart: unless-stopped

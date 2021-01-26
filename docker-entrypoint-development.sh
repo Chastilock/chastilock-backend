@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo $@
-echo $0
-
 # Install dependencies using npm
 npm install
 
