@@ -2,6 +2,7 @@ const CreateUser = require('../mutations/createUser');
 const CreateUserAnon = require('../mutations/createUserAnon');
 const LoginAnon = require('../mutations/loginAnon');
 const Login = require('../mutations/login');
+const changePassword = require('../mutations/changePassword');
 
 const resolvers = {
   Query: {     
@@ -28,6 +29,9 @@ const resolvers = {
     },
     async login(root, args, { models }) {
       return Login(args, models);
+    },
+    async changePassword(root, args, { models }) {
+      return changePassword(args, models);
     }
   },
 

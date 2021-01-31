@@ -60,6 +60,7 @@ const typeDefs = gql`
     createUserAnon(APIKey: String!, APISecret: String!): User!
     loginAnon(APIKey: String!, APISecret: String!, UUID: String!): Session!
     login(APIKey: String!, APISecret: String!, Username: String!, Password: String!): Session!
+    changePassword(APIKey: String!, APISecret: String!, Token: String!, OldPassword: String!, NewPassword: String!): User!
   }
 `;
 
