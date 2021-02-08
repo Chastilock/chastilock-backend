@@ -58,7 +58,7 @@ async function TranslateUUID(UUID) {
 
 async function CheckSession(Token) {
   //First, check that the JWT is valid  
-  const CheckToken = verifyJWT(Token);
+  const CheckToken = await verifyJWT(Token);
   
   if(CheckToken === null) {
     throw new AuthenticationError("Invalid Session");
