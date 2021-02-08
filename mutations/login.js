@@ -1,5 +1,5 @@
 const { generateJWT } = require('../helpers/authentication');
-const {AuthenticationError} = require('apollo-server');
+const {AuthenticationError} = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
 async function login({ APIKey, APISecret, Username, Password }, models) {

@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server');
+const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { checkAppTokens } = require("../helpers/authentication");

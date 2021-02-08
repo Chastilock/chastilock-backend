@@ -1,5 +1,5 @@
 const { generateJWT, CheckUserPasswordEnabled } = require('../helpers/authentication');
-const {AuthenticationError, ForbiddenError} = require('apollo-server');
+const {AuthenticationError, ForbiddenError} = require('apollo-server-express');
 
 async function loginAnon({ APIKey, APISecret, UUID }, models) {
 console.log("Searching for App Key and Secret");

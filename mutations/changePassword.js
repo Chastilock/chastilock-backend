@@ -1,5 +1,5 @@
 const { checkAppTokens, CheckSession } = require("../helpers/authentication");
-const { AuthenticationError, UserInputError } = require('apollo-server');
+const { AuthenticationError, UserInputError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
 async function changePassword(inputs, models) {

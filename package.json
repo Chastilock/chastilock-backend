@@ -15,7 +15,7 @@
   "author": "SirHavok, Itsuki, Micsen",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.19.0",
+    "apollo-server-express": "^2.19.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "graphql": "^15.4.0",

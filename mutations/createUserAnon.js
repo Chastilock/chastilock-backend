@@ -1,7 +1,7 @@
 const { createSourceEventStream } = require('graphql');
 const { v4: uuidv4 } = require('uuid');
 const {checkAppTokens} = require("../helpers/authentication");
-const { AuthenticationError } = require('apollo-server');
+const { AuthenticationError } = require('apollo-server-express');
 
 async function createUserAnon({ APIKey, APISecret }, models) {
 
