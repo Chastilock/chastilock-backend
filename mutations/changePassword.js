@@ -15,6 +15,7 @@ async function changePassword(inputs, models) {
 
     const UserID = await CheckSession(inputs.Token);
     //Get user ID from Token
+    console.log(UserID);
     if(UserID) {
         console.log("Validated Token");
     } else {
@@ -42,7 +43,8 @@ async function changePassword(inputs, models) {
         Password: NewHashedPassword
     }
     userSearch.set(DataToSet);
-    return userSearch.save();
+    userSearch.save();
+    return userSearch;
 
 }
 module.exports = changePassword;
