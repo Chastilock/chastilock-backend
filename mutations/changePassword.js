@@ -1,25 +1,13 @@
-const { checkAppTokens, CheckSession } = require("../helpers/authentication");
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
-async function changePassword(inputs, models) {
-    //First we need to check if the APIKey and APISecret exist in our database
-    console.log("Searching for App Key and Secret");
-    const AppSearch = await checkAppTokens(inputs.APIKey, inputs.APISecret);
-
-    if (AppSearch) {
-    console.log("App found");
-    } else {
+async function changePassword(inputs, models, req) {
+    if (req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
     }
 
-    const UserID = await CheckSession(inputs.Token);
-    //Get user ID from Token
-    console.log(UserID);
-    if(UserID) {
-        console.log("Validated Token");
-    } else {
-        throw new AuthenticationError("Session not valid");
+    if (req.Authenticated === false) {
+        throw new AuthenticationError("Session is not valid");
     }
 
     if(inputs.NewPassword.length < 8) {
@@ -28,17 +16,19 @@ async function changePassword(inputs, models) {
 
     const userSearch = await models.User.findOne({
         where: {
-          User_ID: UserID
+          User_ID: req.Authenticated
         }
       });
     const hash = userSearch.Password;
+    console.log(`Hash: ${hash}`)
+    console.log(`Old Password: ${inputs.OldPassword}`)
     //We need to check the old password
     if(Bcypt.compareSync(inputs.OldPassword, hash) === false) {
         throw new AuthenticationError("Old password is incorrect");
     }
 
     //Set the password on the previously retrieved user account
-    const NewHashedPassword = Bcypt.hashSync(inputs.Password, 10);
+    const NewHashedPassword = Bcypt.hashSync(inputs.NewPassword, 10);
     const DataToSet = {
         Password: NewHashedPassword
     }

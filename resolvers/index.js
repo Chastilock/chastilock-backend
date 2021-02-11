@@ -19,20 +19,20 @@ const resolvers = {
   },
 
   Mutation: {
-    async createUser(root, args, { models }){
-      return CreateUser(args, models);
+    async createUser(root, args, { models, req }){
+      return CreateUser(args, models, req);
     },
-    async createUserAnon(root, args, { models }) {
-      return CreateUserAnon(args, models);
+    async createUserAnon(root, args, { models, req }) {
+      return CreateUserAnon(models, req);
     },
-    async loginAnon(root, args, { models }) {
+    async loginAnon(root, args, { models, req }) {
       return LoginAnon(args, models)
     },
     async login(root, args, { models }) {
       return Login(args, models);
     },
-    async changePassword(root, args, { models }) {
-      return changePassword(args, models);
+    async changePassword(root, args, { models, req }) {
+      return changePassword(args, models, req);
     }
   },
 

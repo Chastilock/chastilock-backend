@@ -1,19 +1,12 @@
 const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
-const { checkAppTokens } = require("../helpers/authentication");
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
 
-async function createUser(inputs, models) {
+async function createUser(inputs, models, req) {
 console.log("Create user init");
 
-//First we need to check if the APIKey and APISecret exist in our database
-console.log("Searching for App Key and Secret");
-const AppSearch = await checkAppTokens(inputs.APIKey, inputs.APISecret);
-
-if (AppSearch) {
-  console.log("App found");
-} else {
+if (req.AppFound === false) {
   throw new AuthenticationError("App does not exist");
 }
 

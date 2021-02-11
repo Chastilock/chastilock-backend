@@ -1,18 +1,9 @@
 const { generateJWT, CheckUserPasswordEnabled } = require('../helpers/authentication');
-const {AuthenticationError, ForbiddenError} = require('apollo-server-express');
+const {AuthenticationError, ForbiddenError, UserInputError} = require('apollo-server-express');
 
-async function loginAnon({ APIKey, APISecret, UUID }, models) {
-console.log("Searching for App Key and Secret");
-  const appSearch = await models.App.findOne({
-    where: {
-      API_Key: APIKey,
-      API_Secret: APISecret
-    }
-  })
+async function loginAnon({ UUID }, models, req) {
 
-  if (appSearch) {
-    console.log("App found");
-  } else {
+  if (req.AppFound === false) {
     throw new AuthenticationError('App does not exist');
   }
 
@@ -33,6 +24,8 @@ console.log("Searching for App Key and Secret");
       Token: generateJWT(UUID),
       App_ID: appSearch.App_ID
     });
+  } else {
+    throw new UserInputError("UUID not found");
   }
 }
 module.exports = loginAnon;
