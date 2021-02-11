@@ -6,7 +6,8 @@ const changePassword = require('../mutations/changePassword');
 
 const resolvers = {
   Query: {     
-    async allUsers (root, args, { models }) {
+    async allUsers (root, args, { req, models }) {
+      console.log(req.AppFound);
       return models.User.findAll();
     },
     async allCreatedLocks (root, args, { models }) {

@@ -8,19 +8,32 @@ const models = require('./models');
 const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
+const { CheckApp, CheckAuth } = require('./middleware');
+const bodyParser = require('body-parser');
 
-const app = express();
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ 
+const app = express();
+const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: {models},
-  });
+  context: ({ req }) => {
+    return {req, models}
+  }
+  }
+);
 
-  server.applyMiddleware({ app });
+app.use(bodyParser.json());
+app.use(CheckApp);
+app.use(CheckAuth);
 
-// The `listen` method launches a web server.
-app.listen({ port: 4000 }, () =>
+server.applyMiddleware({ app });
+
+app.use((req, res) => {
+  res.status(200).send('Hello from GraphQL server! 👋🏻');
+  res.end();
+});
+
+app.listen({ port }, () =>
   console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
 )

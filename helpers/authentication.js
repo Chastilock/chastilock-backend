@@ -16,7 +16,7 @@ async function verifyJWT(Token) {
   }
 }
 
-async function checkAppTokens(APIKey, APISecret) {
+/* async function checkAppTokens(APIKey, APISecret) {
   const AppSearch = await App.findOne({
     where: {
       API_Key: APIKey,
@@ -28,7 +28,7 @@ async function checkAppTokens(APIKey, APISecret) {
   } else {
     return false;
   }
-}
+} */
 
 async function CheckUserPasswordEnabled(UserUUID) {
   const UserSearch = await User.findOne({
@@ -95,7 +95,6 @@ async function CheckSession(Token) {
 }
 
 module.exports = {
-  checkAppTokens,
   generateJWT,
   CheckUserPasswordEnabled,
   verifyJWT,
