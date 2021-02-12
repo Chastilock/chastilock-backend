@@ -3,6 +3,7 @@ const CreateUserAnon = require('../mutations/createUserAnon');
 const LoginAnon = require('../mutations/loginAnon');
 const Login = require('../mutations/login');
 const changePassword = require('../mutations/changePassword');
+const upgradeAccount = require('../mutations/upgradeAccount');
 
 const resolvers = {
   Query: {     
@@ -26,13 +27,16 @@ const resolvers = {
       return CreateUserAnon(models, req);
     },
     async loginAnon(root, args, { models, req }) {
-      return LoginAnon(args, models)
+      return LoginAnon(args, models, req);
     },
     async login(root, args, { models }) {
       return Login(args, models);
     },
     async changePassword(root, args, { models, req }) {
       return changePassword(args, models, req);
+    },
+    async upgradeAccount(root, args, { models, req }) {
+      return upgradeAccount(args, models, req);
     }
   },
 

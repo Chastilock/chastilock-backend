@@ -22,7 +22,7 @@ async function loginAnon({ UUID }, models, req) {
     return models.Session.create({
       User_ID: UserSearch.User_ID,
       Token: generateJWT(UUID),
-      App_ID: appSearch.App_ID
+      App_ID: req.AppID
     });
   } else {
     throw new UserInputError("UUID not found");

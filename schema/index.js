@@ -61,6 +61,7 @@ const typeDefs = gql`
     loginAnon(UUID: String!): Session!
     login(Username: String!, Password: String!): Session!
     changePassword(OldPassword: String!, NewPassword: String!): User!
+    upgradeAccount(Email: String!, Password: String!, Username: String!): User!
   }
 `;
 

@@ -1,5 +1,5 @@
 const { generateJWT } = require('../helpers/authentication');
-const {AuthenticationError} = require('apollo-server-express');
+const {AuthenticationError, ReplaceFieldWithFragment} = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
 async function login({ Username, Password }, models, req) {
@@ -28,7 +28,7 @@ async function login({ Username, Password }, models, req) {
   return models.Session.create({
     User_ID: userSearch.User_ID,
     Token: generateJWT(userSearch.UUID),
-    App_ID: appSearch.App_ID
+    App_ID: req.AppID
     });
   }
 module.exports = login;
