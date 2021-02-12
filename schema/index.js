@@ -57,7 +57,7 @@ const typeDefs = gql`
 
   type Mutation {
     createUser(Email: String!, Password: String!, Username: String!): User!
-    createUserAnon(): User!
+    createUserAnon: User!
     loginAnon(UUID: String!): Session!
     login(Username: String!, Password: String!): Session!
     changePassword(OldPassword: String!, NewPassword: String!): User!
