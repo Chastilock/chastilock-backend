@@ -1,19 +1,10 @@
 const { generateJWT } = require('../helpers/authentication');
-const {AuthenticationError} = require('apollo-server');
+const {AuthenticationError} = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
-async function login({ APIKey, APISecret, Username, Password }, models) {
-console.log("Searching for App Key and Secret");
-  const appSearch = await models.App.findOne({
-    where: {
-      API_Key: APIKey,
-      API_Secret: APISecret
-    }
-  })
+async function login({ Username, Password }, models, req) {
 
-  if (appSearch) {
-    console.log("App found");
-  } else {
+  if (req.AppFound === false) {
     throw new AuthenticationError('App does not exist');
   }
 

@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server')
+const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
   type User {
@@ -56,11 +56,11 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(APIKey: String!, APISecret: String!, Email: String!, Password: String!, Username: String!): User!
-    createUserAnon(APIKey: String!, APISecret: String!): User!
-    loginAnon(APIKey: String!, APISecret: String!, UUID: String!): Session!
-    login(APIKey: String!, APISecret: String!, Username: String!, Password: String!): Session!
-    changePassword(APIKey: String!, APISecret: String!, Token: String!, OldPassword: String!, NewPassword: String!): User!
+    createUser(Email: String!, Password: String!, Username: String!): User!
+    createUserAnon(): User!
+    loginAnon(UUID: String!): Session!
+    login(Username: String!, Password: String!): Session!
+    changePassword(OldPassword: String!, NewPassword: String!): User!
   }
 `;
 
