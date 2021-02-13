@@ -26,6 +26,7 @@ async function loginAnon({ UUID }, models, req) {
     });
 
     newSession.User = UserSearch;
+    return newSession;
   } else {
     throw new UserInputError("UUID not found");
   }
