@@ -1,5 +1,5 @@
 const { generateJWT } = require('../helpers/authentication');
-const {AuthenticationError, ReplaceFieldWithFragment} = require('apollo-server-express');
+const { AuthenticationError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 
 async function login({ Username, Password }, models, req) {
