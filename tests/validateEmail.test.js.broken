@@ -1,0 +1,9 @@
+const { ValidateEmail } = require('../helpers/authentication');
+
+test("Email validation works as expected", () => {
+    expect(() => ValidateEmail("test@example.com")).toBeTruthy();
+    expect(() => ValidateEmail("thisisareallylongemail@example.co")).toBeTruthy();
+    expect(() => ValidateEmail("a@a.co")).toBeTruthy();
+    expect(() => ValidateEmail("invalid@example")).toBeFalsey();
+    expect(() => ValidateEmail("@google.com")).toBeFalsey();
+})
