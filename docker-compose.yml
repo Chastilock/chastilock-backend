@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     environment:
       - DATABASE=mysql://mysql_user:mysql_password@db/chastilock
+      - JWT_SECRET=secret
     ports:
       - "4000:4000"
     volumes:

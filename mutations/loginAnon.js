@@ -19,11 +19,13 @@ async function loginAnon({ UUID }, models, req) {
   }
 
   if(UserSearch) {
-    return models.Session.create({
+    const newSession = models.Session.create({
       User_ID: UserSearch.User_ID,
       Token: generateJWT(UUID),
       App_ID: req.AppID
     });
+
+    newSession.User = UserSearch;
   } else {
     throw new UserInputError("UUID not found");
   }
