@@ -4,6 +4,7 @@ const LoginAnon = require('../mutations/loginAnon');
 const Login = require('../mutations/login');
 const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
+const Logout = require('../mutations/logout');
 
 const resolvers = {
   Query: {     
@@ -37,6 +38,9 @@ const resolvers = {
     },
     async upgradeAccount(root, args, { models, req }) {
       return upgradeAccount(args, models, req);
+    },
+    async logout(root, args, { models, req }) {
+      return Logout(args, models, req);
     }
   },
 

@@ -62,6 +62,7 @@ const typeDefs = gql`
     login(Username: String!, Password: String!): Session!
     changePassword(OldPassword: String!, NewPassword: String!): User!
     upgradeAccount(Email: String!, Password: String!, Username: String!): User!
+    logout: String!
   }
 `;
 

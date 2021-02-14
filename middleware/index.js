@@ -10,7 +10,7 @@ const CheckApp = async (req, res, next) => {
   });
   if(AppSearch) {
     req.AppFound = true;
-    req.AppID = AppSearch.App_ID
+    req.App = AppSearch.App_ID;
   } else {
     req.AppFound = false;
   }
@@ -45,6 +45,7 @@ const CheckAuth = async (req, res, next) => {
 
   if(CheckToken) {
     req.Authenticated = CheckToken.User_ID;
+    req.token = CheckToken.Token;
     next();
   } else {
     req.Authenticated = false;
