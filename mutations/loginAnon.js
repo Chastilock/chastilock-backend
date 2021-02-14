@@ -19,7 +19,7 @@ async function loginAnon({ UUID }, models, req) {
   }
 
   if(UserSearch) {
-    const newSession = models.Session.create({
+    const newSession = await models.Session.create({
       User_ID: UserSearch.User_ID,
       Token: generateJWT(UUID),
       App_ID: req.AppID
