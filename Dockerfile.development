@@ -4,3 +4,4 @@ FROM node:14-alpine
 WORKDIR /home/node/app
 
 CMD /home/node/app/docker-entrypoint-development.sh
+# CMD ls /home/node/app

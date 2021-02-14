@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # Install dependencies using npm
 npm install
 
