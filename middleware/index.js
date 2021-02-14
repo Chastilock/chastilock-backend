@@ -10,7 +10,7 @@ const CheckApp = async (req, res, next) => {
   });
   if(AppSearch) {
     req.AppFound = true;
-    req.App = AppSearch.App_ID;
+    req.AppID = AppSearch.App_ID;
   } else {
     req.AppFound = false;
   }
