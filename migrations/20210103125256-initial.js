@@ -122,6 +122,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      Lock_Type_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       Lock_Name: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -130,9 +134,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      Fixed_Length: {
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+    // CreatedLock
+    await queryInterface.createTable('OriginalLockType', {
+      Original_Deck_ID: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        primaryKey: true,
+        autoIncrement: true
       },
       Variable_Max_Greens: {
         type: Sequelize.INTEGER,
@@ -197,21 +213,15 @@ module.exports = {
       Variable_Min_RandomRed: {
         type: Sequelize.INTEGER,
         allowNull: true,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
+
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Apps');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Sessions');
     await queryInterface.dropTable('CreatedLocks');
+    await queryInterface.dropTable('OriginalLockType');
   }
 };
