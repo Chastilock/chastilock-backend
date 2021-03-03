@@ -5,6 +5,7 @@ const Login = require('../mutations/login');
 const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
 const Logout = require('../mutations/logout');
+const createOriginalLock = require('../mutations/createOriginalLock');
 
 const resolvers = {
   Query: {     
@@ -41,6 +42,9 @@ const resolvers = {
     },
     async logout(root, args, { models, req }) {
       return Logout(args, models, req);
+    },
+    async createOriginalLock(root, args, { models, req }) {
+      return createOriginalLock(args, models, req);
     }
   },
 
