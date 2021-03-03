@@ -119,7 +119,7 @@ module.exports = {
         allowNull: false,
       },
       Lock_Type: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       Lock_Type_ID: {
