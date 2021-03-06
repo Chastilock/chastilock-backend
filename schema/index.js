@@ -17,25 +17,26 @@ const typeDefs = gql`
     Lock_Type_ID: Int!
     Lock_Name: String
     Disabled: Int!
+    OriginalLockType: OriginalLockType
     
   }
   type OriginalLockType {
     Original_Deck_ID: ID!,
     Lock: CreatedLock!,
-    Variable_Max_Reds: Int!
-    Variable_Max_Freezes: Int!
-    Variable_Max_Doubles: Int!
-    Variable_Max_Stickies: Int!
-    Variable_Max_AddRed: Int!
-    Variable_Max_RemoveRed: Int!
-    Variable_Max_RandomRed: Int!
-    Variable_Min_Greens: Int!
-    Variable_Min_Reds: Int!
-    Variable_Min_Freezes: Int!
-    Variable_Min_Doubles: Int!
-    Variable_Min_Stickies: Int!
-    Variable_Min_AddRed: Int!
-    Variable_Min_RemoveRed: Int!
+    Variable_Max_Reds: Int!
+    Variable_Max_Freezes: Int!
+    Variable_Max_Doubles: Int!
+    Variable_Max_Stickies: Int!
+    Variable_Max_AddRed: Int!
+    Variable_Max_RemoveRed: Int!
+    Variable_Max_RandomRed: Int!
+    Variable_Min_Greens: Int!
+    Variable_Min_Reds: Int!
+    Variable_Min_Freezes: Int!
+    Variable_Min_Doubles: Int!
+    Variable_Min_Stickies: Int!
+    Variable_Min_AddRed: Int!
+    Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
   }
 
@@ -69,7 +70,7 @@ const typeDefs = gql`
     changePassword(OldPassword: String!, NewPassword: String!): User!
     upgradeAccount(Email: String!, Password: String!, Username: String!): User!
     logout: String!
-    CreateOriginalLock(LockName: String, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!): CreatedLock!
+    createOriginalLock(LockName: String, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!): CreatedLock!
   }`;
 
 module.exports = typeDefs

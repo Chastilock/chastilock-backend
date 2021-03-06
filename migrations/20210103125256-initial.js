@@ -87,15 +87,23 @@ module.exports = {
       },
       User_ID: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
+        }
       },
       Token: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       App_ID: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Apps',
+          key: 'App_ID'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -108,47 +116,13 @@ module.exports = {
     });
 
     // CreatedLock
-    await queryInterface.createTable('CreatedLocks', {
-      Lock_ID: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      User_ID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      Lock_Type: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      Lock_Type_ID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      Lock_Name: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      Disabled: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+    
     // OriginalLockType
     await queryInterface.createTable('OriginalLockType', {
       Original_Deck_ID: {
-        type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
       },
       Variable_Max_Greens: {
         type: Sequelize.INTEGER,
@@ -213,6 +187,46 @@ module.exports = {
       Variable_Min_RandomRed: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      }
+    });
+
+    await queryInterface.createTable('CreatedLocks', {
+      Lock_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      User_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
+        }
+      },
+      OriginalLockType_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'OriginalLockType',
+          key: 'Original_Deck_ID'
+        }
+      },
+      Lock_Name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      Disabled: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
 
