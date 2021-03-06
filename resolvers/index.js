@@ -18,7 +18,7 @@ const resolvers = {
     },
     async createdLock (root, { id }, { models }) {
       const model = models.CreatedLock.findByPk(id);
-      model.OriginalLockType = models.OriginalLockType.findByPk(model.OriginalLockType_ID);
+      model.OriginalLockType = model.getOriginalLockType();
       return model;
     }
   },

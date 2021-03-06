@@ -118,7 +118,7 @@ module.exports = {
     // CreatedLock
     
     // OriginalLockType
-    await queryInterface.createTable('OriginalLockType', {
+    await queryInterface.createTable('OriginalLockTypes', {
       Original_Deck_ID: {
         primaryKey: true,
         autoIncrement: true,
@@ -187,6 +187,14 @@ module.exports = {
       Variable_Min_RandomRed: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
 

@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
       App_ID: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
+      }
       
     }, {sequelize}
     );
