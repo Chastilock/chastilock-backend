@@ -19,7 +19,7 @@ module.exports = {
       },
       API_Secret: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -119,7 +119,7 @@ module.exports = {
         allowNull: false,
       },
       Lock_Type: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       Lock_Type_ID: {
@@ -143,7 +143,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    // CreatedLock
+    // OriginalLockType
     await queryInterface.createTable('OriginalLockType', {
       Original_Deck_ID: {
         type: Sequelize.INTEGER,
@@ -152,67 +152,67 @@ module.exports = {
       },
       Variable_Max_Greens: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_Reds: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_Freezes: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_Doubles: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_Stickies: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_AddRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_RemoveRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Max_RandomRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_Greens: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_Reds: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_Freezes: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_Doubles: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_Stickies: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_AddRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_RemoveRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Variable_Min_RandomRed: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       }
     });
 

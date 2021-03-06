@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       },
       API_Secret: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       
     }, {sequelize}
