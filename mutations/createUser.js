@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
 
 async function createUser(inputs, models, req) {
-console.log("Create user init");
 
 if (req.AppFound === false) {
   throw new AuthenticationError("App does not exist");
