@@ -14,23 +14,44 @@ async function createOriginalLock(inputs, models, req) {
     if(inputs.Variable_Max_Reds > 599 || inputs.Variable_Min_Reds < 0) {
         validationErrors.push("Invalid red card count")
     }
+    if(inputs.Variable_Min_Reds > inputs.Variable_Max_Reds) {
+        validationErrors.push("Min reds is bigger than max reds")
+    }
     if(inputs.Variable_Max_Freezes > 100 || inputs.Variable_Min_Freezes < 0) {
         validationErrors.push("Invalid freeze card count")
+    }
+    if(inputs.Variable_Min_Freezes > inputs.Variable_Max_Freezes) {
+        validationErrors.push("Min freezes is bigger than max freezes")
     }
     if(inputs.Variable_Max_Doubles > 100 || inputs.Variable_Min_Doubles < 0) {
         validationErrors.push("Invalid double card count")
     }
+    if(inputs.Variable_Min_Doubles > inputs.Variable_Max_Doubles) {
+        validationErrors.push("Min doubles is bigger than max doubles")
+    }
     if(inputs.Variable_Max_Stickies > 100 || inputs.Variable_Min_Stickies < 0) {
         validationErrors.push("Invalid Sticky card count")
+    }
+    if(inputs.Variable_Min_Stickies > inputs.Variable_Max_Stickies) {
+        validationErrors.push("Min stickies is bigger than max stickies")
     }
     if(inputs.Variable_Max_AddRed > 299 || inputs.Variable_Min_AddRed < 0) {
         validationErrors.push("Invalid Yellow add card count")
     }
+    if(inputs.Variable_Min_AddRed > inputs.Variable_Max_AddRed) {
+        validationErrors.push("Min add red is bigger than max add red")
+    }
     if(inputs.Variable_Max_RemoveRed > 299 || inputs.Variable_Min_RemoveRed < 0) {
         validationErrors.push("Invalid Yellow remove card count")
     }
+    if(inputs.Variable_Min_RemoveRed > inputs.Variable_Max_RemoveRed) {
+        validationErrors.push("Min remove red is bigger than max remove red")
+    }
     if(inputs.Variable_Max_RandomRed > 299 || inputs.Variable_Min_RandomRed < 0) {
         validationErrors.push("Invalid Yellow random card count")
+    }
+    if(inputs.Variable_Min_RandomRed > inputs.Variable_Max_RemoveRed) {
+        validationErrors.push("Min random red is bigger than max random red")
     }
     if(inputs.LockName.length > 255) {
         validationErrors.push("Name too long!");
