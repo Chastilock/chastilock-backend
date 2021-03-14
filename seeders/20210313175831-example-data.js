@@ -19,10 +19,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       }], {});
+      await queryInterface.bulkInsert('Users', [{
+        UUID: 'fa48915c-4a9a-4eff-82d4-763e3b9608fe',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
      await queryInterface.bulkDelete('Apps', null, {});
+     await queryInterface.bulkDelete('Users', null, {});
     
   }
 };
