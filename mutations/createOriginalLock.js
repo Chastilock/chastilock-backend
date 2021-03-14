@@ -6,11 +6,9 @@ async function createOriginalLock(inputs, models, req) {
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
     }
-      
     if(req.Authenticated === false) {
         throw new AuthenticationError("Session is not valid");
     }
-
     if(inputs.Variable_Max_Reds > 599 || inputs.Variable_Min_Reds < 0) {
         validationErrors.push("Invalid red card count")
     }

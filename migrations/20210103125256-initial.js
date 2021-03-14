@@ -56,10 +56,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      Created: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       Keyholder: {
         type: Sequelize.INTEGER,
         allowNull: true
@@ -324,7 +320,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'OriginalLockType',
+          model: 'OriginalLockTypes',
           key: 'Original_Deck_ID'
         }
       },
@@ -348,10 +344,10 @@ module.exports = {
 
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Apps');
-    await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Sessions');
+    await queryInterface.dropTable('Apps');
     await queryInterface.dropTable('CreatedLocks');
-    await queryInterface.dropTable('OriginalLockType');
+    await queryInterface.dropTable('OriginalLockTypes');
+    await queryInterface.dropTable('Users');
   }
 };
