@@ -71,7 +71,7 @@ const typeDefs = gql`
     changePassword(OldPassword: String!, NewPassword: String!): User!
     upgradeAccount(Email: String!, Password: String!, Username: String!): User!
     logout: String!
-    createOriginalLock(LockName: String, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!): CreatedLock!
+    createOriginalLock(LockName: String, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!, Chance_Period: Int!, Cumalative: Int!, Multiple_Greens_Required: Int!, Hide_Card_Info: Int!, Allow_Fakes: Int!, Min_Fakes: Int, Max_Fakes: Int, Auto_Resets_Enabled: Int!, Reset_Frequency: Int, Max_Resets: Int, Checkins_Enabled: Int!): CreatedLock!
   }`;
 
 module.exports = typeDefs

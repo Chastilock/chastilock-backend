@@ -52,8 +52,60 @@ async function createOriginalLock(inputs, models, req) {
         validationErrors.push("Min random red is bigger than max random red")
     }
     if(inputs.LockName.length > 255) {
-        validationErrors.push("Name too long!");
+        validationErrors.push("Name too long");
     }
+    if(inputs.Chance_Period > 1440 || inputs.Chance_Period < 1) {
+        validationErrors.push("Chance period is not valid");
+    }
+    if(inputs.Cumaltive != 0 && inputs.Cumaltive != 1) {
+        validationErrors.push("Cumalative is not valid");
+    }
+    if(inputs.Multiple_Greens_Required != 0 && inputs.Multiple_Greens_Required != 1) {
+        validationErrors.push("Multiple greens required is not valid");
+    }
+    if(inputs.Hide_Card_Info != 0 && inputs.Hide_Card_Info != 1) {
+        validationErrors.push("Hide card info is not valid");
+    }
+    if(inputs.Allow_Fakes != 0 && inputs.Allow_Fakes != 1) {
+        validationErrors.push("Allow fakes is not valid");
+    }
+
+    if(inputs.Allow_Fakes === 1) {
+        if(inputs.Min_Fakes > 19 || inputs.Min_Fakes < 0) {
+            validationErrors.push("Min fakes is not valid");
+        }
+        if(inputs.Max_Fakes > 19 || inputs.Max_Fakes < 0) {
+            validationErrors.push("Max fakes is not valid");
+        }
+        if(inputs.Min_Fakes > inputs.Max_Fakes) {
+            validationErrors.push("Min fakes is bigger than max fakes");
+        }
+    }
+
+    if(inputs.Auto_Resets_Enabled != 0 && inputs.Auto_Resets_Enabled != 1) {
+        validationErrors.push("Auto resets enabled is not valid");
+    }
+    
+    if(inputs.Auto_Resets_Enabled === 1) {
+        if (inputs.Reset_Frequency < 2 || inputs.Reset_Frequency > 399) {
+            validationErrors.push("Reset frequency is not valid");
+        }
+        if (inputs.Max_Resets < 1 || inputs.Max_Resets > 20) {
+            validationErrors.push("Max resets is not valid");
+        }
+    }
+
+    if(inputs.Checkins_Enabled != 0 && inputs.Checkins_Enabled != 1) {
+        validationErrors.push("Checkins enabled is not valid");
+    }
+
+    if(inputs.Checkins_Enabled === 1) {
+        
+    }
+
+
+
+
 
     if(validationErrors.length) {
         throw new UserInputError("Form inputs are invalid!", {
@@ -77,7 +129,11 @@ async function createOriginalLock(inputs, models, req) {
         Variable_Min_Stickies: inputs.Variable_Min_Stickies,
         Variable_Min_AddRed: inputs.Variable_Min_AddRed,
         Variable_Min_RemoveRed: inputs.Variable_Min_RemoveRed,
-        Variable_Min_RandomRed: inputs.Variable_Min_RandomRed
+        Variable_Min_RandomRed: inputs.Variable_Min_RandomRed,
+        Chance_Period: inputs.Chance_Period,
+        Cumaltive: inputs.Cumaltive,
+        Multiple_Greens_Required: inputs.Multiple_Greens_Required,
+        Hide_Card_Info: inputs.Hide_Card_Info
     });
     const cardRecordID = CardsRecord.Original_Deck_ID;
 
