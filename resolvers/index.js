@@ -18,7 +18,14 @@ const resolvers = {
     },
     async createdLock (root, { id }, { models }) {
       return models.CreatedLock.findByPk(id);
+    },
+    async User (root, { id }, { models }) {
+      return models.User.findByPk(id);
+    },
+    async Session (root, { id }, { models }) {
+      return models.Session.findByPk(id);
     }
+
   },
 
   Mutation: {
@@ -51,12 +58,29 @@ const resolvers = {
   User: {
     async CreatedLocks (user) {
       return user.getCreatedLocks()
+    },
+    async Sessions (user) {
+      return user.getSessions()
     }
   },
   CreatedLock: {
     async User (CreatedLock) {
       return CreatedLock.getUser()
     }
+  },
+  OriginalLockType: {
+    async Lock (OriginalLockType) {
+      return OriginalLockType.getCreatedLock();
+    }
+  },
+  Session: {
+    async User (Session) {
+      return Session.getUser();
+    },
+    async App (Session) {
+      return Session.getApp();
+    }
   }
+
 }
 module.exports = resolvers

@@ -61,6 +61,8 @@ const typeDefs = gql`
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
     createdLock(id: Int!): CreatedLock
+    User(id: Int!): User,
+    Session(id: Int!): Session
   }
 
   type Mutation {
