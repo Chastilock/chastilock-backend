@@ -24,6 +24,9 @@ const resolvers = {
     },
     async Session (root, { id }, { models }) {
       return models.Session.findByPk(id);
+    },
+    async LoadedLock (root, { id }, { models }) {
+      return models.LoadedLock.findByPk(id);
     }
 
   },
@@ -79,6 +82,17 @@ const resolvers = {
     },
     async App (Session) {
       return Session.getApp();
+    }
+  },
+  LoadedLock: {
+    async Lockee (LoadedLock) {
+      return LoadedLock.getUser();
+    },
+    async Keyholder (LoadedLock) {
+      return LoadedLock.getUser();
+    },
+    async CreatedLock (LoadedLock) {
+      return LoadedLock.getCreatedLock();
     }
   }
 

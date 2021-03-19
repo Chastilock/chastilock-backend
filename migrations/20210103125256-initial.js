@@ -342,6 +342,50 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('LoadedLocks', {
+      LoadedLock_ID: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      CreatedLock_ID: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'CreatedLocks',
+            key: 'Lock_ID'
+          }
+      },
+      Lockee: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Users',
+            key: 'User_ID'
+          }
+      },
+      Keyholder: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'Users',
+            key: 'User_ID'
+          }
+      },
+      Code: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+      },   
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sessions');
@@ -349,5 +393,6 @@ module.exports = {
     await queryInterface.dropTable('CreatedLocks');
     await queryInterface.dropTable('OriginalLockTypes');
     await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('LoadedLocks');
   }
 };

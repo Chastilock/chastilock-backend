@@ -55,6 +55,14 @@ const typeDefs = gql`
     App: App!
   }
 
+  type LoadedLock {
+    LoadedLock_ID: Int!,
+    CreatedLock: CreatedLock!,
+    Lockee: User!,
+    Keyholder: User,
+    Code: Int!
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. 
   type Query {
@@ -63,6 +71,8 @@ const typeDefs = gql`
     createdLock(id: Int!): CreatedLock
     User(id: Int!): User,
     Session(id: Int!): Session
+    LoadedLock(id: Int!): LoadedLock
+
   }
 
   type Mutation {
