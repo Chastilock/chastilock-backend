@@ -229,11 +229,11 @@ module.exports = {
         allowNull: false
       },
       Checkins_Frequency: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       Checkins_Window: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       Allow_Buyout: {
