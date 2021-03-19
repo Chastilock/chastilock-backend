@@ -130,15 +130,7 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: true
       },
-      Allow_Buyout: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       Start_Lock_Frozen: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      Disable_Keyholder_Decision: {
         type: Sequelize.INTEGER,
         allowNull: false
       },

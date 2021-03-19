@@ -111,3 +111,6 @@ kube/
 
 #config folder
 config/
+
+#test.js in root
+test.js

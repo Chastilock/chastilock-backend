@@ -100,12 +100,65 @@ async function createOriginalLock(inputs, models, req) {
     }
 
     if(inputs.Checkins_Enabled === 1) {
-        
+        if (inputs.Checkins_Frequency < 0.5 || inputs.Reset_Frequency > 23940) {
+            validationErrors.push("Checkins frequency is not valid");
+        }
+
+        if (inputs.Checkins_Window < 0.25 || inputs.Checkins_Window > 23880) {
+            validationErrors.push("Checkins window is not valid");
+        }
     }
 
+    if(inputs.Allow_Buyout != 0 || inputs.Allow_Buyout != 1) {
+        validationErrors.push("Allow buyout is not valid");
+    }
 
+    if(inputs.Start_Lock_Frozen != 0 || inputs.Start_Lock_Frozen != 1) {
+        validationErrors.push("Start lock frozen is not valid");
+    }
+    if(inputs.Disable_Keyholder_Decision != 0 || inputs.Disable_Keyholder_Decision != 1) {
+        validationErrors.push("Disable keyholder permission is not valid");
+    }
 
+    if(inputs.Limit_Users != 0 || inputs.Limit_Users != 1) {
+        validationErrors.push("Limit users is not valid");
+    }
 
+    if(inputs.Limit_Users === 1) {
+        if(inputs.User_Limit_Amount > 100 || inputs.User_Limit_Amount < 1) {
+            validationErrors.push("Limit users amount is not valid");
+        }
+    }
+
+    if(inputs.Block_Test_Locks != 0 || inputs.Block_Test_Locks != 1) {
+        validationErrors.push("Block test users is not valid");
+    }
+
+    if(inputs.Block_User_Rating_Enabled != 0 || inputs.Block_User_Rating_Enabled != 1) {
+        validationErrors.push("Block user rating enabled is not valid");
+    }
+
+    if(inputs.Block_User_Rating_Enabled === 1) {
+        if(inputs.Block_User_Rating > 5 || inputs.Block_User_Rating < 1) {
+            validationErrors.push("User blocked rating is not valid");
+        }
+    }
+
+    if(inputs.Block_Already_Locked != 0 || inputs.Block_Already_Locked != 1) {
+        validationErrors.push("Block already locked users is not valid");
+    }
+
+    if(inputs.Block_Stats_Hidden != 0 || inputs.Block_Stats_Hidden != 1) {
+        validationErrors.push("Block stat hidden users is not valid");
+    }
+
+    if(inputs.Only_Accept_Trusted != 0 || inputs.Only_Accept_Trusted != 1) {
+        validationErrors.push("Only accept trusted users is not valid");
+    }
+
+    if(inputs.Require_DM != 0 || inputs.Require_DM != 1) {
+        validationErrors.push("Require DM is not valid");
+    }
 
     if(validationErrors.length) {
         throw new UserInputError("Form inputs are invalid!", {
@@ -133,7 +186,28 @@ async function createOriginalLock(inputs, models, req) {
         Chance_Period: inputs.Chance_Period,
         Cumaltive: inputs.Cumaltive,
         Multiple_Greens_Required: inputs.Multiple_Greens_Required,
-        Hide_Card_Info: inputs.Hide_Card_Info
+        Hide_Card_Info: inputs.Hide_Card_Info,
+        Allow_Fakes: inputs.Allow_Fakes,
+        Min_Fakes: inputs.Min_Fakes,
+        Max_Fakes: inputs.Max_Fakes,
+        Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
+        Reset_Frequency: inputs.Reset_Frequency,
+        Max_Resets: inputs.Max_Resets,
+        Checkins_Enabled: inputs.Checkins_Enabled,
+        Checkins_Frequency: inputs.Checkins_Frequency,
+        Checkins_Window: inputs.Checkins_Window,
+        Allow_Buyout: inputs.Allow_Buyout,
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
+        Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
+        Limit_Users: inputs.Limit_Users,
+        User_Limit_Amount: inputs.User_Limit_Amount,
+        Block_Test_Locks: inputs.Block_Test_Locks,
+        Block_User_Rating_Enabled: inputs.Block_User_Rating_Enabled,
+        Block_User_Rating: inputs.Block_User_Rating,
+        Block_Already_Locked: inputs.Block_Already_Locked,
+        Block_Stats_Hidden: inputs.Block_Stats_Hidden,
+        Only_Accept_Trusted: inputs.Only_Accept_Trusted,
+        Require_DM: inputs.Require_DM
     });
     const cardRecordID = CardsRecord.Original_Deck_ID;
 
