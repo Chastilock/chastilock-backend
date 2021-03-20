@@ -57,20 +57,20 @@ async function createOriginalLock(inputs, models, req) {
     if(inputs.Chance_Period > 1440 || inputs.Chance_Period < 1) {
         validationErrors.push("Chance period is not valid");
     }
-    if(inputs.Cumaltive != 0 && inputs.Cumaltive != 1) {
+    if(inputs.Cumaltive != false && inputs.Cumaltive != true) {
         validationErrors.push("Cumalative is not valid");
     }
-    if(inputs.Multiple_Greens_Required != 0 && inputs.Multiple_Greens_Required != 1) {
+    if(inputs.Multiple_Greens_Required != false && inputs.Multiple_Greens_Required != true) {
         validationErrors.push("Multiple greens required is not valid");
     }
-    if(inputs.Hide_Card_Info != 0 && inputs.Hide_Card_Info != 1) {
+    if(inputs.Hide_Card_Info != false && inputs.Hide_Card_Info != true) {
         validationErrors.push("Hide card info is not valid");
     }
-    if(inputs.Allow_Fakes != 0 && inputs.Allow_Fakes != 1) {
+    if(inputs.Allow_Fakes != false && inputs.Allow_Fakes != true) {
         validationErrors.push("Allow fakes is not valid");
     }
 
-    if(inputs.Allow_Fakes === 1) {
+    if(inputs.Allow_Fakes === true) {
         if(inputs.Min_Fakes > 19 || inputs.Min_Fakes < 0) {
             validationErrors.push("Min fakes is not valid");
         }
@@ -82,11 +82,11 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Auto_Resets_Enabled != 0 && inputs.Auto_Resets_Enabled != 1) {
+    if(inputs.Auto_Resets_Enabled != false && inputs.Auto_Resets_Enabled != 1) {
         validationErrors.push("Auto resets enabled is not valid");
     }
     
-    if(inputs.Auto_Resets_Enabled === 1) {
+    if(inputs.Auto_Resets_Enabled === true) {
         if (inputs.Reset_Frequency < 2 || inputs.Reset_Frequency > 399) {
             validationErrors.push("Reset frequency is not valid");
         }
@@ -95,11 +95,11 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Checkins_Enabled != 0 && inputs.Checkins_Enabled != 1) {
+    if(inputs.Checkins_Enabled != false && inputs.Checkins_Enabled != true) {
         validationErrors.push("Checkins enabled is not valid");
     }
 
-    if(inputs.Checkins_Enabled === 1) {
+    if(inputs.Checkins_Enabled === true) {
         if (inputs.Checkins_Frequency < 0.5 || inputs.Reset_Frequency > 23940) {
             validationErrors.push("Checkins frequency is not valid");
         }
@@ -109,54 +109,54 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Allow_Buyout != 0 || inputs.Allow_Buyout != 1) {
+    if(inputs.Allow_Buyout != false || inputs.Allow_Buyout != true) {
         validationErrors.push("Allow buyout is not valid");
     }
 
-    if(inputs.Start_Lock_Frozen != 0 || inputs.Start_Lock_Frozen != 1) {
+    if(inputs.Start_Lock_Frozen != false || inputs.Start_Lock_Frozen != true) {
         validationErrors.push("Start lock frozen is not valid");
     }
-    if(inputs.Disable_Keyholder_Decision != 0 || inputs.Disable_Keyholder_Decision != 1) {
+    if(inputs.Disable_Keyholder_Decision != false || inputs.Disable_Keyholder_Decision != true) {
         validationErrors.push("Disable keyholder permission is not valid");
     }
 
-    if(inputs.Limit_Users != 0 || inputs.Limit_Users != 1) {
+    if(inputs.Limit_Users != false || inputs.Limit_Users != true) {
         validationErrors.push("Limit users is not valid");
     }
 
-    if(inputs.Limit_Users === 1) {
+    if(inputs.Limit_Users === true) {
         if(inputs.User_Limit_Amount > 100 || inputs.User_Limit_Amount < 1) {
             validationErrors.push("Limit users amount is not valid");
         }
     }
 
-    if(inputs.Block_Test_Locks != 0 || inputs.Block_Test_Locks != 1) {
+    if(inputs.Block_Test_Locks != false || inputs.Block_Test_Locks != true) {
         validationErrors.push("Block test users is not valid");
     }
 
-    if(inputs.Block_User_Rating_Enabled != 0 || inputs.Block_User_Rating_Enabled != 1) {
+    if(inputs.Block_User_Rating_Enabled != false || inputs.Block_User_Rating_Enabled != true) {
         validationErrors.push("Block user rating enabled is not valid");
     }
 
-    if(inputs.Block_User_Rating_Enabled === 1) {
+    if(inputs.Block_User_Rating_Enabled === true) {
         if(inputs.Block_User_Rating > 5 || inputs.Block_User_Rating < 1) {
             validationErrors.push("User blocked rating is not valid");
         }
     }
 
-    if(inputs.Block_Already_Locked != 0 || inputs.Block_Already_Locked != 1) {
+    if(inputs.Block_Already_Locked != false || inputs.Block_Already_Locked != true) {
         validationErrors.push("Block already locked users is not valid");
     }
 
-    if(inputs.Block_Stats_Hidden != 0 || inputs.Block_Stats_Hidden != 1) {
+    if(inputs.Block_Stats_Hidden != false || inputs.Block_Stats_Hidden != true) {
         validationErrors.push("Block stat hidden users is not valid");
     }
 
-    if(inputs.Only_Accept_Trusted != 0 || inputs.Only_Accept_Trusted != 1) {
+    if(inputs.Only_Accept_Trusted != false || inputs.Only_Accept_Trusted != true) {
         validationErrors.push("Only accept trusted users is not valid");
     }
 
-    if(inputs.Require_DM != 0 || inputs.Require_DM != 1) {
+    if(inputs.Require_DM != false || inputs.Require_DM != true) {
         validationErrors.push("Require DM is not valid");
     }
 

@@ -79,19 +79,19 @@ module.exports = (sequelize) => {
         allowNull: false
       },
       Cumulative: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Multiple_Greens_Required: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Hide_Card_Info: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Allow_Fakes: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Min_Fakes: {
@@ -103,7 +103,7 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Auto_Resets_Enabled: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Reset_Frequency: {
@@ -115,7 +115,7 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Checkins_Enabled: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Checkins_Frequency: {
@@ -127,19 +127,19 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Allow_Buyout: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
       },
       Start_Lock_Frozen: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Disable_Keyholder_Decision: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Limit_Users: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       User_Limit_Amount: {
@@ -147,11 +147,11 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Block_Test_Locks: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Block_User_Rating_Enabled: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Block_User_Rating: {
@@ -159,19 +159,19 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Block_Already_Locked: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Block_Stats_Hidden: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Only_Accept_Trusted: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       Require_DM: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       }      
     }, {sequelize}
