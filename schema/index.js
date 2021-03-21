@@ -39,6 +39,31 @@ const typeDefs = gql`
     Variable_Min_AddRed: Int!
     Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
+    Chance_Period:Int!
+    Cumalative:Int!
+    Multiple_Greens_Required:Int!
+    Hide_Card_Info:Int!
+    Allow_Fakes:Int!
+    Min_Fakes:Int
+    Max_Fakes:Int
+    Auto_Resets_Enabled:Int!
+    Reset_Frequency:Int
+    Max_Resets:Int
+    Checkins_Enabled:Int!
+    Checkins_Frequency:Int
+    Checkins_Window:Int
+    Allow_Buyout:Int!
+    Start_Lock_Frozen:Int!
+    Disable_Keyholder_Decision:Int!
+    Limit_Users:Int!
+    User_Limit_Amount:Int!
+    Block_Test_Locks:Int!
+    Block_User_Rating_Enabled:Int!
+    Block_User_Rating:Int
+    Block_Already_Locked:Int!
+    Block_Stats_Hidden:Int!
+    Only_Accept_Trusted:Int!
+    Require_DM:Int!
   }
 
   type App {
