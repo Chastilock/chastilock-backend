@@ -24,12 +24,17 @@ module.exports = (sequelize) => {
         Code: {
             type: Sequelize.INTEGER,
             allowNull: false
+        },
+        Original_Lock_Deck: {
+            type: Sequelize.INTEGER,
+            allowNull: true
         }        
     }, {sequelize});
     
     LoadedLock.associate = (models) => {
         LoadedLock.belongsTo(models.User, {foreignKey: "Keyholder"});
         LoadedLock.belongsTo(models.User, {foreignKey: "Lockee"});
+        LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
       }; 
     
     return LoadedLock;
