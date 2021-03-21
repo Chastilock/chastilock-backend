@@ -88,6 +88,23 @@ const typeDefs = gql`
     Code: Int!
   }
 
+  type LoadedOriginalLock {
+    Original_Loaded_ID: Int!,
+    Remaining_Red: Int!
+    Remaining_Green: Int!,
+    Found_Green: Int!,
+    Remaining_Sticky: Int!,
+    Remaining_Add1: Int!,
+    Remaining_Add2: Int!,
+    Remaining_Add3: Int!,
+    Remaining_Remove1: Int!,
+    Remaining_Remove2: Int!,
+    Remaining_Freeze: Int!,
+    Remaining_Double: Int!,
+    Remaining_Reset: Int!,
+    Cumulative: Boolean!
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. 
   type Query {
@@ -97,7 +114,6 @@ const typeDefs = gql`
     User(id: Int!): User,
     Session(id: Int!): Session
     LoadedLock(id: Int!): LoadedLock
-
   }
 
   type Mutation {

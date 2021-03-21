@@ -334,6 +334,75 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('LoadedOriginalLocks', {
+      Original_Loaded_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    Remaining_Red: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Green: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Found_Green: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Sticky: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add1: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add2: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add3: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Remove1: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Remove2: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Freeze: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Double: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Reset: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Cumulative: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+    },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
     await queryInterface.createTable('LoadedLocks', {
       LoadedLock_ID: {
         type: Sequelize.INTEGER,
@@ -367,6 +436,14 @@ module.exports = {
       Code: {
           type: Sequelize.INTEGER,
           allowNull: false
+      },
+      Original_Lock_Deck: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'LoadedOriginalLocks',
+            key: 'Original_Loaded_ID'
+          }
       },   
       createdAt: {
         allowNull: false,
@@ -377,7 +454,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sessions');
@@ -385,6 +461,8 @@ module.exports = {
     await queryInterface.dropTable('LoadedLocks');
     await queryInterface.dropTable('CreatedLocks');
     await queryInterface.dropTable('OriginalLockTypes');
+    await queryInterface.dropTable('LoadedOriginalLocks');
     await queryInterface.dropTable('Users');
+
   }
 };
