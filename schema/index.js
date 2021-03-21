@@ -16,7 +16,7 @@ const typeDefs = gql`
     Lock_Type: String!
     Lock_Type_ID: Int!
     Lock_Name: String
-    Disabled: Int!
+    Disabled: Boolean!
     OriginalLockType: OriginalLockType
     
   }
