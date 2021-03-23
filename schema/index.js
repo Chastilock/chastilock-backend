@@ -105,8 +105,6 @@ const typeDefs = gql`
     Cumulative: Boolean!
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. 
   type Query {
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
@@ -114,6 +112,10 @@ const typeDefs = gql`
     User(id: Int!): User,
     Session(id: Int!): Session
     LoadedLock(id: Int!): LoadedLock
+    #Prod Queries!!
+    myLoadedLocks: [LoadedLock!]!
+    myCreatedLocks: [CreatedLock!]!
+
   }
 
   type Mutation {

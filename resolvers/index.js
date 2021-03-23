@@ -6,6 +6,9 @@ const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
 const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
+const myLoadedLocks = require('../queries/myLoadedLocks');
+const myCreatedLocks = require('../queries/myCreatedLocks');
+
 
 const resolvers = {
   Query: {     
@@ -27,6 +30,12 @@ const resolvers = {
     },
     async LoadedLock (root, { id }, { models }) {
       return models.LoadedLock.findByPk(id);
+    },
+    async myLoadedLocks(root, args, { models, req }) {
+      return myLoadedLocks(models, req);
+    },
+    async myCreatedLocks(root, args, { models, req }) {
+      return myCreatedLocks(models, req);
     }
 
   },
