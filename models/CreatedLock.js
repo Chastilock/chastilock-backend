@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       Disabled: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false,
       }
     }, {sequelize}

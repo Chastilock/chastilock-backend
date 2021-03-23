@@ -56,10 +56,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      Created: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       Keyholder: {
         type: Sequelize.INTEGER,
         allowNull: true
@@ -120,9 +116,9 @@ module.exports = {
     // OriginalLockType
     await queryInterface.createTable('OriginalLockTypes', {
       Original_Deck_ID: {
-        primaryKey: true,
-        autoIncrement: true,
         type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
       },
       Variable_Max_Greens: {
         type: Sequelize.INTEGER,
@@ -188,6 +184,106 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      Chance_Period: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      Cumulative: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Multiple_Greens_Required: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Hide_Card_Info: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Allow_Fakes: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Min_Fakes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Fakes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Auto_Resets_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Reset_Frequency: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Checkins_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Checkins_Frequency: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      Checkins_Window: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      Allow_Buyout: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      Start_Lock_Frozen: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Disable_Keyholder_Decision: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Limit_Users: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      User_Limit_Amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Block_Test_Locks: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_User_Rating_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_User_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Block_Already_Locked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_Stats_Hidden: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Only_Accept_Trusted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Require_DM: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -216,7 +312,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'OriginalLockType',
+          model: 'OriginalLockTypes',
           key: 'Original_Deck_ID'
         }
       },
@@ -225,7 +321,7 @@ module.exports = {
         allowNull: true,
       },
       Disabled: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false,
       },
       createdAt: {
@@ -238,12 +334,135 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('LoadedOriginalLocks', {
+      Original_Loaded_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    Remaining_Red: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Green: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Found_Green: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Sticky: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add1: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add2: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Add3: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Remove1: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Remove2: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Freeze: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Double: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Remaining_Reset: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    Cumulative: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+    },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
+    await queryInterface.createTable('LoadedLocks', {
+      LoadedLock_ID: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      CreatedLock_ID: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'CreatedLocks',
+            key: 'Lock_ID'
+          }
+      },
+      Lockee: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Users',
+            key: 'User_ID'
+          }
+      },
+      Keyholder: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'Users',
+            key: 'User_ID'
+          }
+      },
+      Code: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+      },
+      Original_Lock_Deck: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'LoadedOriginalLocks',
+            key: 'Original_Loaded_ID'
+          }
+      },   
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Apps');
-    await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Sessions');
+    await queryInterface.dropTable('Apps');
+    await queryInterface.dropTable('LoadedLocks');
     await queryInterface.dropTable('CreatedLocks');
-    await queryInterface.dropTable('OriginalLockType');
+    await queryInterface.dropTable('OriginalLockTypes');
+    await queryInterface.dropTable('LoadedOriginalLocks');
+    await queryInterface.dropTable('Users');
+
   }
 };
