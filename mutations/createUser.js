@@ -39,8 +39,7 @@ if(await CheckEmailAvailable(inputs.Email) === false) {
 
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
 const UUID = uuidv4();
-const Created = Math.floor(Date.now() / 1000)
-return models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username, Created});
+return models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username});
 
 }
 module.exports = createUser;

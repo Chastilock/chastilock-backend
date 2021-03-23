@@ -9,8 +9,7 @@ async function createUserAnon(models, req) {
   }
 
   const UUID = uuidv4();
-  const Created = Math.floor(Date.now() / 1000)
-  return models.User.create({UUID, Created});
+  return models.User.create({UUID});
 }
 
 module.exports = createUserAnon

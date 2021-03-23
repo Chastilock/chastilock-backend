@@ -28,10 +28,6 @@ module.exports = (sequelize) => {
         type: Sequelize.STRING,
         allowNull: true
       },
-      Created: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       Keyholder: {
         type: Sequelize.INTEGER,
         allowNull: true
