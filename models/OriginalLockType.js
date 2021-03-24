@@ -2,8 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    class OriginalLockType extends Sequelize.Model {}
-    OriginalLockType.init({
+    const OriginalLockType = sequelize.define("OriginalLockType", {
       
       Original_Deck_ID: {
         type: Sequelize.INTEGER,

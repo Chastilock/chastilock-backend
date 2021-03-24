@@ -2,8 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    class Session extends Sequelize.Model {}
-    Session.init({
+    const Session = sequelize.define("Session", {
       
       Session_ID: {
         type: Sequelize.INTEGER,
