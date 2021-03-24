@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    class LoadedOriginalLock extends Sequelize.Model {}
-    LoadedOriginalLock.init({
+    const LoadedOriginalLock = sequelize.define("LoadedOriginalLock", {
+
         Original_Loaded_ID: {
             type: Sequelize.INTEGER,
             primaryKey: true,

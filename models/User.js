@@ -2,8 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    class User extends Sequelize.Model {}
-    User.init({
+    const User = sequelize.define("User", {
       
       User_ID: {
         type: Sequelize.INTEGER,
