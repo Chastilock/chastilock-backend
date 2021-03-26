@@ -13,6 +13,14 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      Shared: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false, 
+      },
+      Shared_Code: {
+        type: Sequelize.TEXT,
+        allowNull: false, 
+      },
       OriginalLockType_ID: {
         type: Sequelize.INTEGER,
         allowNull: true,

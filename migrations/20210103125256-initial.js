@@ -308,6 +308,14 @@ module.exports = {
           key: 'User_ID'
         }
       },
+      Shared: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false, 
+      },
+      Shared_Code: {
+        type: Sequelize.TEXT,
+        allowNull: false, 
+      },
       OriginalLockType_ID: {
         type: Sequelize.INTEGER,
         allowNull: true,

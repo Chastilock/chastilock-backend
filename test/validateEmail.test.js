@@ -8,6 +8,9 @@ describe("Email validation", function() {
         expect(ValidateEmail("a@a.co")).to.equal(true);
         expect(ValidateEmail("invalid@example")).to.equal(false);;
         expect(ValidateEmail("@google.com")).to.equal(false);
+        expect(ValidateEmail("")).to.equal(false);
+        expect(ValidateEmail("f")).to.equal(false);
+
 })
 
 });

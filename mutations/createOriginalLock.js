@@ -1,4 +1,5 @@
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const srs = require('secure-random-string');
 
 async function createOriginalLock(inputs, models, req) {
     const validationErrors = [];
@@ -213,6 +214,8 @@ async function createOriginalLock(inputs, models, req) {
 
     return models.CreatedLock.create({
         User_ID: req.Authenticated,
+        Shared: inputs.Shared,
+        Shared_Code: srs({length: 20, alphanumeric: true}),
         OriginalLockType_ID: cardRecordID,
         LockName: inputs.LockName,
         Disabled: 0

@@ -13,12 +13,11 @@ const typeDefs = gql`
   type CreatedLock {
     Lock_ID: ID!
     User: User!
-    Lock_Type: String!
-    Lock_Type_ID: Int!
+    Shared: Boolean!
+    Shared_Code: String!
     Lock_Name: String
     Disabled: Boolean!
     OriginalLockType: OriginalLockType
-    
   }
   type OriginalLockType {
     Original_Deck_ID: ID!,
@@ -40,30 +39,30 @@ const typeDefs = gql`
     Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
     Chance_Period:Int!
-    Cumalative:Int!
-    Multiple_Greens_Required:Int!
-    Hide_Card_Info:Int!
-    Allow_Fakes:Int!
+    Cumalative:Boolean!
+    Multiple_Greens_Required:Boolean!
+    Hide_Card_Info:Boolean!
+    Allow_Fakes:Boolean!
     Min_Fakes:Int
     Max_Fakes:Int
-    Auto_Resets_Enabled:Int!
+    Auto_Resets_Enabled:Boolean!
     Reset_Frequency:Int
     Max_Resets:Int
-    Checkins_Enabled:Int!
+    Checkins_Enabled:Boolean!
     Checkins_Frequency:Int
     Checkins_Window:Int
-    Allow_Buyout:Int!
-    Start_Lock_Frozen:Int!
-    Disable_Keyholder_Decision:Int!
-    Limit_Users:Int!
+    Allow_Buyout:Boolean!
+    Start_Lock_Frozen:Boolean!
+    Disable_Keyholder_Decision:Boolean!
+    Limit_Users:Boolean!
     User_Limit_Amount:Int!
-    Block_Test_Locks:Int!
-    Block_User_Rating_Enabled:Int!
+    Block_Test_Locks:Boolean!
+    Block_User_Rating_Enabled:Boolean!
     Block_User_Rating:Int
-    Block_Already_Locked:Int!
-    Block_Stats_Hidden:Int!
-    Only_Accept_Trusted:Int!
-    Require_DM:Int!
+    Block_Already_Locked:Boolean!
+    Block_Stats_Hidden:Boolean!
+    Only_Accept_Trusted:Boolean!
+    Require_DM:Boolean!
   }
 
   type App {
@@ -126,7 +125,7 @@ const typeDefs = gql`
     changePassword(OldPassword: String!, NewPassword: String!): User!
     upgradeAccount(Email: String!, Password: String!, Username: String!): User!
     logout: String!
-    createOriginalLock(LockName: String, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!, Chance_Period: Int!, Cumalative: Int!, Multiple_Greens_Required: Int!, Hide_Card_Info: Int!, Allow_Fakes: Int!, Min_Fakes: Int, Max_Fakes: Int, Auto_Resets_Enabled: Int!, Reset_Frequency: Int, Max_Resets: Int, Checkins_Enabled: Int!, Checkins_Frequency: Int, Checkins_Window: Int, Allow_Buyout: Int!, Start_Lock_Frozen: Int!, Disable_Keyholder_Decision: Int!, Limit_Users: Int!, User_Limit_Amount: Int!, Block_Test_Locks: Int!, Block_User_Rating_Enabled: Int!, Block_User_Rating: Int, Block_Already_Locked: Int!, Block_Stats_Hidden: Int!, Only_Accept_Trusted: Int!, Require_DM: Int!): CreatedLock!
+    createOriginalLock(LockName: String, Shared: Boolean!, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!, Chance_Period: Int!, Cumalative: Boolean!, Multiple_Greens_Required: Boolean!, Hide_Card_Info: Boolean!, Allow_Fakes: Boolean!, Min_Fakes: Int, Max_Fakes: Int, Auto_Resets_Enabled: Boolean!, Reset_Frequency: Int, Max_Resets: Int, Checkins_Enabled: Boolean!, Checkins_Frequency: Int, Checkins_Window: Int, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Boolean, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
   }`;
 
 module.exports = typeDefs
