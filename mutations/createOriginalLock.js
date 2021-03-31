@@ -4,6 +4,8 @@ const srs = require('secure-random-string');
 async function createOriginalLock(inputs, models, req) {
     const validationErrors = [];
 
+    console.log(inputs);
+
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
     }
@@ -58,8 +60,8 @@ async function createOriginalLock(inputs, models, req) {
     if(inputs.Chance_Period > 1440 || inputs.Chance_Period < 1) {
         validationErrors.push("Chance period is not valid");
     }
-    if(inputs.Cumaltive != false && inputs.Cumaltive != true) {
-        validationErrors.push("Cumalative is not valid");
+    if(inputs.Cumulative != false && inputs.Cumulative != true) {
+        validationErrors.push("Cumulative is not valid");
     }
     if(inputs.Multiple_Greens_Required != false && inputs.Multiple_Greens_Required != true) {
         validationErrors.push("Multiple greens required is not valid");
@@ -110,18 +112,18 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Allow_Buyout != false || inputs.Allow_Buyout != true) {
+    if(inputs.Allow_Buyout != false && inputs.Allow_Buyout != true) {
         validationErrors.push("Allow buyout is not valid");
     }
 
-    if(inputs.Start_Lock_Frozen != false || inputs.Start_Lock_Frozen != true) {
+    if(inputs.Start_Lock_Frozen != false && inputs.Start_Lock_Frozen != true) {
         validationErrors.push("Start lock frozen is not valid");
     }
-    if(inputs.Disable_Keyholder_Decision != false || inputs.Disable_Keyholder_Decision != true) {
+    if(inputs.Disable_Keyholder_Decision != false && inputs.Disable_Keyholder_Decision != true) {
         validationErrors.push("Disable keyholder permission is not valid");
     }
 
-    if(inputs.Limit_Users != false || inputs.Limit_Users != true) {
+    if(inputs.Limit_Users != false && inputs.Limit_Users != true) {
         validationErrors.push("Limit users is not valid");
     }
 
@@ -131,11 +133,11 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Block_Test_Locks != false || inputs.Block_Test_Locks != true) {
+    if(inputs.Block_Test_Locks != false && inputs.Block_Test_Locks != true) {
         validationErrors.push("Block test users is not valid");
     }
 
-    if(inputs.Block_User_Rating_Enabled != false || inputs.Block_User_Rating_Enabled != true) {
+    if(inputs.Block_User_Rating_Enabled != false && inputs.Block_User_Rating_Enabled != true) {
         validationErrors.push("Block user rating enabled is not valid");
     }
 
@@ -145,19 +147,19 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Block_Already_Locked != false || inputs.Block_Already_Locked != true) {
+    if(inputs.Block_Already_Locked != false && inputs.Block_Already_Locked != true) {
         validationErrors.push("Block already locked users is not valid");
     }
 
-    if(inputs.Block_Stats_Hidden != false || inputs.Block_Stats_Hidden != true) {
+    if(inputs.Block_Stats_Hidden != false && inputs.Block_Stats_Hidden != true) {
         validationErrors.push("Block stat hidden users is not valid");
     }
 
-    if(inputs.Only_Accept_Trusted != false || inputs.Only_Accept_Trusted != true) {
+    if(inputs.Only_Accept_Trusted != false && inputs.Only_Accept_Trusted != true) {
         validationErrors.push("Only accept trusted users is not valid");
     }
 
-    if(inputs.Require_DM != false || inputs.Require_DM != true) {
+    if(inputs.Require_DM != false && inputs.Require_DM != true) {
         validationErrors.push("Require DM is not valid");
     }
 
@@ -185,7 +187,7 @@ async function createOriginalLock(inputs, models, req) {
         Variable_Min_RemoveRed: inputs.Variable_Min_RemoveRed,
         Variable_Min_RandomRed: inputs.Variable_Min_RandomRed,
         Chance_Period: inputs.Chance_Period,
-        Cumaltive: inputs.Cumaltive,
+        Cumulative: inputs.Cumulative,
         Multiple_Greens_Required: inputs.Multiple_Greens_Required,
         Hide_Card_Info: inputs.Hide_Card_Info,
         Allow_Fakes: inputs.Allow_Fakes,
