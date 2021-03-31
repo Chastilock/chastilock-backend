@@ -4,8 +4,6 @@ const srs = require('secure-random-string');
 async function createOriginalLock(inputs, models, req) {
     const validationErrors = [];
 
-    console.log(inputs);
-
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
     }
