@@ -8,7 +8,7 @@ const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
-
+const loadLock = require('../mutations/loadLock');
 
 const resolvers = {
   Query: {     
@@ -64,6 +64,9 @@ const resolvers = {
     },
     async createOriginalLock(root, args, { models, req }) {
       return createOriginalLock(args, models, req);
+    },
+    async loadLock(root, args, { models, req }) {
+      return loadLock(args, models, req);
     }
   },
 

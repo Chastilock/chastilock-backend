@@ -1,6 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express');
 
-async function loadLock(models, req) {
+async function loadLock(inputs, models, req) {
     const validationErrors = [];
 
     if(req.AppFound === false) {
@@ -10,6 +10,18 @@ async function loadLock(models, req) {
         throw new AuthenticationError("Session is not valid");
     }
 
+    //Find lock that we are going to load!
+    const LockSearch = await models.CreatedLock.findOne({
+        where: {
+            Shared_Code: inputs.ShareCode
+        }
+    });
+    if(LockSearch) {
+        console.log("Lock Found")
+    } else {
+        console.log("Lock not found")
+
+    }
     
 }
 
