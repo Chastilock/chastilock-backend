@@ -32,6 +32,86 @@ module.exports = (sequelize) => {
       Disabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+      },
+      Allow_Fakes: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Min_Fakes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Fakes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Auto_Resets_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Reset_Frequency: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Checkins_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Checkins_Frequency: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      Checkins_Window: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      Allow_Buyout: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      Disable_Keyholder_Decision: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Limit_Users: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      User_Limit_Amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Block_Test_Locks: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_User_Rating_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_User_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Block_Already_Locked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Block_Stats_Hidden: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Only_Accept_Trusted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Require_DM: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       }
     }, {sequelize}
     );

@@ -18,6 +18,26 @@ const typeDefs = gql`
     Lock_Name: String
     Disabled: Boolean!
     OriginalLockType: OriginalLockType
+    Allow_Fakes:Boolean!
+    Min_Fakes:Int
+    Max_Fakes:Int
+    Auto_Resets_Enabled:Boolean!
+    Reset_Frequency:Int
+    Max_Resets:Int
+    Checkins_Enabled:Boolean!
+    Checkins_Frequency:Int
+    Checkins_Window:Int
+    Allow_Buyout:Boolean!
+    Disable_Keyholder_Decision:Boolean!
+    Limit_Users:Boolean!
+    User_Limit_Amount:Int!
+    Block_Test_Locks:Boolean!
+    Block_User_Rating_Enabled:Boolean!
+    Block_User_Rating:Int
+    Block_Already_Locked:Boolean!
+    Block_Stats_Hidden:Boolean!
+    Only_Accept_Trusted:Boolean!
+    Require_DM:Boolean!
   }
   type OriginalLockType {
     Original_Deck_ID: ID!,
@@ -39,30 +59,10 @@ const typeDefs = gql`
     Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
     Chance_Period:Int!
-     Cumulative:Boolean!
+    Cumulative:Boolean!
     Multiple_Greens_Required:Boolean!
     Hide_Card_Info:Boolean!
-    Allow_Fakes:Boolean!
-    Min_Fakes:Int
-    Max_Fakes:Int
-    Auto_Resets_Enabled:Boolean!
-    Reset_Frequency:Int
-    Max_Resets:Int
-    Checkins_Enabled:Boolean!
-    Checkins_Frequency:Int
-    Checkins_Window:Int
-    Allow_Buyout:Boolean!
     Start_Lock_Frozen:Boolean!
-    Disable_Keyholder_Decision:Boolean!
-    Limit_Users:Boolean!
-    User_Limit_Amount:Int!
-    Block_Test_Locks:Boolean!
-    Block_User_Rating_Enabled:Boolean!
-    Block_User_Rating:Int
-    Block_Already_Locked:Boolean!
-    Block_Stats_Hidden:Boolean!
-    Only_Accept_Trusted:Boolean!
-    Require_DM:Boolean!
   }
 
   type App {
