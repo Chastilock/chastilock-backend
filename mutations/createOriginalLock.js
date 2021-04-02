@@ -188,6 +188,18 @@ async function createOriginalLock(inputs, models, req) {
         Cumulative: inputs.Cumulative,
         Multiple_Greens_Required: inputs.Multiple_Greens_Required,
         Hide_Card_Info: inputs.Hide_Card_Info,
+        Allow_Buyout: inputs.Allow_Buyout,
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen
+    });
+    const cardRecordID = CardsRecord.Original_Deck_ID;
+
+    return models.CreatedLock.create({
+        User_ID: req.Authenticated,
+        Shared: inputs.Shared,
+        Shared_Code: srs({length: 20, alphanumeric: true}),
+        OriginalLockType_ID: cardRecordID,
+        LockName: inputs.LockName,
+        Disabled: 0,
         Allow_Fakes: inputs.Allow_Fakes,
         Min_Fakes: inputs.Min_Fakes,
         Max_Fakes: inputs.Max_Fakes,
@@ -197,8 +209,6 @@ async function createOriginalLock(inputs, models, req) {
         Checkins_Enabled: inputs.Checkins_Enabled,
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
-        Allow_Buyout: inputs.Allow_Buyout,
-        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
         Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
         Limit_Users: inputs.Limit_Users,
         User_Limit_Amount: inputs.User_Limit_Amount,
@@ -209,16 +219,6 @@ async function createOriginalLock(inputs, models, req) {
         Block_Stats_Hidden: inputs.Block_Stats_Hidden,
         Only_Accept_Trusted: inputs.Only_Accept_Trusted,
         Require_DM: inputs.Require_DM
-    });
-    const cardRecordID = CardsRecord.Original_Deck_ID;
-
-    return models.CreatedLock.create({
-        User_ID: req.Authenticated,
-        Shared: inputs.Shared,
-        Shared_Code: srs({length: 20, alphanumeric: true}),
-        OriginalLockType_ID: cardRecordID,
-        LockName: inputs.LockName,
-        Disabled: 0
     });
 }
 module.exports = createOriginalLock;
