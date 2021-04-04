@@ -81,6 +81,9 @@ const resolvers = {
   CreatedLock: {
     async User (CreatedLock) {
       return CreatedLock.getUser()
+    },
+    async OriginalLockType (CreatedLock) {
+      return CreatedLock.getOriginalLockType()
     }
   },
   OriginalLockType: {

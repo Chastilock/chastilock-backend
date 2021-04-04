@@ -7,9 +7,5 @@ async function loadOriginalLockType(CreatedLock) {
     if(!LockDetails) {
         return "Cannot find lock";
     }
-
-
-
-
 }
 module.exports = loadOriginalLockType
