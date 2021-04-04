@@ -460,6 +460,10 @@ Disable_Keyholder_Decision: {
       Emergency_Keys_Amount: {
         type: Sequelize.INTEGER,
         allowNull: true
+      },
+      Test_Lock: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },       
       createdAt: {
         allowNull: false,

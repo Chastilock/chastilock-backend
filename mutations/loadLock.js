@@ -29,6 +29,11 @@ async function loadLock(inputs, models, req) {
         throw new ForbiddenError("Lock has been disabled");
     }
 
+    if(LockSearch.Only_Accept_Trusted === true) {
+        if(inputs.Trust_Keyholder === false) {
+            throw new ApolloError("The keyholder of this lock requires you to trust them", "401");
+        }
+    }
     
 
     
