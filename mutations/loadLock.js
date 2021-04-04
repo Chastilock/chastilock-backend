@@ -1,4 +1,4 @@
-const { AuthenticationError, ApolloError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
 const loadOriginalLockType = import('../helpers/loadOriginalLockType');
 
 async function loadLock(inputs, models, req) {
@@ -20,10 +20,19 @@ async function loadLock(inputs, models, req) {
         throw new ApolloError("Lock not found", "404");
     }
 
-    if(LockSearch.Disabled === true) {
-        throw new ApolloError("Lock has been disabled", "403");
+    if (LockSearch.Shared === false) {
+        //We don't want to give off the impression the lock exists if it's supposted to be shared.
+        throw new ApolloError("Lock not found", "404");
     }
 
+    if(LockSearch.Disabled === true) {
+        throw new ForbiddenError("Lock has been disabled");
+    }
+
+    
+
+    
+    
     if(LockSearch.OriginalLockType_ID != null) {
         //Original lock type. Will use helper function to return the lock to keep this file neat!
         loadOriginalLockType(LockSearch);
