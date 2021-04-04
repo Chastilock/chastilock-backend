@@ -28,6 +28,14 @@ module.exports = (sequelize) => {
         Original_Lock_Deck: {
             type: Sequelize.INTEGER,
             allowNull: true
+        },
+        Emergency_Keys_Enabled: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
+        Emergency_Keys_Amount: {
+            type: Sequelize.INTEGER,
+            allowNull: true
         }        
     }, {sequelize});
     

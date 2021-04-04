@@ -452,7 +452,15 @@ Disable_Keyholder_Decision: {
             model: 'LoadedOriginalLocks',
             key: 'Original_Loaded_ID'
           }
-      },   
+      },
+      Emergency_Keys_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Emergency_Keys_Amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },       
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
