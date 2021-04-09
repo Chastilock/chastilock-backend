@@ -21,7 +21,7 @@ async function loadLock(inputs, models, req) {
     }
 
     if (LockSearch.Shared === false) {
-        //We don't want to give off the impression the lock exists if it's supposted to be shared.
+        //We don't want to give off the impression the lock exists if it's not supposted to be shared.
         throw new ApolloError("Lock not found", "404");
     }
 
@@ -29,14 +29,17 @@ async function loadLock(inputs, models, req) {
         throw new ForbiddenError("Lock has been disabled");
     }
 
+    const validationErrors = [];
+
     if(LockSearch.Only_Accept_Trusted === true) {
         if(inputs.Trust_Keyholder === false) {
-            throw new ApolloError("The keyholder of this lock requires you to trust them", "401");
+            validationErrors.push("The keyholder of this lock requires you to trust them");
         }
     }
-    
 
-    
+    if(LockSearch.Allow_Fakes === true) {
+       
+    }
     
     if(LockSearch.OriginalLockType_ID != null) {
         //Original lock type. Will use helper function to return the lock to keep this file neat!

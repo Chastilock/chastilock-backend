@@ -36,6 +36,10 @@ module.exports = (sequelize) => {
         Emergency_Keys_Amount: {
             type: Sequelize.INTEGER,
             allowNull: true
+        },
+        Test_Lock: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
         }        
     }, {sequelize});
     
