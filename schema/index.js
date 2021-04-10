@@ -87,8 +87,8 @@ const typeDefs = gql`
     Code: Int!
     Emergency_Keys: Boolean!
     Emergency_Keys_Amount: Int
-    Test_Lock: Boolean!
-
+    Test_Lock: Boolean!,
+    CurrentFreeze: Freeze
   }
 
   type LoadedOriginalLock {
@@ -106,6 +106,13 @@ const typeDefs = gql`
     Remaining_Double: Int!,
     Remaining_Reset: Int!,
     Cumulative: Boolean!
+  }
+  type Freeze {
+    Freeze_ID: Int!,
+    Lock: LoadedLock!,
+    Type: String!,
+    Started: Int!,
+    EndTime: Int
   }
 
   type Query {

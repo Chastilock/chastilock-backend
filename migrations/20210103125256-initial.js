@@ -411,6 +411,34 @@ Disable_Keyholder_Decision: {
       }
     });
 
+    await queryInterface.createTable('Freezes', {
+      Freeze_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      Started: {
+        type: Sequelize.TIME,
+        allowNull: false,
+      },
+      EndTime: {
+        type: Sequelize.TIME,
+        allowNull: true,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+    
     await queryInterface.createTable('LoadedLocks', {
       LoadedLock_ID: {
         type: Sequelize.INTEGER,
@@ -464,35 +492,15 @@ Disable_Keyholder_Decision: {
       Test_Lock: {
         type: Sequelize.BOOLEAN,
         allowNull: false
-      },       
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-
-    await queryInterface.createTable('Freezes', {
-      Freeze_ID: {
+      Current_Freeze_ID: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      Type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      Started: {
-        type: Sequelize.TIME,
-        allowNull: false,
-      },
-      EndTime: {
-        type: Sequelize.TIME,
         allowNull: true,
-      },
+        references: {
+          model: "Freezes",
+          key: "Freeze_ID"
+        }
+      },       
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

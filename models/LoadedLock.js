@@ -40,6 +40,10 @@ module.exports = (sequelize) => {
         Test_Lock: {
             type: Sequelize.BOOLEAN,
             allowNull: false
+        },
+        Current_Freeze_ID: {
+          type: Sequelize.INTEGER,
+          allowNull: true
         }        
     }, {sequelize});
     
@@ -47,6 +51,7 @@ module.exports = (sequelize) => {
         LoadedLock.belongsTo(models.User, {foreignKey: "Keyholder"});
         LoadedLock.belongsTo(models.User, {foreignKey: "Lockee"});
         LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
+        LoadedLock.belongsTo(models.Freeze, {foreignKey: "Current_Freeze_ID"})
       }; 
     
     return LoadedLock;

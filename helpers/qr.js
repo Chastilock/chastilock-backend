@@ -5,7 +5,7 @@ async function QRAsDataURL(ShareCode) {
     if(err === null) {
       return url;
     } else {
-      return err;
+      return `Error: ${err}`;
     }
   })
 }

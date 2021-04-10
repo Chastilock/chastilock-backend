@@ -9,21 +9,27 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true
       },
+      Lock_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       Type: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       Started: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       EndTime: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
         allowNull: true,
       },
       
     }, {sequelize}
     );
-
-    return Freeze;
+    Freeze.associate = (models) => {
+      Freeze.belongsTo(models.LoadedLock, {foreignKey: "Lock_ID"})
+    }
+      return Freeze;
   }

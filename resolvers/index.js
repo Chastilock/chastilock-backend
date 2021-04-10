@@ -108,7 +108,11 @@ const resolvers = {
     },
     async CreatedLock (LoadedLock) {
       return LoadedLock.getCreatedLock();
+    },
+    async CurrentFreeze (LoadedLock) {
+      return LoadedLock.getCurrentFreeze();
     }
+
   }
 
 }
