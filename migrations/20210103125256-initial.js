@@ -510,6 +510,48 @@ Disable_Keyholder_Decision: {
         type: Sequelize.DATE
       }
     });
+
+    await queryInterface.createTable('TimerLockTypes', {
+      Timer_Type_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Max_Days: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      Max_Hours: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Max_Minutes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Days: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Hours: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Minutes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
+    
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sessions');
@@ -520,6 +562,7 @@ Disable_Keyholder_Decision: {
     await queryInterface.dropTable('LoadedOriginalLocks');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
+    await queryInterface.dropTable('TimerLockTypes');
 
 
   }
