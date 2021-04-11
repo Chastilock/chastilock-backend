@@ -1,22 +1,5 @@
-const { App, Session } = require('../models');
+const { Session } = require('../models');
 const jwt = require('jsonwebtoken');
-
-const CheckApp = async (req, res, next) => {
-  
-  const AppSearch = await App.findOne({
-    where: {
-      API_Key: req.body.APIKey || "",
-      API_Secret: req.body.APISecret || "" 
-    }
-  });
-  if(AppSearch) {
-    req.AppFound = true;
-    req.AppID = AppSearch.App_ID;
-  } else {
-    req.AppFound = false;
-  }
-  next();
-}
 
 const CheckAuth = async (req, res, next) => {
   let HTTPtoken = "";
@@ -53,6 +36,4 @@ const CheckAuth = async (req, res, next) => {
     return next();
   }
 }
-
-
-module.exports = {CheckApp, CheckAuth}
+module.exports = CheckAuth;

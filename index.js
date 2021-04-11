@@ -8,7 +8,8 @@ const models = require('./models');
 const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
-const { CheckApp, CheckAuth } = require('./middleware');
+const CheckApp = require('./middleware/CheckApp');
+const CheckAuth = require('./middleware/CheckAuth');
 const rateLimiter = require('./middleware/rateLimiter') 
 const bodyParser = require('body-parser');
 
