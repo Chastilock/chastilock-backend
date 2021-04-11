@@ -9,6 +9,7 @@ const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
 const { CheckApp, CheckAuth } = require('./middleware');
+const rateLimiter = require('./middleware/rateLimiter') 
 const bodyParser = require('body-parser');
 
 // The ApolloServer constructor requires two parameters: your schema
@@ -24,6 +25,7 @@ const server = new ApolloServer({
 );
 
 app.use(bodyParser.json());
+app.use(rateLimiter);
 app.use(CheckApp);
 app.use(CheckAuth);
 

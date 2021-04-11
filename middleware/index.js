@@ -1,5 +1,6 @@
 const { App, Session } = require('../models');
 const jwt = require('jsonwebtoken');
+
 const CheckApp = async (req, res, next) => {
   
   const AppSearch = await App.findOne({
@@ -52,5 +53,6 @@ const CheckAuth = async (req, res, next) => {
     return next();
   }
 }
+
 
 module.exports = {CheckApp, CheckAuth}
