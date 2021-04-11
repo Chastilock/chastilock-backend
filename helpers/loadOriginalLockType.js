@@ -1,4 +1,4 @@
-const { OriginalLockType } = import("../models");
+const { OriginalLockType } = require("../models");
 
 async function loadOriginalLockType(CreatedLock) {
 

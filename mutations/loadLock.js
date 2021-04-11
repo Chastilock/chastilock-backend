@@ -1,5 +1,5 @@
 const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
-const loadOriginalLockType = import('../helpers/loadOriginalLockType');
+const loadOriginalLockType = require('../helpers/loadOriginalLockType');
 
 async function loadLock(inputs, models, req) {
 
