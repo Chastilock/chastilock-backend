@@ -1,6 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    
     // App
     await queryInterface.createTable('Apps', {
       App_ID: {
@@ -110,8 +111,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
-    // CreatedLock
     
     // OriginalLockType
     await queryInterface.createTable('OriginalLockTypes', {
@@ -213,7 +212,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
+    
+    //CreatedLock
     await queryInterface.createTable('CreatedLocks', {
       Lock_ID: {
         type: Sequelize.INTEGER,
@@ -292,7 +292,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: true
       },
-Disable_Keyholder_Decision: {
+      Disable_Keyholder_Decision: {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
@@ -342,6 +342,7 @@ Disable_Keyholder_Decision: {
       }
     });
 
+    //LoadedOriginalLock
     await queryInterface.createTable('LoadedOriginalLocks', {
       Original_Loaded_ID: {
         type: Sequelize.INTEGER,
@@ -411,6 +412,7 @@ Disable_Keyholder_Decision: {
       }
     });
 
+    //Freeze
     await queryInterface.createTable('Freezes', {
       Freeze_ID: {
         type: Sequelize.INTEGER,
@@ -439,6 +441,7 @@ Disable_Keyholder_Decision: {
       }
     });
     
+    //LoadLock
     await queryInterface.createTable('LoadedLocks', {
       LoadedLock_ID: {
         type: Sequelize.INTEGER,
@@ -446,40 +449,40 @@ Disable_Keyholder_Decision: {
         primaryKey: true
       },
       CreatedLock_ID: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'CreatedLocks',
-            key: 'Lock_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'CreatedLocks',
+          key: 'Lock_ID'
+        }
       },
       Lockee: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Users',
-            key: 'User_ID'
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
           }
       },
       Keyholder: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          references: {
-            model: 'Users',
-            key: 'User_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
+        }
       },
       Code: {
-          type: Sequelize.INTEGER,
-          allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       Original_Lock_Deck: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          references: {
-            model: 'LoadedOriginalLocks',
-            key: 'Original_Loaded_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'LoadedOriginalLocks',
+          key: 'Original_Loaded_ID'
+        }
       },
       Emergency_Keys_Enabled: {
         type: Sequelize.BOOLEAN,
@@ -520,7 +523,5 @@ Disable_Keyholder_Decision: {
     await queryInterface.dropTable('LoadedOriginalLocks');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
-
-
   }
 };
