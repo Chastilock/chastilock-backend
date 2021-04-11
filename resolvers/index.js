@@ -1,3 +1,4 @@
+//Import mutations
 const CreateUser = require('../mutations/createUser');
 const CreateUserAnon = require('../mutations/createUserAnon');
 const LoginAnon = require('../mutations/loginAnon');
@@ -6,9 +7,11 @@ const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
 const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
+const loadLock = require('../mutations/loadLock');
+//Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
-const loadLock = require('../mutations/loadLock');
+const sharedLock = require('../queries/sharedLock');
 
 const resolvers = {
   Query: {     
@@ -31,11 +34,15 @@ const resolvers = {
     async LoadedLock (root, { id }, { models }) {
       return models.LoadedLock.findByPk(id);
     },
+    //Prod Queries
     async myLoadedLocks(root, args, { models, req }) {
       return myLoadedLocks(models, req);
     },
     async myCreatedLocks(root, args, { models, req }) {
       return myCreatedLocks(models, req);
+    },
+    async sharedLock(root, args, {models, req}) {
+      return sharedLock(models, req, args);
     }
 
   },
@@ -112,7 +119,6 @@ const resolvers = {
     async CurrentFreeze (LoadedLock) {
       return LoadedLock.getCurrentFreeze();
     }
-
   }
 
 }
