@@ -84,7 +84,7 @@ const typeDefs = gql`
     CreatedLock: CreatedLock!
     Lockee: User!
     Keyholder: User
-    Code: Int!
+    Code: String!
     Emergency_Keys: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,

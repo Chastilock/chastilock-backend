@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         Code: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false
         },
         Original_Lock_Deck: {

@@ -470,7 +470,7 @@ Disable_Keyholder_Decision: {
           }
       },
       Code: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           allowNull: false
       },
       Original_Lock_Deck: {
