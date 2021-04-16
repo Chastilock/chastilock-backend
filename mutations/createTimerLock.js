@@ -26,8 +26,10 @@ async function createTimerLock(inputs, models, req) {
         validationErrors.push("Hide timer is invalid");
     }
 
-    if(inputs.LockName.length > 255) {
-        validationErrors.push("Name too long");
+    if(inputs.LockName != null) {
+        if(inputs.LockName.length > 255) {
+            validationErrors.push("Name too long");
+        }
     }
 
     if(inputs.Auto_Resets_Enabled != false && inputs.Auto_Resets_Enabled != true) {
@@ -113,6 +115,46 @@ async function createTimerLock(inputs, models, req) {
           invalidArgs: validationErrors
         });
     }
+
+    const TimerRecord = await models.TimerLockType.create({
+        Max_Days: inputs.Timer_Max_Days,
+        Max_Hours: inputs.Timer_Max_Hours,
+        Max_Minutes: inputs.Timer_Max_Minutes,
+        Min_Days: inputs.Timer_Min_Days,
+        Min_Hours: inputs.Timer_Min_Hours,
+        Min_Minutes: inputs.Timer_Min_Minutes,
+        Hide_Timer: inputs.Hide_Timer
+    })
+
+    const TimerRecordID = TimerRecord.Timer_Type_ID;
+
+    return models.CreatedLock.create({
+        User_ID: req.Authenticated,
+        Shared: inputs.Shared,
+        Shared_Code: srs({length: 20, alphanumeric: true}),
+        TimerLockType_ID: TimerRecordID,
+        LockName: inputs.LockName,
+        Disabled: 0,
+        Allow_Fakes: inputs.Allow_Fakes,
+        Min_Fakes: inputs.Min_Fakes,
+        Max_Fakes: inputs.Max_Fakes,
+        Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
+        Reset_Frequency: inputs.Reset_Frequency,
+        Max_Resets: inputs.Max_Resets,
+        Checkins_Enabled: inputs.Checkins_Enabled,
+        Checkins_Frequency: inputs.Checkins_Frequency,
+        Checkins_Window: inputs.Checkins_Window,
+        Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
+        Limit_Users: inputs.Limit_Users,
+        User_Limit_Amount: inputs.User_Limit_Amount,
+        Block_Test_Locks: inputs.Block_Test_Locks,
+        Block_User_Rating_Enabled: inputs.Block_User_Rating_Enabled,
+        Block_User_Rating: inputs.Block_User_Rating,
+        Block_Already_Locked: inputs.Block_Already_Locked,
+        Block_Stats_Hidden: inputs.Block_Stats_Hidden,
+        Only_Accept_Trusted: inputs.Only_Accept_Trusted,
+        Require_DM: inputs.Require_DM
+    });
 
 
 
