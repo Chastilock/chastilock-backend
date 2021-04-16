@@ -32,6 +32,10 @@ module.exports = (sequelize) => {
       Min_Minutes: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      Hide_Timer: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
       }
     }, {sequelize}
     );
