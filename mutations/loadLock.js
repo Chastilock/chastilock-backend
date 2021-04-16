@@ -99,13 +99,11 @@ async function loadLock(inputs, models, req) {
             }
         }
 
-
-
-
-
-
-
-       
+        if(LockSearch.Require_DM === true) {
+            if(inputs.Sent_DM === false) {
+                validationErrors.push("The keyholder requires that you speak to them prior to loading this lock. Please refer to where you found the lock for more details.");
+            }
+        }
     }
     
     if(LockSearch.OriginalLockType_ID != null) {
