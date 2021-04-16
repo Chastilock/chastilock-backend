@@ -83,7 +83,7 @@ async function createOriginalLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Auto_Resets_Enabled != false && inputs.Auto_Resets_Enabled != 1) {
+    if(inputs.Auto_Resets_Enabled != false && inputs.Auto_Resets_Enabled != true) {
         validationErrors.push("Auto resets enabled is not valid");
     }
     
