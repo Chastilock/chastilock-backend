@@ -7,6 +7,7 @@ const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
 const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
+const createTimerLock = require('../mutations/createTimerLock');
 const loadLock = require('../mutations/loadLock');
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -71,6 +72,9 @@ const resolvers = {
     },
     async createOriginalLock(root, args, { models, req }) {
       return createOriginalLock(args, models, req);
+    },
+    async createTimerLock(root, args, { models, req }) {
+      return createTimerLock(args, models, req);
     },
     async loadLock(root, args, { models, req }) {
       return loadLock(args, models, req);
