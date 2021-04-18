@@ -48,7 +48,15 @@ module.exports = (sequelize) => {
         Unlocked: {
             type: Sequelize.BOOLEAN,
             allowNull: false
-        }        
+        },
+        Lockee_Rating: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        Keyholder_Rating: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        }          
     }, {sequelize});
     
     LoadedLock.associate = (models) => {

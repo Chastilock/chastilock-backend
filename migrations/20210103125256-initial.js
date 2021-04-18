@@ -556,6 +556,14 @@ Disable_Keyholder_Decision: {
       Unlocked: {
         type: Sequelize.BOOLEAN,
         allowNull: false
+      },
+      Lockee_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Keyholder_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       },     
       createdAt: {
         allowNull: false,
