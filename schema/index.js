@@ -88,7 +88,8 @@ const typeDefs = gql`
     Emergency_Keys: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
-    CurrentFreeze: Freeze
+    CurrentFreeze: Freeze,
+    Unlocked: Boolean!
   }
 
   type LoadedOriginalLock {

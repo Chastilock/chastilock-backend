@@ -62,11 +62,11 @@ async function loadLock(inputs, models, req) {
        }
 
        if(LockSearch.Limit_Users === true) {
-           const UserLimit = LockSearch.User_Limit_Amount;
-           //TODO: Will need to exclude unlocked locks 
+           const UserLimit = LockSearch.User_Limit_Amount; 
            const NumOfLocksLoaded = models.LoadedLock.findAll({
                 where: {
-                    CreatedLock_ID: LockSearch.Lock_ID
+                    CreatedLock_ID: LockSearch.Lock_ID,
+                    $and: {Unlocked: false}
                 }
             })
 

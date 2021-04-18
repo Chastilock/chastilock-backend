@@ -552,7 +552,11 @@ Disable_Keyholder_Decision: {
           model: "Freezes",
           key: "Freeze_ID"
         }
-      },       
+      },  
+      Unlocked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

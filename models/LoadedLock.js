@@ -44,6 +44,10 @@ module.exports = (sequelize) => {
         Current_Freeze_ID: {
           type: Sequelize.INTEGER,
           allowNull: true
+        },
+        Unlocked: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
         }        
     }, {sequelize});
     
