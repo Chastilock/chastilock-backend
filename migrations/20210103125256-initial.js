@@ -74,6 +74,46 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('UserSettings', {
+      Setting_ID: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      User_ID: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "User_ID"
+          }
+      },
+      Combo_Type: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
+      Allow_Duplicate_Characters: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
+      },
+      Show_Combo_To_Keyholder: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
+      },
+      Share_Stats: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
     // Session
     await queryInterface.createTable('Sessions', {
       Session_ID: {
@@ -583,6 +623,7 @@ Disable_Keyholder_Decision: {
     await queryInterface.dropTable('CreatedLocks');
     await queryInterface.dropTable('OriginalLockTypes');
     await queryInterface.dropTable('LoadedOriginalLocks');
+    await queryInterface.dropTable('UserSettings');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
     await queryInterface.dropTable('TimerLockTypes');
