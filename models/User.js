@@ -28,11 +28,11 @@ module.exports = (sequelize) => {
         allowNull: true
       },
       Keyholder: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
       },
       Lockee: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
       },
 
