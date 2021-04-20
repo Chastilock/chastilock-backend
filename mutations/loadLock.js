@@ -55,6 +55,8 @@ async function loadLock(inputs, models, req) {
         validationErrors.push("You need less fake locks to be able to load this lock");
        }
 
+    }
+
        if(inputs.Emergency_Keys === true) {
         if(LockSearch.Allow_Buyout === false) {
             validationErrors.push("You are not allowed to enable emergency keys on this lock");
@@ -86,11 +88,25 @@ async function loadLock(inputs, models, req) {
        }
 
        if(LockSearch.Block_Already_Locked) {
-           //TODO: This needs adding once unlocked locks are added
+           const AlreadyLocked = await models.LoadedLock.findOne({
+               where: {
+                   Lockee: req.Authenticated
+               }
+           });
+           if(AlreadyLocked != null) {
+                validationErrors.push("The keyholder does not allow you to load this alongside other locks");
+           }
        }
        
-       if(LockSearch.Block_Stats_Hidden) {
-        //TODO: This needs adding once user settings are added
+        if(LockSearch.Block_Stats_Hidden) {
+        const UserSettings = await models.UserSetting.findOne({
+            where: {
+                User_ID: req.Authenticated
+            }
+        });
+        if(UserSettings.Share_Stats === false) {
+            validationErrors.push("The keyholder requires that you share your stats");
+        }
         }
 
         if(LockSearch.Only_Accept_Trusted === true) {
@@ -104,13 +120,17 @@ async function loadLock(inputs, models, req) {
                 validationErrors.push("The keyholder requires that you speak to them prior to loading this lock. Please refer to where you found the lock for more details.");
             }
         }
-    }
+
+        if(validationErrors.length) {
+            throw new UserInputError("Cannot load lock", {
+                invalidArgs: ValidationErrors
+              });
+        }
     
-    if(LockSearch.OriginalLockType_ID != null) {
-        //Original lock type. Will use helper function to return the lock to keep this file neat!
-        await loadOriginalLockType(LockSearch);
-    }
-    
-}
+        if(LockSearch.OriginalLockType_ID != null) {
+            //Original lock type. Will use helper function to return the lock to keep this file neat!
+            await loadOriginalLockType(LockSearch);
+        }
+    } 
 
 module.exports = loadLock;
