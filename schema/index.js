@@ -115,6 +115,14 @@ const typeDefs = gql`
     Started: Int!,
     EndTime: Int
   }
+  type UserSetting {
+    Setting_ID: Int!,
+    User: User!,
+    Combo_Type: String!,
+    Allow_Duplicate_Characters: Boolean!,
+    Show_Combo_To_Keyholder: Boolean!,
+    Share_Stats: Boolean!
+  }
 
   type Query {
     allUsers: [User!]!
