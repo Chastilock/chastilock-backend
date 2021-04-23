@@ -9,6 +9,7 @@ const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
 const createTimerLock = require('../mutations/createTimerLock');
 const loadLock = require('../mutations/loadLock');
+const changeUserSettings = require('../mutations/changeUserSettings');
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
@@ -78,6 +79,9 @@ const resolvers = {
     },
     async loadLock(root, args, { models, req }) {
       return loadLock(args, models, req);
+    },
+    async changeUserSettings(root, args, { models, req }) {
+      return changeUserSettings(args, models, req);
     }
   },
 
