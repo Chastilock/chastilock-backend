@@ -6,7 +6,9 @@ const typeDefs = gql`
     UUID: String!
     Email: String
     Password: String
-    Username: String
+    Username: String,
+    Keyholder: Boolean,
+    Lockee: Boolean,
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
   }
@@ -85,11 +87,13 @@ const typeDefs = gql`
     Lockee: User!
     Keyholder: User
     Code: String!
-    Emergency_Keys: Boolean!
+    Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
     CurrentFreeze: Freeze,
-    Unlocked: Boolean!
+    Unlocked: Boolean!,
+    Lockee_Rating: Int,
+    Keyholder_Rating: Int
   }
 
   type LoadedOriginalLock {
