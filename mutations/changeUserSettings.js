@@ -11,7 +11,7 @@ async function changeUserSettings(inputs, models, req) {
 
     const SettingsSearch = await models.UserSetting.findOne({
         where: {
-            User_ID: Authenticated
+            User_ID: req.Authenticated
         }
     })
     if(!SettingsSearch) {

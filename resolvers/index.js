@@ -127,6 +127,11 @@ const resolvers = {
     async CurrentFreeze (LoadedLock) {
       return LoadedLock.getCurrentFreeze();
     }
+  },
+  UserSetting: {
+    async User (UserSetting) {
+      return UserSetting.getUser();
+    }
   }
 
 }
