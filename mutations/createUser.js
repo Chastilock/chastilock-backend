@@ -39,7 +39,9 @@ if(await CheckEmailAvailable(inputs.Email) === false) {
 
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
 const UUID = uuidv4();
-return models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username});
+const NewUser = await models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username});
+await models.UserSetting.create({User_ID: NewUser.User_ID, Combo_Type: "123", Allow_Duplicate_Characters: true, Show_Combo_To_Keyholder: false, Share_Stats: true});
+return NewUser;
 
 }
 module.exports = createUser;
