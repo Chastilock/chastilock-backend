@@ -27,7 +27,7 @@ jobs:
         with:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push to local registry
         uses: docker/build-push-action@v2
         with:
