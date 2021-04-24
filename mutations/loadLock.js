@@ -1,5 +1,6 @@
 const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
 const loadOriginalLockType = require('../helpers/loadOriginalLockType');
+const { getLockeeRating } = require('../helpers/ratings');
 
 async function loadLock(inputs, models, req) {
 
@@ -84,7 +85,11 @@ async function loadLock(inputs, models, req) {
        }
 
        if(LockSearch.Block_User_Rating_Enabled) {
-           //TODO: This needs adding once ratings are added
+           const MinRating = LockSearch.Block_User_Rating
+
+           if(getLockeeRating(req.Authenticated) < MinRating) {
+                validationErrors.push("The keyholder needs you to have a higher lockee rating before loading this lock");
+           }
        }
 
        if(LockSearch.Block_Already_Locked) {
