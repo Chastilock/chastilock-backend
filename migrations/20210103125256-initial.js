@@ -614,7 +614,24 @@ Disable_Keyholder_Decision: {
         type: Sequelize.DATE
       }
     });
-    
+
+    await queryInterface.createTable('AppSettings', {
+      
+      AppSetting_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Setting_Name: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+      },
+      Setting_Value: {
+        type: Sequelize.STRING,
+        allowNull: false
+      }
+    });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sessions');
@@ -627,7 +644,6 @@ Disable_Keyholder_Decision: {
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
     await queryInterface.dropTable('TimerLockTypes');
-
-
+    await queryInterface.dropTable('AppSettings');
   }
-};
+}
