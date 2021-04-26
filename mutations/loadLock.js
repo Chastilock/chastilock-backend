@@ -4,6 +4,16 @@ const { getLockeeRating } = require('../helpers/ratings');
 
 async function loadLock(inputs, models, req) {
 
+    const loadLockDisabled = await models.AppSetting.findOne({
+        where: {
+            Setting_Name: "Allow_LoadLock",
+            Setting_Value: "true"
+        }
+    });
+    if (loadLockDisabled) {
+        throw new ForbiddenError("We are currently not accepting new locks to be loaded. Please try again later")
+    }
+
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
     }
