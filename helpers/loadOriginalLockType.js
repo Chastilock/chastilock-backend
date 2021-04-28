@@ -1,6 +1,6 @@
 const { UserInputError } = require("apollo-server-errors");
 const { OriginalLockType } = require("../models");
-const { RandomInt, SplitNumberIntoRand } = require('./random');
+const { RandomInt, SplitNumberInto2Rand, SplitNumberInto3Rand } = require('./random');
 
 async function loadOriginalLockType(CreatedLock) {
 
