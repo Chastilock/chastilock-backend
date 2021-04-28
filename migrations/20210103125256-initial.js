@@ -58,12 +58,52 @@ module.exports = {
         allowNull: true
       },
       Keyholder: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
       },
       Lockee: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
+    await queryInterface.createTable('UserSettings', {
+      Setting_ID: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      User_ID: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "User_ID"
+          }
+      },
+      Combo_Type: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
+      Allow_Duplicate_Characters: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
+      },
+      Show_Combo_To_Keyholder: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
+      },
+      Share_Stats: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -212,8 +252,51 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    
-    //CreatedLock
+
+    await queryInterface.createTable('TimerLockTypes', {
+      Timer_Type_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Max_Days: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      Max_Hours: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Max_Minutes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Days: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Hours: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Min_Minutes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Hide_Timer: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
     await queryInterface.createTable('CreatedLocks', {
       Lock_ID: {
         type: Sequelize.INTEGER,
@@ -242,6 +325,14 @@ module.exports = {
         references: {
           model: 'OriginalLockTypes',
           key: 'Original_Deck_ID'
+        }
+      },
+      TimerLockType_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'TimerLockTypes',
+          key: 'Timer_Type_ID'
         }
       },
       Lock_Name: {
@@ -473,8 +564,8 @@ module.exports = {
         }
       },
       Code: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+          type: Sequelize.STRING,
+          allowNull: false
       },
       Original_Lock_Deck: {
         type: Sequelize.INTEGER,
@@ -503,7 +594,19 @@ module.exports = {
           model: "Freezes",
           key: "Freeze_ID"
         }
-      },       
+      },  
+      Unlocked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Lockee_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Keyholder_Rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -511,6 +614,24 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      }
+    });
+
+    await queryInterface.createTable('AppSettings', {
+      
+      AppSetting_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Setting_Name: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+      },
+      Setting_Value: {
+        type: Sequelize.STRING,
+        allowNull: false
       }
     });
   },
@@ -521,7 +642,10 @@ module.exports = {
     await queryInterface.dropTable('CreatedLocks');
     await queryInterface.dropTable('OriginalLockTypes');
     await queryInterface.dropTable('LoadedOriginalLocks');
+    await queryInterface.dropTable('UserSettings');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
+    await queryInterface.dropTable('TimerLockTypes');
+    await queryInterface.dropTable('AppSettings');
   }
-};
+}

@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         Code: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false
         },
         Original_Lock_Deck: {
@@ -44,7 +44,19 @@ module.exports = (sequelize) => {
         Current_Freeze_ID: {
           type: Sequelize.INTEGER,
           allowNull: true
-        }        
+        },
+        Unlocked: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
+        Lockee_Rating: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        Keyholder_Rating: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        }          
     }, {sequelize});
     
     LoadedLock.associate = (models) => {

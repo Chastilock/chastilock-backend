@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      TimerLockType_ID: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       Lock_Name: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -119,6 +123,8 @@ module.exports = (sequelize) => {
     CreatedLock.associate = (models) => {
       CreatedLock.belongsTo(models.User, {foreignKey: "User_ID"});
       CreatedLock.hasOne(models.OriginalLockType, {foreignKey: "Original_Deck_ID"})
+      CreatedLock.hasOne(models.TimerLockType, {foreignKey: "Timer_Type_ID"})
+
     };
 
     return CreatedLock;
