@@ -62,6 +62,10 @@ module.exports = (sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: false,
         },
+        Hide_Card_Info: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        }
 
                 
     }, {sequelize});
