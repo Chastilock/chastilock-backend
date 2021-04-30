@@ -65,6 +65,10 @@ module.exports = (sequelize) => {
         Hide_Card_Info: {
             type: Sequelize.BOOLEAN,
             allowNull: false
+        },
+        Chance_Period: {
+            type: Sequelize.INTEGER,
+            allowNull: false
         }
 
                 

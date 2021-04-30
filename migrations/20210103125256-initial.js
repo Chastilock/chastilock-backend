@@ -497,14 +497,18 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
     },
-      createdAt: {
+    Chance_Period: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      updatedAt: {
+    },
+    updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+    }
     });
 
     //Freeze
