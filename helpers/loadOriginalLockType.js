@@ -9,6 +9,8 @@ async function loadOriginalLockType(CreatedLock) {
     const OriginalLockID = CreatedLock.OriginalLockType_ID;
     const LockDetails = await OriginalLockType.findByPk(OriginalLockID);
 
+    const HideCardInfo = OriginalLockType.Hide_Card_Info;
+
     if(!LockDetails) {
         Errors.push("Cannot find lock");
     }
@@ -19,7 +21,6 @@ async function loadOriginalLockType(CreatedLock) {
     const Resets = RandomInt(LockDetails.Variable_Min_Resets, LockDetails.Variable_Max_Resets);
     const Doubles = RandomInt(LockDetails.Variable_Min_Doubles, LockDetails.Variable_Max_Doubles);
     const Freezes = RandomInt(LockDetails.Variable_Min_Freezes, LockDetails.Variable_Max_Freezes);
-
 
     const TotalAddReds = RandomInt(LockDetails.Variable_Min_AddRed, LockDetails.Variable_Max_AddRed);
     const TotalRemoveReds = RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
@@ -48,7 +49,14 @@ async function loadOriginalLockType(CreatedLock) {
     Add3 = Add3 + SplitRandom.Num3
     Remove1 = Remove1 + SplitRandom.Num4
     Remove2 = Remove2 + SplitRandom.Num5
-    
+
+    if(HideCardInfo) {
+      const TotalCards = Reds + Greens + Stickies + Resets + Doubles + Freezes + TotalAddReds + TotalRandomReds + TotalRemoveReds;
+      const RandomPercentage = RandomInt(0, 15);
+      const GoAgainCards = (RandomPercentage / 100) * TotalCards;
+    } else {
+      const GoAgainCards = 0;
+    }
 
     if(Errors.length) {
       throw new UserInputError("Unable to load lock", {
@@ -69,7 +77,10 @@ async function loadOriginalLockType(CreatedLock) {
       Remaining_Freeze: Freezes,
       Remaining_Double: Doubles,
       Remaining_Reset: Resets,
-      Cumalative: LockDetails.Cumulative
+      Remaining_GoAgain: GoAgainCards,
+      Cumalative: LockDetails.Cumulative,
+      Hide_Card_Info: HideCardInfo,
+      Chance_Period: LockDetails.Chance_Period
     })
 
     return OriginalLockRecord
