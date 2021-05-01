@@ -58,6 +58,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        Remaining_GoAgain: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
         Cumulative: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
