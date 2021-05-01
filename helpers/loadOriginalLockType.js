@@ -50,12 +50,12 @@ async function loadOriginalLockType(CreatedLock) {
     Remove1 = Remove1 + SplitRandom.Num4
     Remove2 = Remove2 + SplitRandom.Num5
 
+    let GoAgainCards = 0;
+
     if(HideCardInfo) {
       const TotalCards = Reds + Greens + Stickies + Resets + Doubles + Freezes + TotalAddReds + TotalRandomReds + TotalRemoveReds;
       const RandomPercentage = RandomInt(0, 15);
-      const GoAgainCards = (RandomPercentage / 100) * TotalCards;
-    } else {
-      const GoAgainCards = 0;
+      GoAgainCards = (RandomPercentage / 100) * TotalCards;
     }
 
     if(Errors.length) {
