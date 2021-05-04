@@ -108,7 +108,8 @@ async function loadLock(inputs, models, req) {
        if(LockSearch.Block_Already_Locked) {
            const AlreadyLocked = await models.LoadedLock.findOne({
                where: {
-                   Lockee: req.Authenticated
+                   Lockee: req.Authenticated,
+                   Unlocked: false
                }
            });
            if(AlreadyLocked != null) {
@@ -128,7 +129,7 @@ async function loadLock(inputs, models, req) {
         }
 
         if(LockSearch.Require_DM === true) {
-            if(inputs.Sent_DM === false) {
+            if(inputs.Sent_DM != true) {
                 validationErrors.push("The keyholder requires that you speak to them prior to loading this lock. Please refer to where you found the lock for more details.");
             }
         }
