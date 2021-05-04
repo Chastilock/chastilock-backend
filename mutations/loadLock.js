@@ -1,4 +1,4 @@
-const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const loadOriginalLockType = require('../helpers/loadOriginalLockType');
 const { getLockeeRating } = require('../helpers/ratings');
 
@@ -138,7 +138,7 @@ async function loadLock(inputs, models, req) {
 
         if(validationErrors.length) {
             throw new UserInputError("Cannot load lock", {
-                invalidArgs: ValidationErrors
+                invalidArgs: validationErrors
               });
         }
     
