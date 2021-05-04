@@ -1,4 +1,7 @@
-const LoadedLock = require('../models/LoadedLock');
+const { LoadedLock } = require('../models');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
+
 //Not Tested yet
 async function getLockeeRating(UserID) {
     const RatingsSearch = await LoadedLock.findAll({

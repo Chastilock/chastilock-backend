@@ -1,9 +1,12 @@
 const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const loadOriginalLockType = require('../helpers/loadOriginalLockType');
 const { getLockeeRating } = require('../helpers/ratings');
+const { Sequelize } = require('sequelize')
 
 async function loadLock(inputs, models, req) {
 
+    const op = Sequelize.Op;
+    
     const loadLockDisabled = await models.AppSetting.findOne({
         where: {
             Setting_Name: "Allow_LoadLock",
