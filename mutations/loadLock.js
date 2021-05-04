@@ -114,19 +114,13 @@ async function loadLock(inputs, models, req) {
        }
        
         if(LockSearch.Block_Stats_Hidden) {
-        const UserSettings = await models.UserSetting.findOne({
-            where: {
-                User_ID: req.Authenticated
-            }
-        });
-        if(UserSettings.Share_Stats === false) {
-            validationErrors.push("The keyholder requires that you share your stats");
-        }
-        }
-
-        if(LockSearch.Only_Accept_Trusted === true) {
-            if(inputs.Trust_Keyholder === false) {
-                validationErrors.push("The keyholder requires that you trust them");
+            const UserSettings = await models.UserSetting.findOne({
+                where: {
+                    User_ID: req.Authenticated
+                }
+            });
+            if(UserSettings.Share_Stats === false) {
+                validationErrors.push("The keyholder requires that you share your stats");
             }
         }
 
