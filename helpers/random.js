@@ -31,9 +31,9 @@ function SplitNumberInto5Rand(Input) {
   const Num1 = RandomInt(0, Input);
   const Remaining = Input - Num1;
   const Num2 = RandomInt(0, Remaining);
-  const Remaining = Input - (Num1 + Num2);
+  Remaining = Input - (Num1 + Num2);
   const Num3 = RandomInt(0, Remaining);
-  const Remaining = Input - (Num1 + Num2 + Num3);
+  Remaining = Input - (Num1 + Num2 + Num3);
   const Num4 = RandomInt(0, Remaining);
   const Num5 = Input - (Num1 + Num2 + Num3 + Num4)
 
