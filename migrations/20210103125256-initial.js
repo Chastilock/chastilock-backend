@@ -381,7 +381,7 @@ module.exports = {
       },
       Allow_Buyout: {
         type: Sequelize.BOOLEAN,
-        allowNull: true
+        allowNull: false
       },
       Disable_Keyholder_Decision: {
         type: Sequelize.BOOLEAN,
