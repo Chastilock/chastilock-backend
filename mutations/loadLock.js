@@ -10,7 +10,7 @@ async function loadLock(inputs, models, req) {
             Setting_Value: "true"
         }
     });
-    if (loadLockDisabled) {
+    if (loadLockDisabled === null) {
         throw new ForbiddenError("We are currently not accepting new locks to be loaded. Please try again later")
     }
 
