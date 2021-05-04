@@ -97,7 +97,7 @@ async function loadLock(inputs, models, req) {
        if(LockSearch.Block_User_Rating_Enabled) {
            const MinRating = LockSearch.Block_User_Rating
 
-           if(getLockeeRating(req.Authenticated) < MinRating) {
+           if(await getLockeeRating(req.Authenticated) < MinRating) {
                 validationErrors.push("The keyholder needs you to have a higher lockee rating before loading this lock");
            }
        }
