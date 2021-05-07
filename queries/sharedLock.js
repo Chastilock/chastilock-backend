@@ -14,10 +14,10 @@ async function sharedLock(models, req, args) {
         }
     });
     if(LockSearch === null) {
-        return new ApolloError("Lock not found", "404");
+        throw new ApolloError("Lock not found", "404");
     }
     if(LockSearch.Shared === false) {
-        return new ApolloError("Lock not found", "404");
+        throw new ApolloError("Lock not found", "404");
     }
     return LockSearch;
 }
