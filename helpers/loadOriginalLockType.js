@@ -9,7 +9,7 @@ async function loadOriginalLockType(CreatedLock) {
     const OriginalLockID = CreatedLock.OriginalLockType_ID;
     const LockDetails = await OriginalLockType.findByPk(OriginalLockID);
 
-    const HideCardInfo = OriginalLockType.Hide_Card_Info;
+    const HideCardInfo = LockDetails.Hide_Card_Info;
 
     if(!LockDetails) {
         Errors.push("Cannot find lock");
@@ -22,9 +22,9 @@ async function loadOriginalLockType(CreatedLock) {
     const Doubles = RandomInt(LockDetails.Variable_Min_Doubles, LockDetails.Variable_Max_Doubles);
     const Freezes = RandomInt(LockDetails.Variable_Min_Freezes, LockDetails.Variable_Max_Freezes);
 
-    const TotalAddReds = RandomInt(LockDetails.Variable_Min_AddRed, LockDetails.Variable_Max_AddRed);
-    const TotalRemoveReds = RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
-    const TotalRandomReds = RandomInt(LockDetails.Variable_Min_RandomRed, LockDetails.Variable_Max_RandomRed);
+    let TotalAddReds = RandomInt(LockDetails.Variable_Min_AddRed, LockDetails.Variable_Max_AddRed);
+    let TotalRemoveReds = RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
+    let TotalRandomReds = RandomInt(LockDetails.Variable_Min_RandomRed, LockDetails.Variable_Max_RandomRed);
 
     const RandomSplit = SplitNumberInto2Rand(TotalRandomReds);
 
@@ -33,14 +33,14 @@ async function loadOriginalLockType(CreatedLock) {
 
     const AddRedSplit = SplitNumberInto3Rand(TotalAddReds);
 
-    const Add1 = AddRedSplit.Num1
-    const Add2 = AddRedSplit.Num2
-    const Add3 = AddRedSplit.Num3
+    let Add1 = AddRedSplit.Num1
+    let Add2 = AddRedSplit.Num2
+    let Add3 = AddRedSplit.Num3
 
     const RemoveRedSplit = SplitNumberInto2Rand(TotalRemoveReds);
 
-    const Remove1 = RemoveRedSplit.Num1
-    const Remove2 = RemoveRedSplit.Num2
+    let Remove1 = RemoveRedSplit.Num1
+    let Remove2 = RemoveRedSplit.Num2
 
     const SplitRandom = SplitNumberInto5Rand(TotalRandomReds);
 
@@ -78,11 +78,11 @@ async function loadOriginalLockType(CreatedLock) {
       Remaining_Double: Doubles,
       Remaining_Reset: Resets,
       Remaining_GoAgain: GoAgainCards,
-      Cumalative: LockDetails.Cumulative,
+      Cumulative: LockDetails.Cumulative,
       Hide_Card_Info: HideCardInfo,
       Chance_Period: LockDetails.Chance_Period
     })
 
-    return OriginalLockRecord
+    return OriginalLockRecord;
 }
 module.exports = loadOriginalLockType

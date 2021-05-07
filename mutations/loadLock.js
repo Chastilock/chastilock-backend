@@ -142,7 +142,21 @@ async function loadLock(inputs, models, req) {
     
         if(LockSearch.OriginalLockType_ID != null) {
             //Original lock type. Will use helper function to return the lock to keep this file neat!
-            await loadOriginalLockType(LockSearch);
+            const OriginalLockType = await loadOriginalLockType(LockSearch);
+            
+            const LoadedLock = await models.LoadedLock.create({
+                CreatedLock_ID: LockSearch.Lock_ID,
+                Lockee: req.Authenticated,
+                Keyholder: LockSearch.User_ID,
+                Code: "1234", //Todo: Fix this!!
+                Original_Lock_Deck: OriginalLockType.Original_Loaded_ID,
+                Emergency_Keys_Enabled: inputs.Emergency_Keys,
+                Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
+                Test_Lock: inputs.Test_Lock,
+                Unlocked: false
+            })
+            return LoadedLock;
+            //console.log(OriginalLockType)
         }
     } 
 
