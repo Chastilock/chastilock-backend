@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
+const { AuthenticationError, UserInputError, ForbiddenError, ApolloError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
@@ -11,7 +11,7 @@ async function createUser(inputs, models, req) {
           Setting_Value: "true"
       }
   });
-  if (SignupDisabled) {
+  if (SignupDisabled === null) {
       throw new ForbiddenError("We are currently not accepting new users. Please try again later")
   }
 

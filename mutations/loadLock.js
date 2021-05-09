@@ -4,7 +4,7 @@ const { getLockeeRating } = require('../helpers/ratings');
 const { Sequelize } = require('sequelize')
 
 async function loadLock(inputs, models, req) {
-
+    //TODO: Need to add fakes!!
     const op = Sequelize.Op;
     
     const loadLockDisabled = await models.AppSetting.findOne({
@@ -141,7 +141,6 @@ async function loadLock(inputs, models, req) {
         }
     
         if(LockSearch.OriginalLockType_ID != null) {
-            //Original lock type. Will use helper function to return the lock to keep this file neat!
             const OriginalLockType = await loadOriginalLockType(LockSearch);
             
             const LoadedLock = await models.LoadedLock.create({
@@ -156,7 +155,6 @@ async function loadLock(inputs, models, req) {
                 Unlocked: false
             })
             return LoadedLock;
-            //console.log(OriginalLockType)
         }
     } 
 

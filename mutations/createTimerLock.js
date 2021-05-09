@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const { AuthenticationError, UserInputError, ForbiddenError } = require('apollo-server-express');
 const srs = require('secure-random-string');
 
 async function createTimerLock(inputs, models, req) {
@@ -9,7 +9,7 @@ async function createTimerLock(inputs, models, req) {
             Setting_Value: "true"
         }
     });
-    if (CreateLockDisabled) {
+    if (CreateLockDisabled === null) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
     

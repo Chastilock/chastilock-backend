@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const {checkAppTokens} = require("../helpers/authentication");
-const { AuthenticationError } = require('apollo-server-express');
+const { AuthenticationError, ForbiddenError } = require('apollo-server-express');
 
 async function createUserAnon(models, req) {
   const SignupDisabled = await models.AppSetting.findOne({
@@ -9,7 +9,7 @@ async function createUserAnon(models, req) {
         Setting_Value: "true"
       }
     });
-    if (SignupDisabled) {
+    if (SignupDisabled === null) {
         throw new ForbiddenError("We are currently not accepting new users. Please try again later")
     }
 

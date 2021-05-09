@@ -10,6 +10,7 @@ const CheckAuth = async (req, res, next) => {
     return next();
   } else {
     HTTPtoken = authorization.split(" ")[1];
+    console.log(HTTPtoken)
   }
   //First, lets check we can verify the token 
     jwt.verify(HTTPtoken, process.env.JWT_SECRET, function(err, decoded) {
