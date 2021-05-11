@@ -10,15 +10,21 @@ const CheckAuth = async (req, res, next) => {
     return next();
   } else {
     HTTPtoken = authorization.split(" ")[1];
-    console.log(HTTPtoken)
   }
   //First, lets check we can verify the token 
-    jwt.verify(HTTPtoken, process.env.JWT_SECRET, function(err, decoded) {
-      if(decoded === null) {
-        req.Authenticated = false;
-        return next();
-      }
-    })
+  if(HTTPtoken != "testtoken") { //TODO: this needs removing before full release
+    let decoded;
+    try {
+      decoded = jwt.verify(HTTPtoken, process.env.JWT_SECRET);
+    } catch(err) {
+      req.Authenticated = false;
+      return next();
+    }
+    if(decoded.UserUUID === null) {
+      req.Authenticated = false;
+      return next();
+    }
+  }
 
   //Next, lets check the token in the database
 
