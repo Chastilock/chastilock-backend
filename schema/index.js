@@ -125,6 +125,7 @@ const typeDefs = gql`
     User: User!,
     Combo_Type: String!,
     Allow_Duplicate_Characters: Boolean!,
+    Combo_Length: Int!,
     Show_Combo_To_Keyholder: Boolean!,
     Share_Stats: Boolean!
   }
