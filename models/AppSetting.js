@@ -20,7 +20,15 @@ module.exports = (sequelize) => {
         allowNull: true
       }
 
-    }, {sequelize}
+    },
+    {
+      indexes: [
+        {
+            unique: true,
+            fields: ['Setting_Name']
+        }
+    ]
+    },{sequelize}
     );
 
     return AppSetting;
