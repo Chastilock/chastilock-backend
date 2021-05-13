@@ -20,7 +20,7 @@ async function createUserAnon(models, req) {
 
   const UUID = uuidv4();
   const NewUser = await models.User.create({UUID});
-  await models.UserSetting.create({User_ID: NewUser.User_ID, Combo_Type: "123", Allow_Duplicate_Characters: true, Show_Combo_To_Keyholder: false, Share_Stats: true});
+  await models.UserSetting.create({User_ID: NewUser.User_ID, Combo_Type: "123", Allow_Duplicate_Characters: true, Combo_Length: 4, Show_Combo_To_Keyholder: false, Share_Stats: true});
   return NewUser;
 }
 
