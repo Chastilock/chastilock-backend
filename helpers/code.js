@@ -20,19 +20,19 @@ async function NewCode(UserID) {
     }
 
     if (ComboType === "ABC" && DuplicateCharacters === true) {
-        return DuplicateLetters(ComboLength)
+        return DuplicateLetters(ComboLength);
     }
  
     if (ComboType === "ABC" && DuplicateCharacters === false) {
-        return  
+        return NonDuplicateLetters(ComboLength);
     }
 
     if (ComboType === "ABC123" && DuplicateCharacters === true) {
-        return  
+        return DuplicateLettersAndNumbers(ComboLength);
     }
  
     if (ComboType === "ABC123" && DuplicateCharacters === false) {
-        return  
+        return NonDuplicateLettersAndNumbers(ComboLength);  
     }
 }
 
@@ -55,11 +55,11 @@ function NonDuplicateNumbers(Length) {
 
 function DuplicateLetters(Length) {
     
-    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let Letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     let Code = '';
     for (let i = 0; i < Length; i++) {
-        Code += chars.charAt(Math.floor(Math.random() * chars.length));
+        Code += Letters.charAt(Math.floor(Math.random() * Letters.length));
     }
 
     return Code;
@@ -72,7 +72,28 @@ function NonDuplicateLetters(Length) {
     const Code = Shuffled.substring(0, Length);
 
     return Code;
-} 
+}
+
+function DuplicateLettersAndNumbers(Length) {
+    
+  let Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  let Code = '';
+  for (let i = 0; i < Length; i++) {
+      Code += Chars.charAt(Math.floor(Math.random() * Chars.length));
+  }
+  return Code;
+}
+
+function NonDuplicateLettersAndNumbers(Length) {
+  const Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const Shuffled = Chars.split('').sort(function(){return 0.5-Math.random()}).join('');
+  const Code = Shuffled.substring(0, Length);
+
+  return Code;
+}
+
+
 
 module.exports = {
     NewCode

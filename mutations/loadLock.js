@@ -1,7 +1,8 @@
 const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const loadOriginalLockType = require('../helpers/loadOriginalLockType');
 const { getLockeeRating } = require('../helpers/ratings');
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('sequelize');
+const { NewCode } = require('../helpers/code');
 
 async function loadLock(inputs, models, req) {
     //TODO: Need to add fakes!!
@@ -147,7 +148,7 @@ async function loadLock(inputs, models, req) {
                 CreatedLock_ID: LockSearch.Lock_ID,
                 Lockee: req.Authenticated,
                 Keyholder: LockSearch.User_ID,
-                Code: "1234", //Todo: Fix this!!
+                Code: await NewCode(req.Authenticated) || inputs.Code,
                 Original_Lock_Deck: OriginalLockType.Original_Loaded_ID,
                 Emergency_Keys_Enabled: inputs.Emergency_Keys,
                 Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
