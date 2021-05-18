@@ -6,7 +6,7 @@ function generateJWT(UserUUID) {
   return token;
 }
 
-async function verifyJWT(Token) {
+function verifyJWT(Token) {
   try {
     const decoded = jwt.verify(Token, process.env.JWT_SECRET);
     return decoded.UserUUID;

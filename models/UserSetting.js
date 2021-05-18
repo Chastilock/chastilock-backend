@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: false
         },
+        Combo_Length: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
         Show_Combo_To_Keyholder: {
             type: Sequelize.BOOLEAN,
             allowNull: false

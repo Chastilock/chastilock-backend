@@ -1,6 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    
     // App
     await queryInterface.createTable('Apps', {
       App_ID: {
@@ -96,6 +97,10 @@ module.exports = {
           type: Sequelize.BOOLEAN,
           allowNull: false
       },
+      Combo_Length: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       Show_Combo_To_Keyholder: {
           type: Sequelize.BOOLEAN,
           allowNull: false
@@ -150,8 +155,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
-    // CreatedLock
     
     // OriginalLockType
     await queryInterface.createTable('OriginalLockTypes', {
@@ -382,9 +385,9 @@ module.exports = {
       },
       Allow_Buyout: {
         type: Sequelize.BOOLEAN,
-        allowNull: true
+        allowNull: false
       },
-Disable_Keyholder_Decision: {
+      Disable_Keyholder_Decision: {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
@@ -434,6 +437,7 @@ Disable_Keyholder_Decision: {
       }
     });
 
+    //LoadedOriginalLock
     await queryInterface.createTable('LoadedOriginalLocks', {
       Original_Loaded_ID: {
         type: Sequelize.INTEGER,
@@ -489,20 +493,33 @@ Disable_Keyholder_Decision: {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    Remaining_GoAgain: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
     Cumulative: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
     },
-      createdAt: {
+    Hide_Card_Info: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    },
+    Chance_Period: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      updatedAt: {
+    },
+    updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+    }
     });
 
+    //Freeze
     await queryInterface.createTable('Freezes', {
       Freeze_ID: {
         type: Sequelize.INTEGER,
@@ -531,6 +548,7 @@ Disable_Keyholder_Decision: {
       }
     });
     
+    //LoadLock
     await queryInterface.createTable('LoadedLocks', {
       LoadedLock_ID: {
         type: Sequelize.INTEGER,
@@ -538,40 +556,40 @@ Disable_Keyholder_Decision: {
         primaryKey: true
       },
       CreatedLock_ID: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'CreatedLocks',
-            key: 'Lock_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'CreatedLocks',
+          key: 'Lock_ID'
+        }
       },
       Lockee: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Users',
-            key: 'User_ID'
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
           }
       },
       Keyholder: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          references: {
-            model: 'Users',
-            key: 'User_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Users',
+          key: 'User_ID'
+        }
       },
       Code: {
           type: Sequelize.STRING,
           allowNull: false
       },
       Original_Lock_Deck: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          references: {
-            model: 'LoadedOriginalLocks',
-            key: 'Original_Loaded_ID'
-          }
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'LoadedOriginalLocks',
+          key: 'Original_Loaded_ID'
+        }
       },
       Emergency_Keys_Enabled: {
         type: Sequelize.BOOLEAN,
@@ -614,7 +632,32 @@ Disable_Keyholder_Decision: {
         type: Sequelize.DATE
       }
     });
-    
+
+    await queryInterface.createTable('AppSettings', {
+      
+      AppSetting_ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      Setting_Name: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+      },
+      Setting_Value: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sessions');
@@ -627,7 +670,6 @@ Disable_Keyholder_Decision: {
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('Freezes');
     await queryInterface.dropTable('TimerLockTypes');
-
-
+    await queryInterface.dropTable('AppSettings');
   }
-};
+}

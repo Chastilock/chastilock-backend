@@ -1,8 +1,22 @@
-const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const loadOriginalLockType = require('../helpers/loadOriginalLockType');
 const { getLockeeRating } = require('../helpers/ratings');
+const { Sequelize } = require('sequelize');
+const { NewCode } = require('../helpers/code');
 
 async function loadLock(inputs, models, req) {
+    //TODO: Need to add fakes!!
+    const op = Sequelize.Op;
+    
+    const loadLockDisabled = await models.AppSetting.findOne({
+        where: {
+            Setting_Name: "Allow_LoadLock",
+            Setting_Value: "true"
+        }
+    });
+    if (loadLockDisabled === null) {
+        throw new ForbiddenError("We are currently not accepting new locks to be loaded. Please try again later")
+    }
 
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
@@ -87,7 +101,7 @@ async function loadLock(inputs, models, req) {
        if(LockSearch.Block_User_Rating_Enabled) {
            const MinRating = LockSearch.Block_User_Rating
 
-           if(getLockeeRating(req.Authenticated) < MinRating) {
+           if(await getLockeeRating(req.Authenticated) < MinRating) {
                 validationErrors.push("The keyholder needs you to have a higher lockee rating before loading this lock");
            }
        }
@@ -95,7 +109,8 @@ async function loadLock(inputs, models, req) {
        if(LockSearch.Block_Already_Locked) {
            const AlreadyLocked = await models.LoadedLock.findOne({
                where: {
-                   Lockee: req.Authenticated
+                   Lockee: req.Authenticated,
+                   Unlocked: false
                }
            });
            if(AlreadyLocked != null) {
@@ -104,37 +119,43 @@ async function loadLock(inputs, models, req) {
        }
        
         if(LockSearch.Block_Stats_Hidden) {
-        const UserSettings = await models.UserSetting.findOne({
-            where: {
-                User_ID: req.Authenticated
-            }
-        });
-        if(UserSettings.Share_Stats === false) {
-            validationErrors.push("The keyholder requires that you share your stats");
-        }
-        }
-
-        if(LockSearch.Only_Accept_Trusted === true) {
-            if(inputs.Trust_Keyholder === false) {
-                validationErrors.push("The keyholder requires that you trust them");
+            const UserSettings = await models.UserSetting.findOne({
+                where: {
+                    User_ID: req.Authenticated
+                }
+            });
+            if(UserSettings.Share_Stats === false) {
+                validationErrors.push("The keyholder requires that you share your stats");
             }
         }
 
         if(LockSearch.Require_DM === true) {
-            if(inputs.Sent_DM === false) {
+            if(inputs.Sent_DM != true) {
                 validationErrors.push("The keyholder requires that you speak to them prior to loading this lock. Please refer to where you found the lock for more details.");
             }
         }
 
         if(validationErrors.length) {
             throw new UserInputError("Cannot load lock", {
-                invalidArgs: ValidationErrors
+                invalidArgs: validationErrors
               });
         }
     
         if(LockSearch.OriginalLockType_ID != null) {
-            //Original lock type. Will use helper function to return the lock to keep this file neat!
-            await loadOriginalLockType(LockSearch);
+            const OriginalLockType = await loadOriginalLockType(LockSearch);
+            
+            const LoadedLock = await models.LoadedLock.create({
+                CreatedLock_ID: LockSearch.Lock_ID,
+                Lockee: req.Authenticated,
+                Keyholder: LockSearch.User_ID,
+                Code: await NewCode(req.Authenticated) || inputs.Code,
+                Original_Lock_Deck: OriginalLockType.Original_Loaded_ID,
+                Emergency_Keys_Enabled: inputs.Emergency_Keys,
+                Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
+                Test_Lock: inputs.Test_Lock,
+                Unlocked: false
+            })
+            return LoadedLock;
         }
     } 
 

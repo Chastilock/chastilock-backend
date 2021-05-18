@@ -22,7 +22,24 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       
-    }, {sequelize}
+    },
+    {
+      indexes: [
+        {
+            unique: true,
+            fields: ['API_Key']
+        },
+        {
+          unique: true,
+          fields: ['API_Secret']
+        },
+        {
+          unique: true,
+          fields: ['Name']
+        },
+
+    ]
+    },{sequelize}
     );
 
     App.associate = (models) => {
