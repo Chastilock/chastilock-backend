@@ -15,7 +15,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  deploy-dev:
+    environment: dev
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -36,5 +37,19 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:${{ steps.docker-tag.outputs.tag }}
+      - name: Env substitute k8s
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD_DEV }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET_DEV }}
+        with:
+          input: ci/k8s/dev.template.yaml
+          output: ci/k8s/dev.yaml
+      - name: deploy to cluster
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: apply -f ci/k8s/dev.yaml
 
 

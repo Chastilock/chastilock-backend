@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chastilock-backend
+  namespace: chastilock-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chastilock-backend
+  template:
+    metadata:
+      labels:
+        app: chastilock-backend
+    spec:
+      containers:
+        - name: chastilock-backend
+          image: registry.k8s.lars.ninja/chastilock-backend:develop
+          imagePullPolicy: Always
+          env:
+          - name: DATABASE
+            value: "mysql://root:${MYSQL_PASSWORD}@mysql/chastilock"
+          - name: JWT_SECRET
+            value: ${JWT_SECRET}
+          ports:
+          - name: http
+            containerPort: 4000
+          volumeMounts:
+          - name: config
+            mountPath: "/home/node/app/config"
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: chastilock-backend
+            items:
+              - key: chastilock-backend-config.json
+                path: config.json
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chastilock-backend
+  namespace: chastilock-dev
+data:
+  chastilock-backend-config.json: |
+    {
+      "development": {
+        "use_env_variable": "DATABASE"
+      }
+    }
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: chastilock-backend
+  namespace: chastilock-dev
+  labels:
+    app: chastilock-backend
+spec:
+  selector:
+    app: chastilock-backend
+  ports:
+  - name: http
+    port: 4000
+    targetPort: 4000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-chastilock-backend
+  namespace: chastilock-dev
+  annotations:
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: api.dev.k8s.chastilock.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: chastilock-backend
+          servicePort: 4000
+  tls:
+  - hosts:
+    - api.dev.k8s.chastilock.org
+    secretName: chastilock-backend-api-cert
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: chastilock-dev
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: chastilock-dev
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: ${MYSQL_PASSWORD}
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: chastilock-dev
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: microk8s-hostpath
