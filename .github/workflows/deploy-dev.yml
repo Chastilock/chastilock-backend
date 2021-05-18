@@ -36,9 +36,9 @@ jobs:
         with:
           context: .
           push: true
-          tags:
-            - ${{ secrets.DOCKER_REPOSITORY }}:${{ steps.docker-tag.outputs.tag }}
-            - ${{ secrets.DOCKER_REPOSITORY }}:${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKER_REPOSITORY }}:${{ steps.docker-tag.outputs.tag }}
+            ${{ secrets.DOCKER_REPOSITORY }}:${{ github.sha }}
       - name: Env substitute k8s
         uses: danielr1996/envsubst-action@1.0.0
         env:
