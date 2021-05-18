@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: chastilock-backend
-          image: registry.k8s.lars.ninja/chastilock-backend:develop
+          image: ${DOCKER_IMAGE}
           imagePullPolicy: Always
           env:
           - name: DATABASE
