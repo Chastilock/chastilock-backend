@@ -1,8 +1,11 @@
 doctype html
 html(lang="en")
   head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width")
     title Load Lock - Chastilock
   body 
-    h1 #{LockName}
-    img(src=`#{QR}`)
-    p #{QR}
+    h3 #{LockName}
+    img(src=QR title='QR Code')
+    p Lock managed by #{Keyholder}
+    button Load Lock in Chastilock

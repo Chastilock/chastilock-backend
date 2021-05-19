@@ -14,6 +14,7 @@ const rateLimiter = require('./middleware/rateLimiter')
 const bodyParser = require('body-parser');
 const { CreatedLock } = require('./models');
 const { QRAsDataURL } = require('./helpers/qr');
+const { GetUsername } = require('./helpers/user');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -50,11 +51,11 @@ app.use('/lock/:lockid', async function(req, res) {
   if(LockSearch) {
 
     const QR = await QRAsDataURL(LockID);
-    console.log(QR)
 
     res.render("loadlock", {
       LockName: LockSearch.Lock_Name,
-      QR
+      QR,
+      Keyholder: await GetUsername(LockSearch.User_ID)
     });
   } else {
     res.end("Lock not found!", 404)
