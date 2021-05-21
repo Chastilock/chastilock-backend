@@ -92,7 +92,19 @@ module.exports = (sequelize) => {
       Start_Lock_Frozen: {
         type: Sequelize.BOOLEAN,
         allowNull: false
-      }      
+      },
+      Auto_Resets_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Reset_Frequency: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },      
     }, {sequelize}
     );
 

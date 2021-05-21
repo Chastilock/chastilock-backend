@@ -200,7 +200,10 @@ async function createOriginalLock(inputs, models, req) {
         Multiple_Greens_Required: inputs.Multiple_Greens_Required,
         Hide_Card_Info: inputs.Hide_Card_Info,
         Allow_Buyout: inputs.Allow_Buyout,
-        Start_Lock_Frozen: inputs.Start_Lock_Frozen
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
+        Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
+        Reset_Frequency: inputs.Reset_Frequency,
+        Max_Resets: inputs.Max_Resets,
     });
     const cardRecordID = CardsRecord.Original_Deck_ID;
 
@@ -214,9 +217,6 @@ async function createOriginalLock(inputs, models, req) {
         Allow_Fakes: inputs.Allow_Fakes,
         Min_Fakes: inputs.Min_Fakes,
         Max_Fakes: inputs.Max_Fakes,
-        Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
-        Reset_Frequency: inputs.Reset_Frequency,
-        Max_Resets: inputs.Max_Resets,
         Checkins_Enabled: inputs.Checkins_Enabled,
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,

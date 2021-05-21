@@ -49,18 +49,6 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: true
       },
-      Auto_Resets_Enabled: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      Reset_Frequency: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      Max_Resets: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       Checkins_Enabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false

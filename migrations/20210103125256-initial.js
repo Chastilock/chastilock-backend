@@ -247,6 +247,18 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      Auto_Resets_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Reset_Frequency: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -356,18 +368,6 @@ module.exports = {
         allowNull: true
       },
       Max_Fakes: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      Auto_Resets_Enabled: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      Reset_Frequency: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      Max_Resets: {
         type: Sequelize.INTEGER,
         allowNull: true
       },

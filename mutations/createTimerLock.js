@@ -43,19 +43,6 @@ async function createTimerLock(inputs, models, req) {
         }
     }
 
-    if(inputs.Auto_Resets_Enabled != false && inputs.Auto_Resets_Enabled != true) {
-        validationErrors.push("Auto resets enabled is not valid");
-    }
-    
-    if(inputs.Auto_Resets_Enabled === true) {
-        if (inputs.Reset_Frequency < 2 || inputs.Reset_Frequency > 399) {
-            validationErrors.push("Reset frequency is not valid");
-        }
-        if (inputs.Max_Resets < 1 || inputs.Max_Resets > 20) {
-            validationErrors.push("Max resets is not valid");
-        }
-    }
-
     if(inputs.Checkins_Enabled != false && inputs.Checkins_Enabled != true) {
         validationErrors.push("Checkins enabled is not valid");
     }
@@ -149,9 +136,6 @@ async function createTimerLock(inputs, models, req) {
         Allow_Fakes: inputs.Allow_Fakes,
         Min_Fakes: inputs.Min_Fakes,
         Max_Fakes: inputs.Max_Fakes,
-        Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
-        Reset_Frequency: inputs.Reset_Frequency,
-        Max_Resets: inputs.Max_Resets,
         Checkins_Enabled: inputs.Checkins_Enabled,
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
