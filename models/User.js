@@ -35,6 +35,14 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: true
       },
+      Email_Validated: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Validation_Code: {
+        type: Sequelize.STRING,
+        allowNull: false
+      }
 
     }, {sequelize}
     );
