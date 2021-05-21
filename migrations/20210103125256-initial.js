@@ -75,11 +75,11 @@ module.exports = {
       },
       Email_Validated: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: true
       },
       Validation_Code: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       }
     });
 
