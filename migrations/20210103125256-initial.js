@@ -65,14 +65,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: true
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
       Email_Validated: {
         type: Sequelize.BOOLEAN,
         allowNull: true
@@ -80,6 +72,14 @@ module.exports = {
       Validation_Code: {
         type: Sequelize.STRING,
         allowNull: true
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
 
