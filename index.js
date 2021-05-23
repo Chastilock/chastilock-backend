@@ -34,7 +34,7 @@ app.use(CheckApp);
 app.use(CheckAuth);
 
 
-app.set('views', './web');
+app.set('views', './web/views');
 app.set('view engine', 'pug');
 
 app.use('/lock/:lockid', async function(req, res) {
