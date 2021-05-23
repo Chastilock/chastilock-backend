@@ -38,9 +38,7 @@ app.set('views', './web');
 app.set('view engine', 'pug');
 
 app.use('/lock/:lockid', async function(req, res) {
-  
   const LockID = req.params.lockid
-  
   const LockSearch = await CreatedLock.findOne({
     where: {
       Shared_Code: LockID,
@@ -60,10 +58,6 @@ app.use('/lock/:lockid', async function(req, res) {
   } else {
     res.end("Lock not found!", 404)
   }
-  
-  
-  
-  //res.send(`LockID is ${LockID}`);
   
 })
 
