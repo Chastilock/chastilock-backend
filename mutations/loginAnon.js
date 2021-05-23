@@ -13,12 +13,12 @@ async function loginAnon({ UUID }, models, req) {
     }
   });
 
-  //Validation
-  if(await CheckUserPasswordEnabled(UUID)) {
-    throw new ForbiddenError("You are not permitted to login with UUID");
-  }
-
   if(UserSearch) {
+
+    if(await CheckUserPasswordEnabled(UUID)) {
+      throw new ForbiddenError("You are not permitted to login with UUID");
+    }
+    
     const newSession = await models.Session.create({
       User_ID: UserSearch.User_ID,
       Token: generateJWT(UUID),
