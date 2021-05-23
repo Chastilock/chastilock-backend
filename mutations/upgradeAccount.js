@@ -53,8 +53,6 @@ if(await CheckUserPasswordEnabled(authenticatedUser.UUID) === true) {
   throw new ApolloError("Account doesn't need to be upgraded", 400);
 }
 
-
-
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
 const Validation_Code = uuidv4();
 const DataToSet = {
