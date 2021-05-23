@@ -1,5 +1,6 @@
 const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 const Bcypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
 
 async function upgradeAccount(inputs, models, req) {
@@ -47,13 +48,17 @@ const authenticatedUser = await models.User.findOne({
 });
 
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
+const Validation_Code = uuidv4();
 const DataToSet = {
     Email: inputs.Email,
     Password: hashedPassword,
-    Username: inputs.Username
+    Username: inputs.Username,
+    Email_Validated: false,
+    Validation_Code
 }
 authenticatedUser.set(DataToSet);
 await authenticatedUser.save();
+//TODO: need to send email validation email here
 return authenticatedUser;
 
 }
