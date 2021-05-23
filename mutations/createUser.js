@@ -49,7 +49,8 @@ async function createUser(inputs, models, req) {
 
   const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
   const UUID = uuidv4();
-  const NewUser = await models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username});
+  const Validation_Code = uuidv4();
+  const NewUser = await models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username, Email_Validated: false, Validation_Code});
   await models.UserSetting.create({User_ID: NewUser.User_ID, Combo_Type: "123", Allow_Duplicate_Characters: true, Combo_Length: 4, Show_Combo_To_Keyholder: false, Share_Stats: true});
   return NewUser;
 
