@@ -1,11 +1,10 @@
-function RandomInt(min, max) {  
-    return Math.floor(
-      Math.random() * (max - min + 1) + min
-    )
+const randomNumber = require("random-number-csprng")
+async function RandomInt(min, max) {  
+    return await randomNumber(min, max);
 }
 
 function SplitNumberInto2Rand(Input) {  
-  const Num1 = RandomInt(0, Input);
+  const Num1 = await RandomInt(0, Input);
   const Num2 = Input - Num1;
 
   return {
@@ -15,9 +14,9 @@ function SplitNumberInto2Rand(Input) {
 }
 
 function SplitNumberInto3Rand(Input) {  
-  const Num1 = RandomInt(0, Input);
+  const Num1 = await RandomInt(0, Input);
   const Remaining = Input - Num1;
-  const Num2 = RandomInt(0, Remaining);
+  const Num2 = await RandomInt(0, Remaining);
   const Num3 = Input - (Num1 + Num2)
 
   return {
@@ -28,13 +27,13 @@ function SplitNumberInto3Rand(Input) {
 }
 
 function SplitNumberInto5Rand(Input) {  
-  const Num1 = RandomInt(0, Input);
+  const Num1 = await RandomInt(0, Input);
   let Remaining = Input - Num1;
-  const Num2 = RandomInt(0, Remaining);
+  const Num2 = await RandomInt(0, Remaining);
   Remaining = Input - (Num1 + Num2);
-  const Num3 = RandomInt(0, Remaining);
+  const Num3 = await RandomInt(0, Remaining);
   Remaining = Input - (Num1 + Num2 + Num3);
-  const Num4 = RandomInt(0, Remaining);
+  const Num4 = await RandomInt(0, Remaining);
   const Num5 = Input - (Num1 + Num2 + Num3 + Num4)
 
 

@@ -15,16 +15,16 @@ async function loadOriginalLockType(CreatedLock) {
         Errors.push("Cannot find lock");
     }
 
-    const Reds = RandomInt(LockDetails.Variable_Min_Reds, LockDetails.Variable_Max_Reds);
-    const Greens = RandomInt(LockDetails.Variable_Min_Greens, LockDetails.Variable_Min_Greens);
-    const Stickies = RandomInt(LockDetails.Variable_Min_Stickies, LockDetails.Variable_Max_Stickies);
-    const Resets = RandomInt(LockDetails.Variable_Min_Resets, LockDetails.Variable_Max_Resets);
-    const Doubles = RandomInt(LockDetails.Variable_Min_Doubles, LockDetails.Variable_Max_Doubles);
-    const Freezes = RandomInt(LockDetails.Variable_Min_Freezes, LockDetails.Variable_Max_Freezes);
+    const Reds = await RandomInt(LockDetails.Variable_Min_Reds, LockDetails.Variable_Max_Reds);
+    const Greens = await RandomInt(LockDetails.Variable_Min_Greens, LockDetails.Variable_Min_Greens);
+    const Stickies = await RandomInt(LockDetails.Variable_Min_Stickies, LockDetails.Variable_Max_Stickies);
+    const Resets = await RandomInt(LockDetails.Variable_Min_Resets, LockDetails.Variable_Max_Resets);
+    const Doubles = await RandomInt(LockDetails.Variable_Min_Doubles, LockDetails.Variable_Max_Doubles);
+    const Freezes = await RandomInt(LockDetails.Variable_Min_Freezes, LockDetails.Variable_Max_Freezes);
 
-    let TotalAddReds = RandomInt(LockDetails.Variable_Min_AddRed, LockDetails.Variable_Max_AddRed);
-    let TotalRemoveReds = RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
-    let TotalRandomReds = RandomInt(LockDetails.Variable_Min_RandomRed, LockDetails.Variable_Max_RandomRed);
+    let TotalAddReds = await RandomInt(LockDetails.Variable_Min_AddRed, LockDetails.Variable_Max_AddRed);
+    let TotalRemoveReds = await RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
+    let TotalRandomReds = await RandomInt(LockDetails.Variable_Min_RandomRed, LockDetails.Variable_Max_RandomRed);
 
     const RandomSplit = SplitNumberInto2Rand(TotalRandomReds);
 
@@ -54,7 +54,7 @@ async function loadOriginalLockType(CreatedLock) {
 
     if(HideCardInfo) {
       const TotalCards = Reds + Greens + Stickies + Resets + Doubles + Freezes + TotalAddReds + TotalRandomReds + TotalRemoveReds;
-      const RandomPercentage = RandomInt(0, 15);
+      const RandomPercentage = await RandomInt(0, 15);
       GoAgainCards = (RandomPercentage / 100) * TotalCards;
     }
 
