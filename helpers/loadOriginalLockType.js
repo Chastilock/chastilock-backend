@@ -26,23 +26,23 @@ async function loadOriginalLockType(CreatedLock) {
     let TotalRemoveReds = await RandomInt(LockDetails.Variable_Min_RemoveRed, LockDetails.Variable_Max_RemoveRed);
     let TotalRandomReds = await RandomInt(LockDetails.Variable_Min_RandomRed, LockDetails.Variable_Max_RandomRed);
 
-    const RandomSplit = SplitNumberInto2Rand(TotalRandomReds);
+    const RandomSplit = await SplitNumberInto2Rand(TotalRandomReds);
 
     TotalAddReds =+ RandomSplit.Num1
     TotalRemoveReds =+ RandomSplit.Num2
 
-    const AddRedSplit = SplitNumberInto3Rand(TotalAddReds);
+    const AddRedSplit = await SplitNumberInto3Rand(TotalAddReds);
 
     let Add1 = AddRedSplit.Num1
     let Add2 = AddRedSplit.Num2
     let Add3 = AddRedSplit.Num3
 
-    const RemoveRedSplit = SplitNumberInto2Rand(TotalRemoveReds);
+    const RemoveRedSplit = await SplitNumberInto2Rand(TotalRemoveReds);
 
     let Remove1 = RemoveRedSplit.Num1
     let Remove2 = RemoveRedSplit.Num2
 
-    const SplitRandom = SplitNumberInto5Rand(TotalRandomReds);
+    const SplitRandom = await SplitNumberInto5Rand(TotalRandomReds);
 
     Add1 = Add1 + SplitRandom.Num1
     Add2 = Add2 + SplitRandom.Num2

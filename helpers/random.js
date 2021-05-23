@@ -3,7 +3,7 @@ async function RandomInt(min, max) {
     return await randomNumber(min, max);
 }
 
-function SplitNumberInto2Rand(Input) {  
+async function SplitNumberInto2Rand(Input) {  
   const Num1 = await RandomInt(0, Input);
   const Num2 = Input - Num1;
 
@@ -13,7 +13,7 @@ function SplitNumberInto2Rand(Input) {
   }
 }
 
-function SplitNumberInto3Rand(Input) {  
+async function SplitNumberInto3Rand(Input) {  
   const Num1 = await RandomInt(0, Input);
   const Remaining = Input - Num1;
   const Num2 = await RandomInt(0, Remaining);
@@ -26,7 +26,7 @@ function SplitNumberInto3Rand(Input) {
   }
 }
 
-function SplitNumberInto5Rand(Input) {  
+async function SplitNumberInto5Rand(Input) {  
   const Num1 = await RandomInt(0, Input);
   let Remaining = Input - Num1;
   const Num2 = await RandomInt(0, Remaining);
