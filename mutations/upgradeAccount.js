@@ -2,6 +2,8 @@ const { AuthenticationError, UserInputError, ApolloError } = require('apollo-ser
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
+const { CheckUserPasswordEnabled } = require("../helpers/authentication");
+
 
 async function upgradeAccount(inputs, models, req) {
 
@@ -43,9 +45,15 @@ if(await CheckEmailAvailable(inputs.Email) === false) {
 
 const authenticatedUser = await models.User.findOne({
     where: {
-        "User_ID": req.Authenticated
+        "User_ID": req.Authenticated,
     }
 });
+
+if(await CheckUserPasswordEnabled(authenticatedUser.UUID) === true) {
+  throw new ApolloError("Account doesn't need to be upgraded", 400);
+}
+
+
 
 const hashedPassword = Bcypt.hashSync(inputs.Password, 10);
 const Validation_Code = uuidv4();
