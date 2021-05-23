@@ -59,8 +59,8 @@ const resolvers = {
     async loginAnon(root, args, { models, req }) {
       return LoginAnon(args, models, req);
     },
-    async login(root, args, { models }) {
-      return Login(args, models);
+    async login(root, args, { models, req }) {
+      return Login(args, models, req);
     },
     async changePassword(root, args, { models, req }) {
       return changePassword(args, models, req);
