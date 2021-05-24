@@ -12,9 +12,8 @@ const CheckApp = require('./middleware/CheckApp');
 const CheckAuth = require('./middleware/CheckAuth');
 const rateLimiter = require('./middleware/rateLimiter') 
 const bodyParser = require('body-parser');
-const { CreatedLock } = require('./models');
-const { QRAsDataURL } = require('./helpers/qr');
-const { GetUsername } = require('./helpers/user');
+const loadlock = require('./web/resolvers/loadlock');
+const activateemail = require('./web/resolvers/activateemail');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -38,27 +37,11 @@ app.set('views', './web/views');
 app.set('view engine', 'pug');
 
 app.use('/lock/:lockid', async function(req, res) {
-  const LockID = req.params.lockid
-  const LockSearch = await CreatedLock.findOne({
-    where: {
-      Shared_Code: LockID,
-      Shared: 1
-    }
-  })
+  await loadlock(req, res);
+})
 
-  if(LockSearch) {
-
-    const QR = await QRAsDataURL(LockID);
-
-    res.render("loadlock", {
-      LockName: LockSearch.Lock_Name,
-      QR,
-      Keyholder: await GetUsername(LockSearch.User_ID)
-    });
-  } else {
-    res.end("Lock not found!", 404)
-  }
-  
+app.use('/activate/:code', async function(req, res) {
+  await activateemail(req, res);
 })
 
 server.applyMiddleware({ app });
