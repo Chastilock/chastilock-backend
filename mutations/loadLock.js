@@ -153,7 +153,8 @@ async function loadLock(inputs, models, req) {
                 Emergency_Keys_Enabled: inputs.Emergency_Keys,
                 Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
                 Test_Lock: inputs.Test_Lock,
-                Unlocked: false
+                Unlocked: false,
+                Free_Unlock: false
             })
             return LoadedLock;
         }

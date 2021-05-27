@@ -630,6 +630,10 @@ module.exports = {
       Keyholder_Rating: {
         type: Sequelize.INTEGER,
         allowNull: true
+      },
+      Free_Unlock: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       },     
       createdAt: {
         allowNull: false,
