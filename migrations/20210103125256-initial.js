@@ -539,11 +539,11 @@ module.exports = {
         allowNull: false,
       },
       Started: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       EndTime: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
         allowNull: true,
       },
       createdAt: {

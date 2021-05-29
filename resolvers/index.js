@@ -10,6 +10,8 @@ const createOriginalLock = require('../mutations/createOriginalLock');
 const createTimerLock = require('../mutations/createTimerLock');
 const loadLock = require('../mutations/loadLock');
 const changeUserSettings = require('../mutations/changeUserSettings');
+const KHFreeze = require('../mutations/KHFreeze');
+
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
@@ -82,6 +84,9 @@ const resolvers = {
     },
     async changeUserSettings(root, args, { models, req }) {
       return changeUserSettings(args, models, req);
+    },
+    async KHFreeze(root, args, { models, req }) {
+      return KHFreeze(args, models, req);
     }
   },
 
