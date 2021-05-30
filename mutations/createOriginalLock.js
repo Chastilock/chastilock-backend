@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const { AuthenticationError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const srs = require('secure-random-string');
 
 async function createOriginalLock(inputs, models, req) {
