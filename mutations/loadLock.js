@@ -5,8 +5,6 @@ const { Sequelize } = require('sequelize');
 const { NewCode } = require('../helpers/code');
 
 async function loadLock(inputs, models, req) {
-    //TODO: Need to add fakes!!
-    const op = Sequelize.Op;
     
     const loadLockDisabled = await models.AppSetting.findOne({
         where: {
@@ -154,8 +152,32 @@ async function loadLock(inputs, models, req) {
                 Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
                 Test_Lock: inputs.Test_Lock,
                 Unlocked: false,
-                Free_Unlock: false
+                Free_Unlock: false,
+                Fake_Lock: false
             })
+            
+            const NumOfFakes = RandomInt(inputs.Min_Fakes, inputs.Max_Fakes);
+
+            if(NumOfFakes > 0) {
+                for(let i = 0; i < NumOfFakes; i++) {
+                    const OriginalLockType = await loadOriginalLockType(LockSearch);
+
+                    await models.LoadedLock.create({
+                        CreatedLock_ID: LockSearch.Lock_ID,
+                        Lockee: req.Authenticated,
+                        Keyholder: LockSearch.User_ID,
+                        Code: await NewCode(req.Authenticated) || inputs.Code,
+                        Original_Lock_Deck: OriginalLockType.Original_Loaded_ID,
+                        Emergency_Keys_Enabled: inputs.Emergency_Keys,
+                        Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
+                        Test_Lock: inputs.Test_Lock,
+                        Unlocked: false,
+                        Free_Unlock: false,
+                        Fake_Lock: true
+                    })
+                }
+            }
+            
             return LoadedLock;
         }
     } 
