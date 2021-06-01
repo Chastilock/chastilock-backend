@@ -634,7 +634,11 @@ module.exports = {
       Free_Unlock: {
         allowNull: false,
         type: Sequelize.BOOLEAN
-      },     
+      },
+      Fake_Lock: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

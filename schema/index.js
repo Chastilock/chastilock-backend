@@ -93,7 +93,9 @@ const typeDefs = gql`
     CurrentFreeze: Freeze,
     Unlocked: Boolean!,
     Lockee_Rating: Int,
-    Keyholder_Rating: Int
+    Keyholder_Rating: Int,
+    Free_Unlock: Boolean!,
+    Fake_Lock: Boolean!
   }
 
   type LoadedOriginalLock {
