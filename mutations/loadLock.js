@@ -166,7 +166,7 @@ async function loadLock(inputs, models, req) {
                         CreatedLock_ID: LockSearch.Lock_ID,
                         Lockee: req.Authenticated,
                         Keyholder: LockSearch.User_ID,
-                        Code: await NewCode(req.Authenticated) || inputs.Code,
+                        Code: await NewCode(req.Authenticated),
                         Original_Lock_Deck: OriginalLockType.Original_Loaded_ID,
                         Emergency_Keys_Enabled: inputs.Emergency_Keys,
                         Emergency_Keys_Amount: inputs.Emergency_Keys_Amount,
