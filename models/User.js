@@ -42,6 +42,10 @@ module.exports = (sequelize) => {
       Validation_Code: {
         type: Sequelize.STRING,
         allowNull: true
+      },
+      Emergency_Keys: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       }
 
     }, {sequelize}
