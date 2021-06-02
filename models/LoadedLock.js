@@ -64,6 +64,10 @@ module.exports = (sequelize) => {
         Fake_Lock: {
             allowNull: false,
             type: Sequelize.BOOLEAN
+        },
+        Real_Lock: {
+            allowNull: true,
+            type: Sequelize.INTEGER
         }           
     }, {sequelize});
     
@@ -72,7 +76,8 @@ module.exports = (sequelize) => {
         LoadedLock.belongsTo(models.User, {foreignKey: "Lockee"});
         LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
         LoadedLock.belongsTo(models.Freeze, {foreignKey: "Current_Freeze_ID"})
-      }; 
+        LoadedLock.belongsTo(models.LoadedLock, {foreignKey: "Real_Lock"})  
+    }; 
     
     return LoadedLock;
 }

@@ -173,7 +173,8 @@ async function loadLock(inputs, models, req) {
                         Test_Lock: inputs.Test_Lock,
                         Unlocked: false,
                         Free_Unlock: false,
-                        Fake_Lock: true
+                        Fake_Lock: true,
+                        Real_Lock: LoadedLock.LoadedLock_ID
                     })
                 }
             }

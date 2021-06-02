@@ -638,6 +638,14 @@ module.exports = {
       Fake_Lock: {
         allowNull: false,
         type: Sequelize.BOOLEAN
+      },
+      Real_Lock: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "LoadedLocks",
+          key: "LoadedLock_ID"
+        }
       },      
       createdAt: {
         allowNull: false,
