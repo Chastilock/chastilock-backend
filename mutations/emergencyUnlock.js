@@ -1,5 +1,5 @@
 const { AuthenticationError, ApolloError, ForbiddenError } = require('apollo-server-express');
-
+//TODO: Test this!!
 async function emergencyUnlock(inputs, models, req) {
     if(req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
@@ -25,41 +25,35 @@ async function emergencyUnlock(inputs, models, req) {
     if(LockSearch.Emergency_Keys_Enabled != true) {
         throw new ApolloError("Emergency keys are not allowed on this lock", 401);
     }
-    const UserKeys = await LockSearch.getLockee().Emergency_Keys;
+    const User = await LockSearch.getLockee();
+    const UserKeys = await User.Emergency_Keys;
 
     if(UserKeys > LockSearch.Emergency_Keys_Amount) {
         throw new ApolloError("You don't have enough emergency keys to unlock", 401);
     }
 
     if(LockSearch.Fake_Lock != true) {
-        //cont Unlocked = Unlock(inputs.LockID)
+        //cont RealLockUnlocked = Unlock(inputs.LockID);
         //Find any fake locks of this lock
-        const Fakes = models.LoadedLock.get({
-            where: {
-                Real_Lock: inputs.LockID
-            }
-        });
-        if (Fakes) {
-            fakes.forEach(i => {
-                //Unlock(i);
-            });
-        }
-        return Unlocked;
+        
     } else {
         const Real_Lock = LoadedLock.getRealLock();
-        //const Unlocked = Unlock(Real_Lock);
-        const Fakes = models.LoadedLock.get({
-            where: {
-                Real_Lock: inputs.LockID
-            }
-        });
-        if (Fakes) {
-            fakes.forEach(i => {
-                //Unlock(i);
-            });
-        }
-
-        return Unlocked;
+        //const RealLockUnlocked = Unlock(Real_Lock);
     }
+    const Fakes = models.LoadedLock.get({
+        where: {
+            Real_Lock: inputs.LockID
+        }
+    });
+    if (Fakes) {
+        fakes.forEach(i => {
+            //Unlock(i);
+        });
+    }
+
+    User.set({ Emergency_Keys: (UserKeys - Emergency_Keys_Amount) })
+    await User.save();
+
+    return RealLockUnlocked;
 }
 module.exports = emergencyUnlock;
