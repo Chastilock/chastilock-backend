@@ -159,6 +159,7 @@ const typeDefs = gql`
     changeUserSettings(Allow_Duplicate_Characters: Boolean!, Show_Combo_To_Keyholder: Boolean!, Share_Stats: Boolean!): UserSetting!
     # Needs testing!!
     KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
+    emergencyUnlock(Lock_ID: Int): LoadedLock!
   }`;
 
 module.exports = typeDefs
