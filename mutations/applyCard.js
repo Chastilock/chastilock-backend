@@ -52,7 +52,8 @@ async function applyCard(inputs, models, req) {
     } else if (freeze.EndTime - Date.now() > 0) { // freeze has not yet expired
       validationErrors.push("The lock is currently frozen");
     } else {
-      // expired freeze 
+      ;
+      // TODO: ??? expired freeze 
       // does code to delete an expired card freeze belong here
       // or in another mutation where the app updates to check the status of a lock
       // or in some server cron job, or...
@@ -321,8 +322,7 @@ async function applyCard(inputs, models, req) {
       break;
   }
 
-  // check limits on cards here - red and yellow maximums, red minimums
-
+  return LockSearch
 }
 
 module.exports = loadLock;
