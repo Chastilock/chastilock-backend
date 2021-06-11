@@ -46,6 +46,7 @@ const typeDefs = gql`
     Variable_Max_Freezes: Int!
     Variable_Max_Doubles: Int!
     Variable_Max_Stickies: Int!
+    Variable_Max_Resets: Int!
     Variable_Max_AddRed: Int!
     Variable_Max_RemoveRed: Int!
     Variable_Max_RandomRed: Int!
@@ -54,6 +55,7 @@ const typeDefs = gql`
     Variable_Min_Freezes: Int!
     Variable_Min_Doubles: Int!
     Variable_Min_Stickies: Int!
+    Variable_Min_Resets: Int!
     Variable_Min_AddRed: Int!
     Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
@@ -91,6 +93,7 @@ const typeDefs = gql`
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
     CurrentFreeze: Freeze,
+    Chances: Int!,
     Unlocked: Boolean!,
     Lockee_Rating: Int,
     Keyholder_Rating: Int,
@@ -132,6 +135,21 @@ const typeDefs = gql`
     Share_Stats: Boolean!
   }
 
+  enum CardType {
+    GREEN
+    RED
+    STICKY
+    YELLOW_PLUS1
+    YELLOW_PLUS2
+    YELLOW_PLUS3
+    YELLOW_MINUS1
+    YELLOW_MINUS2
+    FREEZE
+    DOUBLE
+    RESET
+    GO_AGAIN
+  }
+
   type Query {
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
@@ -160,6 +178,7 @@ const typeDefs = gql`
     # Needs testing!!
     KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
+    applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
   }`;
 
 module.exports = typeDefs
