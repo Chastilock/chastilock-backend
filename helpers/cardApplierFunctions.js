@@ -5,6 +5,7 @@ import { CardType } from 'graphql'
 
 // ? this is probably be available already somewhere else ?
 // but if so, I couldn't find it
+//TODO: Work out where this should be stored
 MAX_CARDS = {
   GREEN = 100, /* Same as CK */
   RED = 599, /* Same as CK */
@@ -33,35 +34,36 @@ async function applyCard(card, lock) {
   let deck_ID = lock.Original_Lock_Deck;
   const deck = await models.LoadedOriginalLock.findByPK(deck_ID)
   if (deck === null) { // shouldn't be unless there's a DB issue
+    //TODO: Work out what to do in this case. I think the lock should be unlocked
     validationErrors.push("DB Error - There is no deck linked to the lock???")
     throw new UserInputError("Cannot apply card", {
       invalidArgs: validationErrors
     });
   }
   if (card === CardType.GREEN) {
-    applyGreen(deck, lock);
+    applyGreenCard(deck, lock);
   } else if (card === CardType.RED) {
-    applyRed(deck, lock);
+    applyRedCard(deck, lock);
   } else if (card === CardType.STICKY) {
-    applySticky(deck, lock);
+    applyStickyCard(deck, lock);
   } else if (card === CardType.YELLOW_PLUS1) {
-    applyYellowPlus1(deck, lock);
+    applyYellowPlus1Card(deck, lock);
   } else if (card === CardType.YELLOW_PLUS2) {
-    applyYellowPlus2(deck, lock);
+    applyYellowPlus2Card(deck, lock);
   } else if (card === CardType.YELLOW_PLUS3) {
-    applyYellowPlus3(deck, lock);
+    applyYellowPlus3Card(deck, lock);
   } else if (card === CardType.YELLOW_MINUS1) {
-    applyYellowMinus1(deck, lock);
+    applyYellowMinus1Card(deck, lock);
   } else if (card === CardType.YELLOW_MINUS2) {
-    applyYellowMinus2(deck, lock);
+    applyYellowMinus2Card(deck, lock);
   } else if (card === CardType.FREEZE) {
-    applyFreeze(deck, lock);
+    applyFreezeCard(deck, lock);
   } else if (card === CardType.DOUBLE) {
-    applyDouble(deck, lock);
+    applyDoubleCard(deck, lock);
   } else if (card === CardType.RESET) {
-    applyReset(deck, lock);
+    applyResetCard(deck, lock);
   } else if (card === CardType.GO_AGAIN) {
-    applyGoAgain(deck, lock);
+    applyGoAgainCard(deck, lock);
   } else {
     validationErrors.push("Invalid type of card")
     throw new UserInputError("Cannot apply card", {
