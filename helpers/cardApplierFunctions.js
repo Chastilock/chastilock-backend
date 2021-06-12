@@ -1,24 +1,12 @@
 const { UserInputError } = require("apollo-server-errors");
 const { LoadedOriginalLock, LoadedLock, CreatedLock } = require("../models");
 const loadOriginalLockType = require('./loadOriginalLockType');
+const MAX_CARDS = require('./max_cards')
 import { CardType } from 'graphql'
 
-// ? this is probably be available already somewhere else ?
-// but if so, I couldn't find it
+
 //TODO: Work out where this should be stored
-MAX_CARDS = {
-  GREEN = 100, /* Same as CK */
-  RED = 599, /* Same as CK */
-  STICKY = 100, /* Same as CK */
-  YELLOW_PLUS1 = 299, /* Same as CK */
-  YELLOW_PLUS2 = 299, /* Same as CK */
-  YELLOW_PLUS3 = 299, /* Same as CK */
-  YELLOW_MINUS1 = 299, /* Same as CK */
-  YELLOW_MINUS2 = 299, /* Same as CK */
-  FREEZE = 100, /* Same as CK */
-  DOUBLE = 100, /* Same as CK */
-  RESET = 100 /* Same as CK */
-}
+const MAX_CARDS = require('./max_cards') // for now
 
 /**
  * Applies a drawn card to the lock.  Both the lock and the associated deck 
