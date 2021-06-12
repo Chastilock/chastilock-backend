@@ -18,8 +18,11 @@
     "apollo-server-express": "^2.24.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "bree": "^6.2.0",
+    "chastilock-cardgame": "https://github.com/Chastilock/chastilock-cardgame/archive/v1.1.1.tar.gz",
     "dotenv": "^10.0.0",
     "express-rate-limit": "^5.2.6",
+    "graceful": "^1.0.2",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
@@ -30,8 +33,7 @@
     "save-dev": "0.0.1-security",
     "secure-random-string": "^1.1.3",
     "sequelize": "^6.6.2",
-    "uuid": "^8.3.2",
-    "chastilock-cardgame": "https://github.com/Chastilock/chastilock-cardgame/archive/v1.1.1.tar.gz"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "chai": "^4.3.4",

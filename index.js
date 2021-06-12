@@ -2,6 +2,7 @@ require('dotenv').config();
 const port = process.env.PORT || 4000;
 
 const express = require('express');
+const Graceful = require('graceful');
 //These are our DB models. They are exposed from models/index.js
 const models = require('./models');
  
