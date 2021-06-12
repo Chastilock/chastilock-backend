@@ -4,11 +4,6 @@ const MAX_CARDS = require('../helpers/max_cards')
 
 async function createOriginalLock(inputs, models, req) {
 
-	// B4COMMIT : remove this
-	req.Authenticated = 1;
-	console.log(MAX_CARDS)
-    console.log(MAX_CARDS.GREEN)
-
     const CreateLockEnabled = await models.AppSetting.findOne({
         where: {
             Setting_Name: "Allow_CreateLock",
@@ -18,8 +13,6 @@ async function createOriginalLock(inputs, models, req) {
     if ( !CreateLockEnabled) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
-
-
 
     const validationErrors = [];
 
