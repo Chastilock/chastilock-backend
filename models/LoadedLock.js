@@ -29,6 +29,14 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        Timed_Unlock_Time: {
+            type: Sequelize.DATE,
+            allowNull: true,      
+        },    
+        Hide_Info: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
         Emergency_Keys_Enabled: {
             type: Sequelize.BOOLEAN,
             allowNull: false
@@ -40,6 +48,26 @@ module.exports = (sequelize) => {
         Test_Lock: {
             type: Sequelize.BOOLEAN,
             allowNull: false
+        },
+        Cumulative: {
+            type: Sequelize.BOOLEAN,
+            allowNull: true
+        },
+        Chance_Period: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        Chances: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        Last_Pick_Time: {
+            type: Sequelize.DATE,
+            allowNull: true     
+        },            
+        Last_Chance_Time: {
+            type: Sequelize.DATE,
+            allowNull: true   
         },
         Current_Freeze_ID: {
           type: Sequelize.INTEGER,
@@ -65,7 +93,7 @@ module.exports = (sequelize) => {
             allowNull: false,
             type: Sequelize.BOOLEAN
         },
-        Real_Lock: {
+        Real_Lock: { //not in schema, should it be?
             allowNull: true,
             type: Sequelize.INTEGER
         }           

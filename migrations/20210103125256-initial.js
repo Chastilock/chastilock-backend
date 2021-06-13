@@ -191,6 +191,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      Variable_Max_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       Variable_Max_Stickies: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -220,6 +224,10 @@ module.exports = {
         allowNull: false,
       },
       Variable_Min_Doubles: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Variable_Min_Resets: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -456,79 +464,71 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
-    },
-    Remaining_Red: {
+      },
+      Remaining_Red: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Green: {
+      },
+      Remaining_Green: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Found_Green: {
+      },
+      Found_Green: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Sticky: {
+      },
+      Multiple_Greens_Required: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      Remaining_Sticky: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Add1: {
+      },
+      Remaining_Add1: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Add2: {
+      },
+      Remaining_Add2: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Add3: {
+      },
+      Remaining_Add3: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Remove1: {
+      },
+      Remaining_Remove1: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Remove2: {
+      },
+      Remaining_Remove2: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Freeze: {
+      },
+      Remaining_Freeze: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Double: {
+      },
+      Remaining_Double: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_Reset: {
+      },
+      Remaining_Reset: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Remaining_GoAgain: {
+      },
+      Remaining_GoAgain: {
         type: Sequelize.INTEGER,
         allowNull: true
-    },
-    Cumulative: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-    },
-    Hide_Card_Info: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-    },
-    Chance_Period: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
-    createdAt: {
+      },
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-    },
-    updatedAt: {
+      },
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-    }
+      }
     });
 
     //Freeze
@@ -560,7 +560,7 @@ module.exports = {
       }
     });
     
-    //LoadLock
+    //LoadedLock
     await queryInterface.createTable('LoadedLocks', {
       LoadedLock_ID: {
         type: Sequelize.INTEGER,
@@ -603,6 +603,14 @@ module.exports = {
           key: 'Original_Loaded_ID'
         }
       },
+      Timed_Unlock_Time: {
+        type: Sequelize.DATE,
+        allowNull: true,      
+      },
+      Hide_Info: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       Emergency_Keys_Enabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -614,6 +622,26 @@ module.exports = {
       Test_Lock: {
         type: Sequelize.BOOLEAN,
         allowNull: false
+      },
+      Cumulative: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+      },
+      Chance_Period: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Chances: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Last_Pick_Time: {
+        type: Sequelize.DATE,
+        allowNull: true,      
+      },            
+      Last_Chance_Time: {
+        type: Sequelize.DATE,
+        allowNull: true,      
       },
       Current_Freeze_ID: {
         type: Sequelize.INTEGER,
@@ -650,7 +678,7 @@ module.exports = {
           model: "LoadedLocks",
           key: "LoadedLock_ID"
         }
-      },      
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

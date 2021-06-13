@@ -22,6 +22,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        Multiple_Greens_Required: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
         Remaining_Sticky: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -61,21 +65,7 @@ module.exports = (sequelize) => {
         Remaining_GoAgain: {
             type: Sequelize.INTEGER,
             allowNull: true
-        },
-        Cumulative: {
-            type: Sequelize.BOOLEAN,
-            allowNull: false,
-        },
-        Hide_Card_Info: {
-            type: Sequelize.BOOLEAN,
-            allowNull: false
-        },
-        Chance_Period: {
-            type: Sequelize.INTEGER,
-            allowNull: false
         }
-
-                
     }, {sequelize});
     
     return LoadedOriginalLock;
