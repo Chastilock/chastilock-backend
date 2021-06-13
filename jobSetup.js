@@ -1,4 +1,5 @@
 const Bree = require('bree');
+const Graceful = require('graceful')
 
 const bree = new Bree({
     jobs: [
@@ -10,9 +11,4 @@ const bree = new Bree({
     ]
 });
 
-//const graceful = new Graceful({ brees: [bree] });
-//graceful.listen();
-
-// start all jobs (this is the equivalent of reloading a crontab):
-bree.start();
-export default bree;
+module.exports = bree;
