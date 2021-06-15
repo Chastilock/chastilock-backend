@@ -53,14 +53,18 @@ async function loadLock(inputs, models, req) {
         throw new ApolloError("Lock not found", "404");
     }
 
+    // TODO: ??? What does shared mean? - Should a user be able to load his own lock if it's not shared ???
+    //       ??? Do we need a test here for whether the User and creator of lock are the same?
     if (LockSearch.Shared === false) {
         //We don't want to give off the impression the lock exists if it's not supposted to be shared.
         throw new ApolloError("Lock not found", "404");
-    }
+    }  
+    // tested
 
     if(LockSearch.Disabled === true) {
         throw new ForbiddenError("Lock has been disabled");
     }
+    // tested
 
     const validationErrors = [];
 
@@ -69,16 +73,19 @@ async function loadLock(inputs, models, req) {
     // not sure if it checks for buffer overflows and if so, how it handles them
     // will check here and throw exception
     if (inputs.Code !== undefined) {
-        if( inputs.Code.length > 100 ) {
-            validationErrors.push("Code must be less than 100 characters");
+        if( inputs.Code.length > 12 ) {
+            validationErrors.push("Code must be less than 12 characters");
         }
     }
+    // tested
 
     if(LockSearch.Only_Accept_Trusted === true) {
         if(inputs.Trust_Keyholder === false) {
             validationErrors.push("The keyholder of this lock requires you to trust them");
         }
     }
+    //tested
+
 /*
     // inputs.Min_Fakes and inputs.Max_Fakes not required to be defined by mutation definition, so...
     // need to test for undefined also, or does this work? It works, but crashes later
@@ -123,20 +130,24 @@ async function loadLock(inputs, models, req) {
         (inputs.Min_Fakes !== undefined && inputs.Max_Fakes === undefined) ) {
             validationErrors.push("Max Fakes is required if Min Fakes is provided, and vice versa")
     } 
+    // tested
     if ( inputs.Min_Fakes !== undefined && inputs.Min_Fakes < 0) { // 0 allowed
         validationErrors.push("Minimum Fakes cannot be negative")
     } else {
         minFakes = inputs.Min_Fakes // set to requested value
     }
+    //tested
     if ( inputs.Max_Fakes !== undefined && inputs.Max_Fakes < 0) { // 0 allowed
         validationErrors.push("Maximum Fakes cannot be negative")
     } else {
         maxFakes = inputs.Max_Fakes // set to requested value
     }
+    //tested
     if ( inputs.Min_Fakes !== undefined && inputs.Max_Fakes !== undefined && 
                     inputs.Min_Fakes > inputs.Max_Fakes ) {
         validationErrors.push("Minimum fakes cannot be greater than maximum fakes")
     }
+    // tested
 
     // TODO: ??? possibly ??? - validate with number of user's pre-existing locks?
  
@@ -149,51 +160,54 @@ async function loadLock(inputs, models, req) {
             throw new Error("CreatedLock object allows fakes, but doesn't specify minimum and maximum fakes")
         }
         // LockSearch has min and max set if we got here
-        // the following could be refactored, but...
-        if (LockSearch.Min_Fakes == 0) { // fakes are allowed but not required
-            // so inputs are optional
-            // locals minFakes and maxFakes were initialized to 0 above and then set above if inputs >= 0, so 
-            // just need to check that requested maximum fakes isn't > than the lock's allowed maximum
-            if (maxFakes > LockSearch.Max_Fakes) {
-                validationErrors.push("Maximum fakes is more than lock's allowed maximum")
-            }
-        }else { // fakes are required
-            if (minFakes < LockSearch.Min_Fakes) {
-                validationErrors.push("Minimum fakes is less than lock's required minimum")
-            }
-            if (maxFakes > LockSearch.Max_Fakes) { 
-                validationErrors.push("Maximum fakes is more than lock's allowed maximum")
-            }
+        if (minFakes < LockSearch.Min_Fakes) {
+            validationErrors.push("Minimum fakes is less than lock's required minimum")
         }
+        // tested
+        if (maxFakes > LockSearch.Max_Fakes) { 
+            validationErrors.push("Maximum fakes is more than lock's allowed maximum")
+        }
+        // tested
     } else { //fakes are not allowed
         if (minFakes > 0 || maxFakes > 0) {
             validationErrors.push("The requested lock does not allow fake locks")
         }
+        // tested
     }
 
     if (inputs.Emergency_Keys === true) { // no validation needed if false
         if(LockSearch.Allow_Buyout === false) {
-            validationErrors.push("You are not allowed to enable emergency keys on this lock");
+            validationErrors.push("The keyholder does not allow emergency keys on this lock");
+            // tested
             // no need to validate inputs.Emergency_Keys_Amount
         } else { //lock allows buyout
-            // need to validate that inputs.Emergency_Keys_Amount was provided
             if (inputs.Emergency_Keys_Amount === undefined) {
                 validationErrors.push("Number of keys must be provided if emerg. keys enabled.");
+                // tested
             } else {
                 if (inputs.Emergency_Keys_Amount < 1 ) {
                     validationErrors.push ("Number of keys must be at least one if emerg. keys enabled");
+                    //tested
                 }
             }
+        }
+    } else {
+        if (inputs.Emergency_Keys_Amount != 0) { // anything other than zero or undefined
+            validationErrors.push("Number of emerg. keys specified without emerg. keys being enabled")
+            //tested
         }
     }
 
     if(LockSearch.Limit_Users === true) {
-        const UserLimit = LockSearch.User_Limit_Amount; // should be defined, but not enforced by DB/model
-                                                        // createOriginalLock.js contains code to ensure
-        const NumOfLocksLoaded = models.LoadedLock.findAll({
+        const UserLimit = LockSearch.User_Limit_Amount // should be defined, but not enforced by DB/model
+        if (UserLimit === undefined) { // should never happen, but...
+            throw new Error("CreatedLock object limits users, but doesn't specify limit")
+        }
+        const NumOfLocksLoaded = await models.LoadedLock.findAll({
             where: {
                 CreatedLock_ID: LockSearch.Lock_ID,
-                $and: {Unlocked: false}
+                Unlocked: false  // default is AND, $ syntax didn't work
+                //https://sequelize.org/master/manual/model-querying-basics.html#deprecated--operator-aliases
             }
         })
 
@@ -201,20 +215,25 @@ async function loadLock(inputs, models, req) {
             validationErrors.push("The keyholder has set a limit on how many of these locks that can be loaded and the limit has been reached.");
         }
     }
+    // tested including boundary
 
     if(LockSearch.Block_Test_Locks) {
         if(inputs.Test_Lock === true) {
             validationErrors.push("The keyholder does not allow test locks");
         }
     }
+    // tested
 
     if(LockSearch.Block_User_Rating_Enabled) {
         const MinRating = LockSearch.Block_User_Rating
-
+        if (MinRating === undefined) { // should never happen, but...
+            throw new Error("CreatedLock object blocks user based on rating, but doesn't specify min rating")
+        }
         if(await getLockeeRating(req.Authenticated) < MinRating) {
             validationErrors.push("The keyholder needs you to have a higher lockee rating before loading this lock");
         }
     }
+    // tested including boundary
 
     if(LockSearch.Block_Already_Locked) {
         const AlreadyLocked = await models.LoadedLock.findOne({
@@ -227,6 +246,7 @@ async function loadLock(inputs, models, req) {
             validationErrors.push("The keyholder does not allow you to load this alongside other locks");
         }
     }
+    // tested
 
     // TODO: ??? possibly ??? CK also prevents any lock from loading if 
     // the lockee has already has an existing lock for which Block_Already_Locked is true.
@@ -241,12 +261,14 @@ async function loadLock(inputs, models, req) {
             validationErrors.push("The keyholder requires that you share your stats");
         }
     }
+    // tested
 
     if(LockSearch.Require_DM === true) {
         if(inputs.Sent_DM != true) {
             validationErrors.push("The keyholder requires that you speak to them prior to loading this lock. Please refer to where you found the lock for more details.");
         }
     }
+    // tested
 
     if(validationErrors.length) {
         throw new UserInputError("Cannot load lock", {
@@ -259,20 +281,19 @@ async function loadLock(inputs, models, req) {
     /**
      * realLock is the LoadedLock object that is the real lock.
      * @type {LoadedLock} */
-    const realLock = createLoadedLock(LockSearch, req.Authenticated, inputs, true);
+    const realLock = await createLoadedLock(LockSearch, req.Authenticated, inputs, true);
     resultArray.push(realLock);
 
     if (minFakes > 0) { // maxFakes will be >= minFakes if exception not thrown in validation
-        const NumOfFakes = RandomInt(minFakes, maxFakes);
+        const NumOfFakes = await RandomInt(minFakes, maxFakes);
         for(let i = 0; i < NumOfFakes; i++) {
             /**
              * fakeLock is a LoadedLock object that is a fake lock.
              * @type {LoadedLock} */
-            const fakeLock = createLoadedLock(LockSearch, req.Authenticated, inputs, false, realLock.LoadedLock_ID);
+            const fakeLock = await createLoadedLock(LockSearch, req.Authenticated, inputs, false, realLock.LoadedLock_ID);
             resultArray.push(fakeLock);
         }
-    }   
-
+    } // tested   
     return resultArray
 } 
 

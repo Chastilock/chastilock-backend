@@ -45,13 +45,11 @@ async function findVariableProperties(createdLock) {
   }
   /** @type {OriginalLockType} */
   lock = await OriginalLockType.findByPk(createdLock.OriginalLockType_ID)
-  console.log(lock)
+
   /** @type {LoadedOriginalLock} */
   deck = await loadOriginalLockType(createdLock)
-  console.log(deck)
 
-  deck_ID = deck.Original_Loaded_ID  //Original_Loaded_ID
-  console.log(deck_ID)
+  deck_ID = deck.Original_Loaded_ID  //Original_Loaded_ID //Original_Loaded_ID
   params = {
     Deck_ID: deck_ID,
     Chance_Period: lock.Chance_Period,
@@ -64,7 +62,6 @@ async function findVariableProperties(createdLock) {
     Reset_Frequency: lock.Reset_Frequency, // included for future use
     Max_Resets: lock.Max_Resets // included for future use
   }
-  console.log(params)
   return params
 }
 
@@ -84,17 +81,16 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
   params = (createdLock.OriginalLockType_ID !== undefined) ? // true if variable, false if fixed
     await findVariableProperties(createdLock) :
     await findFixedProperties(createdLock)
-  console.log(params);
   const loadedLock = await LoadedLock.create({
     CreatedLock_ID: createdLock.Lock_ID,
     Lockee: User_ID,
     Keyholder: createdLock.User_ID,
-    Code: inputs.Code || await NewCode(User_ID),
+    Code: inputs.Code || await NewCode(User_ID), //tested
     Original_Lock_Deck: params.Deck_ID,
     Timed_Unlock_Time: params.Timed_Unlock_Time,
     Hide_Info: params.Hide_Info,
     Emergency_Keys_Enabled: inputs.Emergency_Keys,
-    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount, // defaults to zero if undefined in input - OK?
+    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount, 
     Test_Lock: inputs.Test_Lock,
     Cumulative: params.Cumulative,
     Chance_Period: params.Chance_Period,
@@ -102,7 +98,7 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     //Last_Pick_Time not initialized, so undefined until first pick
     Last_Chance_Time: params.Last_Chance_Time,
     // Current_Freeze_ID: not initialized, so starts as null.  TODO: Add code to support start frozen.
-    // Lockee_Rating, KeyholderRating not initialized
+    // Lockee_Rating, KeyholderRating  - left NULL at start of lock
     Unlocked: false,
     Free_Unlock: false,
     Fake_Lock: !is_real_lock,

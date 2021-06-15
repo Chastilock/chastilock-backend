@@ -32,7 +32,7 @@ async function loadOriginalLockType(CreatedLock) {
     //TotalAddReds =+ RandomSplit.Num1  // same as TotalAddReds = RandomSplit.Num1
     //TotalRemoveReds =+ RandomSplit.Num2
 
-    //const AddRedSplit = await SplitNumberInto3Rand(TotalAddReds); // skewed 50%
+    //const AddRedSplit = await SplitNumberInto3Rand(TotalAddReds); // skewed 50% to Add1
     const AddRedSplit = split(TotalAddReds, 3)
 
     let Add1 = AddRedSplit[0]
@@ -44,7 +44,7 @@ async function loadOriginalLockType(CreatedLock) {
     let Remove1 = RemoveRedSplit.Num1
     let Remove2 = RemoveRedSplit.Num2
 
-    // const SplitRandom = await SplitNumberInto5Rand(TotalRandomReds); //skewed 87.5% add, only 12.5 removes
+    // const SplitRandom = await SplitNumberInto5Rand(TotalRandomReds); //skewed 87.5% adds, only 12.5 removes
     const SplitRandom = split(TotalRandomReds, 5)
     Add1 = Add1 + SplitRandom[0]
     Add2 = Add2 + SplitRandom[1]
@@ -65,7 +65,7 @@ async function loadOriginalLockType(CreatedLock) {
         invalidArgs: Errors
       })
     }
-    
+    /** @type {LoadedOriginalLock} */
     const OriginalLockRecord = await LoadedOriginalLock.create({
       Remaining_Red: Reds,
       Remaining_Green: Greens,
