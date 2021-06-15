@@ -3,13 +3,13 @@ const srs = require('secure-random-string');
 
 async function createTimerLock(inputs, models, req) {
     
-    const CreateLockDisabled = await models.AppSetting.findOne({
+    const CreateLockEnabled = await models.AppSetting.findOne({
         where: {
             Setting_Name: "Allow_CreateLock",
             Setting_Value: "true"
         }
     });
-    if (CreateLockDisabled === null) {
+    if (!CreateLockEnabled) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
     
@@ -131,7 +131,7 @@ async function createTimerLock(inputs, models, req) {
         Shared: inputs.Shared,
         Shared_Code: srs({length: 20, alphanumeric: true}),
         TimerLockType_ID: TimerRecordID,
-        LockName: inputs.LockName,
+        Lock_Name: inputs.LockName, 
         Disabled: 0,
         Allow_Fakes: inputs.Allow_Fakes,
         Min_Fakes: inputs.Min_Fakes,
@@ -139,6 +139,7 @@ async function createTimerLock(inputs, models, req) {
         Checkins_Enabled: inputs.Checkins_Enabled,
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
+        Allow_Buyout: inputs.Allow_Buyout,
         Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
         Limit_Users: inputs.Limit_Users,
         User_Limit_Amount: inputs.User_Limit_Amount,
