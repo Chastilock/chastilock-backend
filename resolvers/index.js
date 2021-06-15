@@ -133,6 +133,9 @@ const resolvers = {
     async CreatedLock (LoadedLock) {
       return LoadedLock.getCreatedLock(); //
     },
+    async Original_Lock_Deck (LoadedLock) {
+      return LoadedLock.getLoadedOriginalLock();
+    },
     async CurrentFreeze (LoadedLock) {
       return LoadedLock.getFreeze();
     }

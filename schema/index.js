@@ -90,7 +90,7 @@ const typeDefs = gql`
     Lockee: User!
     Keyholder: User
     Code: String!
-    Original_Lock_Deck: OriginalLockType
+    Original_Lock_Deck: LoadedOriginalLock
     Timed_Unlock_Time: Int
     Hide_Info: Boolean!
     Emergency_Keys_Enabled: Boolean!
