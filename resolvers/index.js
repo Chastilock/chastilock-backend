@@ -125,16 +125,16 @@ const resolvers = {
   },
   LoadedLock: {
     async Lockee (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getLockeeUser();
     },
     async Keyholder (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getKeyholderUser();
     },
     async CreatedLock (LoadedLock) {
-      return LoadedLock.getCreatedLock();
+      return LoadedLock.getCreatedLock(); //
     },
     async CurrentFreeze (LoadedLock) {
-      return LoadedLock.getCurrentFreeze();
+      return LoadedLock.getFreeze();
     }
   },
   UserSetting: {
