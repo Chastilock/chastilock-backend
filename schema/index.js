@@ -99,8 +99,8 @@ const typeDefs = gql`
     Cumulative: Boolean,
     Chance_Period: Int,
     Chances: Int,
-    Last_Pick_Time: Int,            
-    Last_Chance_Time: Int,
+    Last_Pick_Time: String,            
+    Last_Chance_Time: String,
     CurrentFreeze: Freeze,
     Unlocked: Boolean!,
     Lockee_Rating: Int,
@@ -130,8 +130,8 @@ const typeDefs = gql`
     Freeze_ID: Int!,
     Lock: LoadedLock!,
     Type: String!,
-    Started: Int!,
-    EndTime: Int
+    Started: String!,
+    EndTime: String
   }
   type UserSetting {
     Setting_ID: Int!,
