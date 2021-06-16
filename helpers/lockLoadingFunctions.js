@@ -22,10 +22,10 @@ async function findFixedProperties(createdLock) {
 
   minTime = calculateMinutes(timed.Min_Days, timed.Min_Hours, timed.Min_Minutes)
   maxTime = calculateMinutes(timed.Max_Days, timed.Max_Hours, timed.Max_Minutes)
-  lockLength = RandomInt(minTime, maxTime)
+  lockLength = await RandomInt(minTime, maxTime) //minutes
   params = {
-    Hide_Info: timer.Hide_Timer,
-    Timed_Unlock_Time: Date.now() + lockLength * 1000 // do I need Date.now().getTime() + or something similar
+    Hide_Info: timed.Hide_Timer,
+    Timed_Unlock_Time: Date.now() + lockLength * 60000 // 60000 milliseconds per minute
   }
   return params
 }
@@ -78,7 +78,7 @@ async function findVariableProperties(createdLock) {
 * @returns {LoadedLock} - The LoadedLock object created
 */
 async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real_lock_link) {
-  params = (createdLock.OriginalLockType_ID !== undefined) ? // true if variable, false if fixed
+  params = (createdLock.OriginalLockType_ID) ? // true if variable, false if fixed
     await findVariableProperties(createdLock) :
     await findFixedProperties(createdLock)
   const loadedLock = await LoadedLock.create({

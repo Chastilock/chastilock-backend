@@ -91,7 +91,7 @@ const typeDefs = gql`
     Keyholder: User
     Code: String!
     Original_Lock_Deck: LoadedOriginalLock
-    Timed_Unlock_Time: Int
+    Timed_Unlock_Time: String
     Hide_Info: Boolean!
     Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
