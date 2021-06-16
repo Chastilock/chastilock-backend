@@ -1,8 +1,9 @@
 const { AuthenticationError, UserInputError, ForbiddenError } = require('apollo-server-express');
 const srs = require('secure-random-string');
+const { validateCommonInputs } = require('../helpers/validatelockcreation')
 
 async function createTimerLock(inputs, models, req) {
-    
+
     const CreateLockEnabled = await models.AppSetting.findOne({
         where: {
             Setting_Name: "Allow_CreateLock",
@@ -12,7 +13,7 @@ async function createTimerLock(inputs, models, req) {
     if (!CreateLockEnabled) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
-    
+
     const validationErrors = [];
 
     if(req.AppFound === false) {
@@ -21,6 +22,8 @@ async function createTimerLock(inputs, models, req) {
     if(req.Authenticated === false) {
         throw new AuthenticationError("Session is not valid");
     }
+
+    validateCommonInputs(inputs, validationErrors)
 
     const MinTimeInMinutes = (inputs.Timer_Min_Days * 1440) + (inputs.Timer_Min_Hours * 60) + (inputs.Timer_Min_Minutes);
     const MaxTimeInMinutes = (inputs.Timer_Max_Days * 1440) + (inputs.Timer_Max_Hours * 60) + (inputs.Timer_Max_Minutes);
@@ -33,79 +36,17 @@ async function createTimerLock(inputs, models, req) {
         validationErrors.push("Locks must last no longer than a year");
     }
 
+    if (MinTimeInMinutes > MaxTimeInMinutes) {
+        validationErrors.push("Minimum lock time cannot be greater than maximum lock time")
+    }
+
+    // TODO: ??? Should max and min days, hours, minutes be validated to each be positive?  ???
+    // Currently 1 day, -5 hours, -23 minutes is accepted as and validated as 0 d, 18h, 37m, but 
+    // stored as 1d, -5h, -23m
+    // It probably depends on whether or not these numbers are going to appear in the lock description
+
     if(inputs.Hide_Timer != true && inputs.Hide_Timer != false) {
         validationErrors.push("Hide timer is invalid");
-    }
-
-    if(inputs.LockName != null) {
-        if(inputs.LockName.length > 255) {
-            validationErrors.push("Name too long");
-        }
-    }
-
-    if(inputs.Checkins_Enabled != false && inputs.Checkins_Enabled != true) {
-        validationErrors.push("Checkins enabled is not valid");
-    }
-
-    if(inputs.Checkins_Enabled === true) {
-        if (inputs.Checkins_Frequency < 0.5 || inputs.Reset_Frequency > 23940) {
-            validationErrors.push("Checkins frequency is not valid");
-        }
-
-        if (inputs.Checkins_Window < 0.25 || inputs.Checkins_Window > 23880) {
-            validationErrors.push("Checkins window is not valid");
-        }
-    }
-
-    if(inputs.Allow_Buyout != false && inputs.Allow_Buyout != true) {
-        validationErrors.push("Allow buyout is not valid");
-    }
-
-    if(inputs.Start_Lock_Frozen != false && inputs.Start_Lock_Frozen != true) {
-        validationErrors.push("Start lock frozen is not valid");
-    }
-    if(inputs.Disable_Keyholder_Decision != false && inputs.Disable_Keyholder_Decision != true) {
-        validationErrors.push("Disable keyholder permission is not valid");
-    }
-
-    if(inputs.Limit_Users != false && inputs.Limit_Users != true) {
-        validationErrors.push("Limit users is not valid");
-    }
-
-    if(inputs.Limit_Users === true) {
-        if(inputs.User_Limit_Amount > 100 || inputs.User_Limit_Amount < 1) {
-            validationErrors.push("Limit users amount is not valid");
-        }
-    }
-
-    if(inputs.Block_Test_Locks != false && inputs.Block_Test_Locks != true) {
-        validationErrors.push("Block test users is not valid");
-    }
-
-    if(inputs.Block_User_Rating_Enabled != false && inputs.Block_User_Rating_Enabled != true) {
-        validationErrors.push("Block user rating enabled is not valid");
-    }
-
-    if(inputs.Block_User_Rating_Enabled === true) {
-        if(inputs.Block_User_Rating > 5 || inputs.Block_User_Rating < 1) {
-            validationErrors.push("User blocked rating is not valid");
-        }
-    }
-
-    if(inputs.Block_Already_Locked != false && inputs.Block_Already_Locked != true) {
-        validationErrors.push("Block already locked users is not valid");
-    }
-
-    if(inputs.Block_Stats_Hidden != false && inputs.Block_Stats_Hidden != true) {
-        validationErrors.push("Block stat hidden users is not valid");
-    }
-
-    if(inputs.Only_Accept_Trusted != false && inputs.Only_Accept_Trusted != true) {
-        validationErrors.push("Only accept trusted users is not valid");
-    }
-
-    if(inputs.Require_DM != false && inputs.Require_DM != true) {
-        validationErrors.push("Require DM is not valid");
     }
 
     if(validationErrors.length) {
@@ -151,10 +92,6 @@ async function createTimerLock(inputs, models, req) {
         Only_Accept_Trusted: inputs.Only_Accept_Trusted,
         Require_DM: inputs.Require_DM
     });
-
-
-
-
 
 }
 module.exports = createTimerLock;
