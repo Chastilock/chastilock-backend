@@ -28,6 +28,7 @@ const typeDefs = gql`
     Checkins_Frequency:Float
     Checkins_Window:Float
     Allow_Buyout:Boolean!
+    Start_Lock_Frozen:Boolean!
     Disable_Keyholder_Decision:Boolean!
     Limit_Users:Boolean!
     User_Limit_Amount:Int
@@ -64,7 +65,6 @@ const typeDefs = gql`
     Cumulative:Boolean!
     Multiple_Greens_Required:Boolean!
     Hide_Card_Info:Boolean!
-    Start_Lock_Frozen:Boolean!
     Auto_Resets_Enabled:Boolean!
     Reset_Frequency:Int
     Max_Resets:Int
