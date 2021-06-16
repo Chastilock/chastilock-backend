@@ -78,7 +78,7 @@ async function createOriginalLock(inputs, models, req) {
     if(inputs.Variable_Max_RandomRed > MAX_CARDS.YELLOW_RANDOM_RED || inputs.Variable_Min_RandomRed < 0) {
         validationErrors.push("Invalid Yellow random card count")
     }
-    if(inputs.Variable_Min_RandomRed > inputs.Variable_Max_RemoveRed) {
+    if(inputs.Variable_Min_RandomRed > inputs.Variable_Max_RandomRed) {
         validationErrors.push("Min random red is bigger than max random red")
     }
 
@@ -141,7 +141,6 @@ async function createOriginalLock(inputs, models, req) {
         Cumulative: inputs.Cumulative,
         Multiple_Greens_Required: inputs.Multiple_Greens_Required,
         Hide_Card_Info: inputs.Hide_Card_Info,
-        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
         Auto_Resets_Enabled: inputs.Auto_Resets_Enabled,
         Reset_Frequency: inputs.Reset_Frequency,
         Max_Resets: inputs.Max_Resets,
@@ -162,6 +161,7 @@ async function createOriginalLock(inputs, models, req) {
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
         Allow_Buyout: inputs.Allow_Buyout,
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
         Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
         Limit_Users: inputs.Limit_Users,
         User_Limit_Amount: inputs.User_Limit_Amount,

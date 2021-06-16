@@ -2,7 +2,7 @@ const { NewCode } = require('./code')
 const { loadOriginalLockType } = require('./loadOriginalLockType');
 const { calculateMinutes } = require('./timeFunctions')
 const { RandomInt } = require('./random')
-const { CreatedLock, OriginalLockType, TimerLockType, LoadedLock } = require("../models");
+const { CreatedLock, OriginalLockType, TimerLockType, LoadedLock, Freeze } = require("../models");
 
 /**
  * Finds the TimerLockType object associated with a CreatedLock object and creates and returns an
@@ -95,15 +95,28 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     Cumulative: params.Cumulative,
     Chance_Period: params.Chance_Period,
     Chances: params.Chances,
-    //Last_Pick_Time not initialized, so undefined until first pick
+    //Last_Pick_Time not initialized, so NULL until first pick
     Last_Chance_Time: params.Last_Chance_Time,
-    // Current_Freeze_ID: not initialized, so starts as null.  TODO: Add code to support start frozen.
+    // Current_Freeze_ID: not initialized, so starts as NULL.  Added below
     // Lockee_Rating, KeyholderRating  - left NULL at start of lock
     Unlocked: false,
     Free_Unlock: false,
     Fake_Lock: !is_real_lock,
     Real_Lock: real_lock_link
   })
+
+  // add support for start_Lock_Frozen
+  if (createdLock.Start_Lock_Frozen === true) {
+    const freeze = await Freeze.create({
+      Lock_ID: loadedLock.LoadedLock_ID,
+      Type: "KH", // same string as used in KHFreeze mutation implementation
+      Started: Date.now()
+      //EndTime:  // end time not initialized, so NULL
+    })
+    loadedLock.Current_Freeze_ID = freeze.Freeze_ID
+    await loadedLock.save()
+  }
+
   return loadedLock;
 }
 

@@ -81,6 +81,7 @@ async function createTimerLock(inputs, models, req) {
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
         Allow_Buyout: inputs.Allow_Buyout,
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
         Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
         Limit_Users: inputs.Limit_Users,
         User_Limit_Amount: inputs.User_Limit_Amount,
