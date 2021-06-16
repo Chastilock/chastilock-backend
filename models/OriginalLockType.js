@@ -97,10 +97,6 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      Start_Lock_Frozen: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
       Auto_Resets_Enabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false

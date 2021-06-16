@@ -65,6 +65,10 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      Start_Lock_Frozen: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       Disable_Keyholder_Decision: {
         type: Sequelize.BOOLEAN,
         allowNull: false
