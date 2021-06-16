@@ -2,7 +2,6 @@ require('dotenv').config();
 const port = process.env.PORT || 4000;
 
 const express = require('express');
-const Graceful = require('graceful');
 const bree = require('./jobSetup');
 //These are our DB models. They are exposed from models/index.js
 const models = require('./models');
@@ -57,8 +56,4 @@ app.listen({ port }, () =>
   console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
 )
 
-const graceful = new Graceful({ 
-    brees: [bree]
-  });
-graceful.listen();
 bree.start();

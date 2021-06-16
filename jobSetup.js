@@ -1,5 +1,5 @@
 const Bree = require('bree');
-const Graceful = require('graceful')
+const Graceful = require('@ladjs/graceful')
 
 const bree = new Bree({
     jobs: [
@@ -10,5 +10,8 @@ const bree = new Bree({
         }
     ]
 });
+
+const graceful = new Graceful({ brees: [bree] });
+graceful.listen();
 
 module.exports = bree;
