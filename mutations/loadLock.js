@@ -2,9 +2,6 @@ const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = req
 const { getLockeeRating } = require('../helpers/ratings');
 const { RandomInt } = require('../helpers/random')
 const { createLoadedLock } = require('../helpers/lockLoadingFunctions');
-//const { Sequelize } = require('sequelize');
-//const { Lock } = require('chastilock-cardgame');
-//const { now } = require('sequelize/types/lib/utils');
 
 // TODO: ??? Possibly ??? Should there be a limit on the number of locks that a user can load?
 // I think CK app uses 20 as limit.
@@ -131,16 +128,20 @@ async function loadLock(inputs, models, req) {
             validationErrors.push("Max Fakes is required if Min Fakes is provided, and vice versa")
     } 
     // tested
-    if ( inputs.Min_Fakes !== undefined && inputs.Min_Fakes < 0) { // 0 allowed
-        validationErrors.push("Minimum Fakes cannot be negative")
-    } else {
-        minFakes = inputs.Min_Fakes // set to requested value
+    if ( inputs.Min_Fakes !== undefined) {
+        if ( inputs.Min_Fakes < 0) { // 0 allowed
+            validationErrors.push("Minimum Fakes cannot be negative")
+        } else {
+            minFakes = inputs.Min_Fakes // set to requested value
+        }
     }
     //tested
-    if ( inputs.Max_Fakes !== undefined && inputs.Max_Fakes < 0) { // 0 allowed
-        validationErrors.push("Maximum Fakes cannot be negative")
-    } else {
-        maxFakes = inputs.Max_Fakes // set to requested value
+    if ( inputs.Max_Fakes !== undefined) {
+        if (inputs.Max_Fakes < 0) { // 0 allowed
+            validationErrors.push("Maximum Fakes cannot be negative")
+        } else {
+            maxFakes = inputs.Max_Fakes // set to requested value
+        }
     }
     //tested
     if ( inputs.Min_Fakes !== undefined && inputs.Max_Fakes !== undefined && 
