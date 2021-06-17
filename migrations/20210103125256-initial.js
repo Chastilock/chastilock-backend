@@ -631,6 +631,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      Trusted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       Cumulative: {
         type: Sequelize.BOOLEAN,
         allowNull: true,

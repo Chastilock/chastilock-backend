@@ -96,6 +96,7 @@ const typeDefs = gql`
     Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
+    Trusted: Boolean!,
     Cumulative: Boolean,
     Chance_Period: Int,
     Chances: Int,
