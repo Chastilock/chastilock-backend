@@ -92,6 +92,7 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     Emergency_Keys_Enabled: inputs.Emergency_Keys,
     Emergency_Keys_Amount: inputs.Emergency_Keys_Amount, 
     Test_Lock: inputs.Test_Lock,
+    Trusted: inputs.Trust_Keyholder,
     Cumulative: params.Cumulative,
     Chance_Period: params.Chance_Period,
     Chances: params.Chances,
