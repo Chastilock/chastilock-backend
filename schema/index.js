@@ -116,7 +116,13 @@ const typeDefs = gql`
     Remaining_Double: Int!,
     Remaining_Reset: Int!,
     Cumulative: Boolean!,
-    Hide_Card_Info: Boolean!
+    Hide_Card_Info: Boolean!,
+    Chance_Period: Integer!,
+    Chances_Remaining: Integer!,
+    Chances_Last_Calulated: Integer!,
+    Auto_Resets_Paused: Boolean,
+    Auto_Resets_Frequency: Integer,
+    Last_Auto_Reset: Integer
   }
   type Freeze {
     Freeze_ID: Int!,

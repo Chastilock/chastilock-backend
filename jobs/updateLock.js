@@ -40,5 +40,5 @@ const UpdateLock = async function() {
     });
 
 }
-
+module.exports = updateLock;
 UpdateLock();
