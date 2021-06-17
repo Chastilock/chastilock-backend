@@ -188,6 +188,7 @@ const typeDefs = gql`
     KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
+    KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
   }`;
 
 module.exports = typeDefs

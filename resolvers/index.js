@@ -12,6 +12,7 @@ const loadLock = require('../mutations/loadLock');
 const changeUserSettings = require('../mutations/changeUserSettings');
 const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
+const KHUnfreeze = require('../mutations/KHUnfreeze');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -91,6 +92,9 @@ const resolvers = {
     },
     async emergencyUnlock(root, args, { models, req }) {
       return emergencyUnlock(args, models, req);
+    },
+    async KHUnfreeze(root, args, {models, req}) {
+      return KHUnfreeze(args, models, req);
     }
   },
 
