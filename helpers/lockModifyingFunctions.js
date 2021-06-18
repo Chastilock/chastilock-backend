@@ -1,6 +1,7 @@
-const { LoadedLock, Freeze } = require("../models");
+const { LoadedLock, Freeze, CreatedLock, LoadedOriginalLock, TimerLockType } = require("../models");
 const { loadOriginalLockType} = require("./loadOriginalLockType")
-
+const { calculateMinutes } = require("./timeFunctions")
+const { RandomInt } = require('./random')
 
 /**
  * This function does a hard reset, that is, it resets ALL cards based on the original distribution
@@ -32,11 +33,13 @@ async function hardResetLock(lock) {
         // create new deck
         /** @type LoadedOriginalLock */
         newDeck = await loadOriginalLockType(createdLock)
+        
         lock.Original_Lock_Deck = newDeck.Original_Loaded_ID
+        await lock.save() // must save lock b4 destroying oldDeck because of constraint
 
         // delete old deck from DB
         await oldDeck.destroy()
-        await lock.save()
+
 
     } else if (lock.Timed_Unlock_Time) { 
         /** @type {TimerLockType} */
@@ -58,7 +61,7 @@ async function hardResetLock(lock) {
  */
 async function unfreezeLock(lock) {
     /** @type { Freeze } */
-    const freeze = await models.Freeze.findByPk(lock.Current_Freeze_ID)
+    const freeze = await Freeze.findByPk(lock.Current_Freeze_ID)
     if (!freeze) { // freeze supposed to exist, but not found in DB
         // TODO: ??? fix by setting LockSearch.Current_Freeze_ID = undefined and saving ???
         throw new Error("DB error: Lock is frozen, but freeze record does not exist.")

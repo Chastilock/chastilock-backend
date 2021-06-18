@@ -40,7 +40,6 @@ async function loadLock(inputs, models, req) {
         throw new AuthenticationError("Session is not valid");
     }
 
-    //Find lock that we are going to load!
     const LockSearch = await models.CreatedLock.findOne({
         where: {
             Shared_Code: inputs.ShareCode
@@ -50,9 +49,8 @@ async function loadLock(inputs, models, req) {
         throw new ApolloError("Lock not found", "404");
     }
 
-    // TODO: ??? What does shared mean? - Should a user be able to load his own lock if it's not shared ???
-    //       ??? Do we need a test here for whether the User and creator of lock are the same?
-    if (LockSearch.Shared === false) {
+    // if the lock is not shared and the loader is not the creator
+    if (LockSearch.Shared === false && req.Authenticated !== LockSearch.User_ID) {
         //We don't want to give off the impression the lock exists if it's not supposted to be shared.
         throw new ApolloError("Lock not found", "404");
     }  
@@ -65,13 +63,9 @@ async function loadLock(inputs, models, req) {
 
     const validationErrors = [];
 
-    // validate inputs.Code for length? DB type is varchar(255)
-    // I'm assuming that Apollo has protection from sql insertion attacks?
-    // not sure if it checks for buffer overflows and if so, how it handles them
-    // will check here and throw exception
     if (inputs.Code !== undefined) {
         if( inputs.Code.length > 12 ) {
-            validationErrors.push("Code must be less than 12 characters");
+            validationErrors.push("Code cannot be more than 12 characters");
         }
     }
     // tested
@@ -83,44 +77,6 @@ async function loadLock(inputs, models, req) {
     }
     //tested
 
-/*
-    // inputs.Min_Fakes and inputs.Max_Fakes not required to be defined by mutation definition, so...
-    // need to test for undefined also, or does this work? It works, but crashes later
-    // true if defined and > 0 for both
-    // false if undefined or is 0 or less for either.
-    // if lockee query requests a range of min:0 to max -20, this check isn't done.
-    // if lockee query doesn't include these field, then this is false, and the program crashes in block to create fakes
-    if(inputs.Min_Fakes > 0 || inputs.Max_Fakes > 0) {  
-
-        if(LockSearch.Allow_Fakes === false) {
-            validationErrors.push("Fakes are not allowed on this lock");
-        }
-        // ? need else here to deal with the fact that if LockSearch.Allow_Fakes is false,
-        // then LockSearch.Min_Fakes and Max_Fakes may be NULL
-        // and they could theoretically be NULL if there's a validation oversight when 
-        // creating or editting/cloning CreatedLocks
-       if(inputs.Min_Fakes > inputs.Max_Fakes) {
-        validationErrors.push("Invalid fake lock amounts");
-       }
-
-       if(inputs.Min_Fakes < LockSearch.Min_Fakes) {
-        validationErrors.push("You need more fake locks to be able to load this lock");
-       }
-
-       if(inputs.Max_Fakes > LockSearch.Max_Fakes) {
-        validationErrors.push("You need less fake locks to be able to load this lock");
-       }
-
-    }
-
-*/
-/* Currently in CK, when creating a lock, the corresponding prompt is "Allow copies with fake combinations?"
-     Choosing NO - results in "No Fake Copies"
-     Choosing YES and using a minimum of zero and a max of X results in "Fake Copies Allowed (Max. X)"
-     Choosing YES and using a non-zero minimum of Y and a max of X results in "Y-X Fake Copies Required" 
-   When loading a lock the prompt is "Create copies with fake combinations" user is limited based on lock parameters as
-    well as the number of locks already loaded.
-*/
     let minFakes = 0; // default values if not changed in validation below
     let maxFakes = 0; 
     if( (inputs.Min_Fakes === undefined && inputs.Max_Fakes !== undefined) || 
@@ -283,9 +239,8 @@ async function loadLock(inputs, models, req) {
      * realLock is the LoadedLock object that is the real lock.
      * @type {LoadedLock} */
     const realLock = await createLoadedLock(LockSearch, req.Authenticated, inputs, true);
-    resultArray.push(realLock);
 
-    if (minFakes > 0) { // maxFakes will be >= minFakes if exception not thrown in validation
+    if (minFakes > 0) { 
         const NumOfFakes = await RandomInt(minFakes, maxFakes);
         for(let i = 0; i < NumOfFakes; i++) {
             /**
@@ -294,7 +249,16 @@ async function loadLock(inputs, models, req) {
             const fakeLock = await createLoadedLock(LockSearch, req.Authenticated, inputs, false, realLock.LoadedLock_ID);
             resultArray.push(fakeLock);
         }
-    } // tested   
+    }  
+
+    // resultArray contains the fake locks, so randomly pick a spot to insert real lock in array
+    const pos = Math.floor(Math.random()* (resultArray.length + 1))
+    resultArray.splice(pos, 0, realLock)
+    // tested with and without fakes
+
+    // TODO: eventually need to change the mutation's return type so that the code and the real lock information
+    // is not returned.
+
     return resultArray
 } 
 

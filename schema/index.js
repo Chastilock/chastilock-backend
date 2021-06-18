@@ -107,7 +107,7 @@ const typeDefs = gql`
     Lockee_Rating: Int,
     Keyholder_Rating: Int,
     Free_Unlock: Boolean!,
-    Fake_Lock: Boolean!,
+    Real_Lock: Int
   }
 
   type LoadedOriginalLock {
@@ -190,6 +190,7 @@ const typeDefs = gql`
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
+    KHReset(LoadedLock_ID: Int!): LoadedLock!
   }`;
 
 module.exports = typeDefs

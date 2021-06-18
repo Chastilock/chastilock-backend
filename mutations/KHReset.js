@@ -1,5 +1,6 @@
 const { AuthenticationError, ApolloError, UserInputError } = require('apollo-server-express');
 const { hardResetLock } = require('../helpers/lockModifyingFunctions');
+const { LoadedLock } = require('../models')
 
 // TODO: If/when trust structure is changed, then the trust code below will need to be revised.
 
@@ -43,9 +44,9 @@ async function KHReset(inputs, models, req) {
             });
     }
 
-    hardResetLock(LockSearch) // also saves
+    await hardResetLock(LockSearch) // also saves
 
     return LockSearch
 }
 
-module.exports = KHUnfreeze;
+module.exports = KHReset;

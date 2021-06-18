@@ -13,6 +13,7 @@ const changeUserSettings = require('../mutations/changeUserSettings');
 const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
 const KHUnfreeze = require('../mutations/KHUnfreeze');
+const KHReset = require('../mutations/KHReset');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -95,6 +96,9 @@ const resolvers = {
     },
     async KHUnfreeze(root, args, {models, req}) {
       return KHUnfreeze(args, models, req);
+    },
+    async KHReset(root, args, {models, req}) {
+      return KHReset(args, models, req);
     }
   },
 

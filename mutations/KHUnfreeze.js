@@ -1,9 +1,8 @@
 const { AuthenticationError, ApolloError, UserInputError } = require('apollo-server-express');
 const { unfreezeLock } = require('../helpers/lockModifyingFunctions');
+const { LoadedLock } = require('../models')
 
 async function KHUnfreeze(inputs, models, req) {
-
-    req.Authenticated = 1; // mock keyholder user for testing
 
     if (req.AppFound === false) {
         throw new AuthenticationError("App does not exist");
@@ -32,7 +31,7 @@ async function KHUnfreeze(inputs, models, req) {
             invalidArgs: ["The lock was not frozen."]
         });
     }
-    unfreezeLock(LockSearch) // also saves LockSearch
+    await unfreezeLock(LockSearch) // also saves LockSearch
 
     return LockSearch
 }

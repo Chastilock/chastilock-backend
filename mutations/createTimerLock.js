@@ -25,6 +25,25 @@ async function createTimerLock(inputs, models, req) {
 
     validateCommonInputs(inputs, validationErrors)
 
+    if (inputs.Timer_Min_Days < 0) {
+        validationErrors.push("Minimum days cannot be negative.")
+    }
+    if (inputs.Timer_Min_Hours < 0) {
+        validationErrors.push("Minimum hours cannot be negative.")
+    }
+    if (inputs.Timer_Min_Minutes < 0) {
+        validationErrors.push("Minimum minutes cannot be negative.")
+    }
+    if (inputs.Timer_Max_Days < 0) {
+        validationErrors.push("Maximum days cannot be negative.")
+    }
+    if (inputs.Timer_Max_Hours < 0) {
+        validationErrors.push("Maximum hours cannot be negative.")
+    }
+    if (inputs.Timer_Max_Minutes < 0) {
+        validationErrors.push("Maximum minutes cannot be negative.")
+    }
+
     const MinTimeInMinutes = (inputs.Timer_Min_Days * 1440) + (inputs.Timer_Min_Hours * 60) + (inputs.Timer_Min_Minutes);
     const MaxTimeInMinutes = (inputs.Timer_Max_Days * 1440) + (inputs.Timer_Max_Hours * 60) + (inputs.Timer_Max_Minutes);
 
@@ -39,11 +58,6 @@ async function createTimerLock(inputs, models, req) {
     if (MinTimeInMinutes > MaxTimeInMinutes) {
         validationErrors.push("Minimum lock time cannot be greater than maximum lock time")
     }
-
-    // TODO: ??? Should max and min days, hours, minutes be validated to each be positive?  ???
-    // Currently 1 day, -5 hours, -23 minutes is accepted as and validated as 0 d, 18h, 37m, but 
-    // stored as 1d, -5h, -23m
-    // It probably depends on whether or not these numbers are going to appear in the lock description
 
     if(inputs.Hide_Timer != true && inputs.Hide_Timer != false) {
         validationErrors.push("Hide timer is invalid");

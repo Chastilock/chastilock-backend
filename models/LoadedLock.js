@@ -93,11 +93,7 @@ module.exports = (sequelize) => {
             allowNull: false,
             type: Sequelize.BOOLEAN
         },
-        Fake_Lock: {
-            allowNull: false,
-            type: Sequelize.BOOLEAN
-        },
-        Real_Lock: { //not in schema, should it be?
+        Real_Lock: { 
             allowNull: true,
             type: Sequelize.INTEGER
         }           

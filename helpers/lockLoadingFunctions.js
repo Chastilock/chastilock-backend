@@ -67,13 +67,12 @@ async function findVariableProperties(createdLock) {
 
 /**
 * Creates either a real or a fake LoadedLock for the user with User_ID based on a CreatedLock and inputs objects.
-* If creating a real lock, is_real_lock should be true, and real_lock_link omitted or undefined.
-* If creating a fake lock, is_real_lock should be fales, and real_lock_link should be the LoadedLock_ID of
+* If creating a real lock, real_lock_link should be omitted or undefined.
+* If creating a fake lock, real_lock_link should be the LoadedLock_ID of
 * the corresponding real lock.
 * @param {CreatedLock} createdLock - The CreatedLock from which to create the LoadedLock
 * @param {int} User_ID - the User_ID of the User loading the lock
 * @param {object} inputs - the input object associated with the loadLock mutation
-* @param {boolean} is_real_lock - True if created lock should be real, false if should be fake
 * @param {int?} real_lock_link - The LoadedLock_ID of the corresponding real LoadedLock or undefined 
 * @returns {LoadedLock} - The LoadedLock object created
 */
@@ -102,7 +101,6 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     // Lockee_Rating, KeyholderRating  - left NULL at start of lock
     Unlocked: false,
     Free_Unlock: false,
-    Fake_Lock: !is_real_lock,
     Real_Lock: real_lock_link
   })
 
