@@ -517,34 +517,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
     },
-    Chance_Period: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
-    Chance_Period: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
-    Chances_Remaining: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    Chances_Last_Calulated: {
-        type: Sequelize.DATE,
-        allowNull: false
-    },
-    Auto_Resets_Paused: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
-    },
-    Auto_Resets_Frequency: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-    },
-    Last_Auto_Reset: {
-        type: Sequelize.DATE,
-        allowNull: true
-    },
     createdAt: {
         allowNull: false,
         type: Sequelize.DATE
