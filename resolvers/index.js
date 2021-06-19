@@ -14,6 +14,7 @@ const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
 const KHUnfreeze = require('../mutations/KHUnfreeze');
 const KHReset = require('../mutations/KHReset');
+const applyCard = require('../mutations/applyCard')
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -99,6 +100,9 @@ const resolvers = {
     },
     async KHReset(root, args, {models, req}) {
       return KHReset(args, models, req);
+    },
+    async applyCard(root, args, {models, req}) {
+      return applyCard(args, models, req);
     }
   },
 
