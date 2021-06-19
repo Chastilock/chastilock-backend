@@ -40,7 +40,7 @@ async function emergencyUnlock(inputs, models, req) {
         const Real_Lock = LoadedLock.getRealLock();
         //const RealLockUnlocked = Unlock(Real_Lock);
     }
-    const Fakes = models.LoadedLock.get({
+    const Fakes = models.LoadedLock.findAll({
         where: {
             Real_Lock: inputs.LockID
         }
