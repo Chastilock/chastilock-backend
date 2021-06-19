@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true
       }),
+      await queryInterface.addColumn("LoadedOriginalLocks", "Auto_Resets_Time_Left", {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      }),
       await queryInterface.addColumn("LoadedOriginalLocks", "Last_Auto_Reset", {
         type: Sequelize.DATE,
         allowNull: true
@@ -37,6 +41,7 @@ module.exports = {
       await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Last_Calulated"),
       await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Paused"),
       await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Frequency"),
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Time_Left"),
       await queryInterface.removeColumn("LoadedOriginalLocks", "Last_Auto_Reset")
     ]
   }

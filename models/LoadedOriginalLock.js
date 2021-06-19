@@ -90,6 +90,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        Auto_Resets_Time_Left: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
         Last_Auto_Reset: {
             type: Sequelize.DATE,
             allowNull: true
