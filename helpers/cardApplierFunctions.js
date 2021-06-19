@@ -1,27 +1,16 @@
 const { UserInputError } = require("apollo-server-errors");
-const { LoadedOriginalLock, LoadedLock, CreatedLock } = require("../models");
-const loadOriginalLockType = require('./loadOriginalLockType');
-import { CardType } from 'graphql'
+const { LoadedOriginalLock, LoadedLock, CreatedLock, Freeze } = require("../models");
+const { loadOriginalLockType } = require('./loadOriginalLockType');
+const MAX_CARDS = require('./max_cards')
+const { CardType } = require('graphql')
 
-// ? this is probably be available already somewhere else ?
-// but if so, I couldn't find it
-//TODO: Work out where this should be stored
-MAX_CARDS = {
-  GREEN = 100, /* Same as CK */
-  RED = 599, /* Same as CK */
-  STICKY = 100, /* Same as CK */
-  YELLOW_PLUS1 = 299, /* Same as CK */
-  YELLOW_PLUS2 = 299, /* Same as CK */
-  YELLOW_PLUS3 = 299, /* Same as CK */
-  YELLOW_MINUS1 = 299, /* Same as CK */
-  YELLOW_MINUS2 = 299, /* Same as CK */
-  FREEZE = 100, /* Same as CK */
-  DOUBLE = 100, /* Same as CK */
-  RESET = 100 /* Same as CK */
-}
+
+//TODO: Freeze, Red, Sticky and Reset cards modify chances.  Need to modify code for them once
+// the chance functionality is written.  It possible we may also need to modify code for other cards if it turns out to 
+// be important to keep track of when the last draw occurred.
 
 /**
- * Applies a drawn card to the lock.  Both the lock and the associated deck 
+ * Applies a drawn card to the deck of the lock.  Both the lock and the associated deck 
  * of type LoadedOriginal Lock may be modified.
  * @param {CardType} card - The card to be applied. Must be an enumerated value of {CardType} defined 
  * defined in the GraphQL schema
@@ -30,49 +19,44 @@ MAX_CARDS = {
  * @throws {UserInputError} The card must be an enumerated value of CardType and the lock's must have a 
  * related deck record in the DB which must contain at least one card of the type card.
  */
-async function applyCard(card, lock) {
+async function applyCardToLockDeck(card, lock) {
   let deck_ID = lock.Original_Lock_Deck;
-  const deck = await models.LoadedOriginalLock.findByPK(deck_ID)
-  if (deck === null) { // shouldn't be unless there's a DB issue
+  const deck = await LoadedOriginalLock.findByPk(deck_ID)
+  if (!deck) { // shouldn't be unless there's a DB issue
     //TODO: Work out what to do in this case. I think the lock should be unlocked
-    validationErrors.push("DB Error - There is no deck linked to the lock???")
-    throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
-    });
+    throw new Error("DB Error - There is no deck linked to the lock???");
   }
-  if (card === CardType.GREEN) {
-    applyGreenCard(deck, lock);
-  } else if (card === CardType.RED) {
-    applyRedCard(deck, lock);
-  } else if (card === CardType.STICKY) {
-    applyStickyCard(deck, lock);
-  } else if (card === CardType.YELLOW_PLUS1) {
-    applyYellowPlus1Card(deck, lock);
-  } else if (card === CardType.YELLOW_PLUS2) {
-    applyYellowPlus2Card(deck, lock);
-  } else if (card === CardType.YELLOW_PLUS3) {
-    applyYellowPlus3Card(deck, lock);
-  } else if (card === CardType.YELLOW_MINUS1) {
-    applyYellowMinus1Card(deck, lock);
-  } else if (card === CardType.YELLOW_MINUS2) {
-    applyYellowMinus2Card(deck, lock);
-  } else if (card === CardType.FREEZE) {
-    applyFreezeCard(deck, lock);
-  } else if (card === CardType.DOUBLE) {
-    applyDoubleCard(deck, lock);
-  } else if (card === CardType.RESET) {
-    applyResetCard(deck, lock);
-  } else if (card === CardType.GO_AGAIN) {
-    applyGoAgainCard(deck, lock);
+  if (card === "GREEN") {
+    await applyGreenCard(deck, lock);
+  } else if (card === "RED") {
+    await applyRedCard(deck, lock);
+  } else if (card === "STICKY") {
+    await applyStickyCard(deck, lock);
+  } else if (card === "YELLOW_PLUS1") {
+    await applyYellowPlus1Card(deck, lock);
+  } else if (card === "YELLOW_PLUS2") {
+    await applyYellowPlus2Card(deck, lock);
+  } else if (card === "YELLOW_PLUS3") {
+    await applyYellowPlus3Card(deck, lock);
+  } else if (card === "YELLOW_MINUS1") {
+    await applyYellowMinus1Card(deck, lock);
+  } else if (card === "YELLOW_MINUS2") {
+    await applyYellowMinus2Card(deck, lock);
+  } else if (card === "FREEZE") {
+    await applyFreezeCard(deck, lock);
+  } else if (card === "DOUBLE") {
+    await applyDoubleCard(deck, lock);
+  } else if (card === "RESET") {
+    await applyResetCard(deck, lock);
+  } else if (card === "GO_AGAIN") {
+    await applyGoAgainCard(deck, lock);
   } else {
-    validationErrors.push("Invalid type of card")
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Invalid type of card"
     });    
   }
 }
 
-// deck should be of type models.LoadedOriginalLock, lock should be of type models.LoadedLock, 
 /**
  * Applies a red card to the current deck of a lock and then updates deck and lock in the DB.
  * @param {LoadedOriginalLock} deck 
@@ -83,13 +67,15 @@ async function applyCard(card, lock) {
 async function applyRedCard(deck, lock) {
   deck.Remaining_Red--;
   if (deck.Remaining_Red < 0) {
-    validationErrors.push("Red drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Red drawn, but not in deck"
     });
   }
   await deck.save();
+
+  // TODO: replace next line with appropriate code once chance code is written
   lock.Chances--;
+
   await lock.save();
 }
 
@@ -104,9 +90,8 @@ async function applyRedCard(deck, lock) {
 async function applyGreenCard(deck, lock) {
   deck.Remaining_Green--;
   if (deck.Remaining_Green < 0) {
-    validationErrors.push("Green drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Green drawn, but not in deck"
     });
   }
   deck.Found_Green++;
@@ -123,12 +108,14 @@ async function applyGreenCard(deck, lock) {
  */
 async function applyStickyCard(deck, lock) {
   if (deck.Remaining_Sticky < 1) {
-    validationErrors.push("Sticky drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Sticky drawn, but not in deck"
     });
   }
+
+  // TODO: replace next line with appropriate code once chance code is written
   lock.Chances--;
+
   await lock.save();
 }
 
@@ -143,9 +130,8 @@ async function applyStickyCard(deck, lock) {
 async function applyYellowPlus1Card(deck, lock) {
   deck.Remaining_Add1--;
   if (deck.Remaining_Add1 < 0) {
-    validationErrors.push("Yellow Add 1 drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Yellow Add 1 drawn, but not in deck"
     });
   }
   deck.Remaining_Red++;
@@ -166,9 +152,8 @@ async function applyYellowPlus1Card(deck, lock) {
 async function applyYellowPlus2Card(deck, lock) {
   deck.Remaining_Add2--;
   if (deck.Remaining_Add2 < 0) {
-      validationErrors.push("Yellow Add 2 drawn, but not in deck");
       throw new UserInputError("Cannot apply card", {
-        invalidArgs: validationErrors
+        invalidArgs: "Yellow Add 2 drawn, but not in deck"
       });
     }
     deck.Remaining_Red += 2;
@@ -176,7 +161,6 @@ async function applyYellowPlus2Card(deck, lock) {
       deck.Remaining_Red = MAX_CARDS.RED;
     }
     await deck.save();
-
 }
 
 /**
@@ -190,9 +174,8 @@ async function applyYellowPlus2Card(deck, lock) {
 async function applyYellowPlus3Card(deck, lock) {
   deck.Remaining_Add3--;
   if (deck.Remaining_Add3 < 0) {
-    validationErrors.push("Yellow Add 3 drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Yellow Add 3 drawn, but not in deck"
     });
   }
   deck.Remaining_Red += 3;
@@ -213,9 +196,8 @@ async function applyYellowPlus3Card(deck, lock) {
 async function applyYellowMinus1Card(deck, lock) {
   deck.Remaining_Remove1--;
   if (deck.Remaining_Remove1 < 0) {
-    validationErrors.push("Yellow Remove 1 drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Yellow Remove 1 drawn, but not in deck"
     });
   }
   deck.Remaining_Red--;
@@ -236,9 +218,8 @@ async function applyYellowMinus1Card(deck, lock) {
 async function applyYellowMinus2Card(deck, lock) {
   deck.Remaining_Remove2--;
   if (deck.Remaining_Remove2 < 0) {
-    validationErrors.push("Yellow Remove 2 drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Yellow Remove 2 drawn, but not in deck"
     });
   }
   deck.Remaining_Red -= 2;
@@ -259,9 +240,8 @@ async function applyYellowMinus2Card(deck, lock) {
 async function applyFreezeCard(deck, lock) {
   deck.Remaining_Freeze--;
   if (deck.Remaining_Freeze < 0) {
-    validationErrors.push("Freeze card drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Freeze card drawn, but not in deck"
     });
   }
   // create and add freeze
@@ -270,17 +250,21 @@ async function applyFreezeCard(deck, lock) {
   // Freeze.EndTime should probably be the same
   // ChancePeriod is validated to range of 1 - 1440, so appears to be Minutes, so multiply
   // duration by 60 to get seconds, and 1000 to get ms.
-  const freezeLength = Deck.Chance_Period * (2 + 2 * Math.random()) * 60000 // milliseconds
-  /**  */
-  const Freeze = await models.Freeze.create({
+  const freezeLength = lock.Chance_Period * (2 + 2 * Math.random()) * 60000 // milliseconds
+  /** @type { Freeze } */
+  const freeze = await Freeze.create({
+    Lock_ID: lock.LoadedLock_ID,
     Type: "Card",
     Started: Date.now(),
     EndTime:Date.now() + freezeLength
   });
   lock.set({
-    Current_Freeze_ID: Freeze.Freeze_ID
+    Current_Freeze_ID: freeze.Freeze_ID
   });
+
+  // TODO: replace next line with appropriate code once chance code is written
   lock.Chances--;
+
   await deck.save();
   await lock.save();
 }
@@ -297,9 +281,8 @@ async function applyFreezeCard(deck, lock) {
 async function applyDoubleCard(deck, lock) {
   deck.Remaining_Double--;
   if (deck.Remaining_Double < 0) {
-    validationErrors.push("Double card drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Double card drawn, but not in deck"
     });
   }
   // double Reds and Yellows and check maximums
@@ -343,34 +326,31 @@ async function applyDoubleCard(deck, lock) {
 async function applyResetCard(deck, lock) {
   deck.Remaining_Reset--;
   if (deck.Remaining_Reset < 0) {
-    validationErrors.push("Reset card drawn, but not in deck");
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Reset card drawn, but not in deck"
     });
   }
-  lock.Chances = 1;
+
+  // TODO: replace next 2 lines with appropriate code once chance code is written
+  lock.Chances = 1
+  lock.Last_Chance_Time = Date.now()
+
   // need to find and retrieve fields from OriginalLockType
-  // CreatedLock_ID is apparently referring to PK of CreatedLock, but no FK declared in model
   /**
    * crLock is the CreatedLock object from which lock was created. 
    * @type {CreatedLock} */
-  const crLock = await models.CreatedLock.findOne(LockSearch.CreatedLock_ID)
+  const crLock = await CreatedLock.findByPk(lock.CreatedLock_ID)
   if (crLock === null ) {
-    validationErrors.push("Could not find CreatedLock record");
-    throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
-    });
+    throw new Error("DB Error: Could not find CreatedLock record");
   }
   if(crLock.OriginalLockType_ID === null) {
-    validationErrors.push("DB Error: There is no OriginalLockType record linked to the lock");
-    throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
-    });
+    throw new Error("DB Error: There is no OriginalLockType record linked to the lock");
   }
   // use code in loadOriginalLockType, but it actually creates a LoadedOriginalLock
   // record in DB, so will need to delete it at end
   // TODO: refactor loadOriginalLock to expose and use helper function that does not actually 
   // create a record in the DB
+  /** @type {LoadedOriginalDeck} */
   const newDeck = await loadOriginalLockType(crLock);
   // modify greens, reds, yellow, and Found_Green counts, but nothing else
   deck.Found_Green = 0
@@ -397,13 +377,12 @@ async function applyResetCard(deck, lock) {
 */
 async function applyGoAgainCard(deck, lock) {
   deck.Remaining_GoAgain--;
-  if (dDeck.Remaining_GoAgain < 0) {
-    validationErrors.push("Go Again card drawn, but not in deck");
+  if (deck.Remaining_GoAgain < 0) {
     throw new UserInputError("Cannot apply card", {
-      invalidArgs: validationErrors
+      invalidArgs: "Go Again card drawn, but not in deck"
     });
   }
   await deck.save();
 }
 
-module.exports = { applyCard }
+module.exports = { applyCardToLockDeck }

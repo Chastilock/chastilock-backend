@@ -1,18 +1,19 @@
 const { AuthenticationError, UserInputError, ForbiddenError } = require('apollo-server-express');
 const srs = require('secure-random-string');
+const { validateCommonInputs } = require('../helpers/validatelockcreation')
 
 async function createTimerLock(inputs, models, req) {
-    
-    const CreateLockDisabled = await models.AppSetting.findOne({
+
+    const CreateLockEnabled = await models.AppSetting.findOne({
         where: {
             Setting_Name: "Allow_CreateLock",
             Setting_Value: "true"
         }
     });
-    if (CreateLockDisabled === null) {
+    if (!CreateLockEnabled) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
-    
+
     const validationErrors = [];
 
     if(req.AppFound === false) {
@@ -20,6 +21,27 @@ async function createTimerLock(inputs, models, req) {
     }
     if(req.Authenticated === false) {
         throw new AuthenticationError("Session is not valid");
+    }
+
+    validateCommonInputs(inputs, validationErrors)
+
+    if (inputs.Timer_Min_Days < 0) {
+        validationErrors.push("Minimum days cannot be negative.")
+    }
+    if (inputs.Timer_Min_Hours < 0) {
+        validationErrors.push("Minimum hours cannot be negative.")
+    }
+    if (inputs.Timer_Min_Minutes < 0) {
+        validationErrors.push("Minimum minutes cannot be negative.")
+    }
+    if (inputs.Timer_Max_Days < 0) {
+        validationErrors.push("Maximum days cannot be negative.")
+    }
+    if (inputs.Timer_Max_Hours < 0) {
+        validationErrors.push("Maximum hours cannot be negative.")
+    }
+    if (inputs.Timer_Max_Minutes < 0) {
+        validationErrors.push("Maximum minutes cannot be negative.")
     }
 
     const MinTimeInMinutes = (inputs.Timer_Min_Days * 1440) + (inputs.Timer_Min_Hours * 60) + (inputs.Timer_Min_Minutes);
@@ -33,79 +55,12 @@ async function createTimerLock(inputs, models, req) {
         validationErrors.push("Locks must last no longer than a year");
     }
 
+    if (MinTimeInMinutes > MaxTimeInMinutes) {
+        validationErrors.push("Minimum lock time cannot be greater than maximum lock time")
+    }
+
     if(inputs.Hide_Timer != true && inputs.Hide_Timer != false) {
         validationErrors.push("Hide timer is invalid");
-    }
-
-    if(inputs.LockName != null) {
-        if(inputs.LockName.length > 255) {
-            validationErrors.push("Name too long");
-        }
-    }
-
-    if(inputs.Checkins_Enabled != false && inputs.Checkins_Enabled != true) {
-        validationErrors.push("Checkins enabled is not valid");
-    }
-
-    if(inputs.Checkins_Enabled === true) {
-        if (inputs.Checkins_Frequency < 0.5 || inputs.Reset_Frequency > 23940) {
-            validationErrors.push("Checkins frequency is not valid");
-        }
-
-        if (inputs.Checkins_Window < 0.25 || inputs.Checkins_Window > 23880) {
-            validationErrors.push("Checkins window is not valid");
-        }
-    }
-
-    if(inputs.Allow_Buyout != false && inputs.Allow_Buyout != true) {
-        validationErrors.push("Allow buyout is not valid");
-    }
-
-    if(inputs.Start_Lock_Frozen != false && inputs.Start_Lock_Frozen != true) {
-        validationErrors.push("Start lock frozen is not valid");
-    }
-    if(inputs.Disable_Keyholder_Decision != false && inputs.Disable_Keyholder_Decision != true) {
-        validationErrors.push("Disable keyholder permission is not valid");
-    }
-
-    if(inputs.Limit_Users != false && inputs.Limit_Users != true) {
-        validationErrors.push("Limit users is not valid");
-    }
-
-    if(inputs.Limit_Users === true) {
-        if(inputs.User_Limit_Amount > 100 || inputs.User_Limit_Amount < 1) {
-            validationErrors.push("Limit users amount is not valid");
-        }
-    }
-
-    if(inputs.Block_Test_Locks != false && inputs.Block_Test_Locks != true) {
-        validationErrors.push("Block test users is not valid");
-    }
-
-    if(inputs.Block_User_Rating_Enabled != false && inputs.Block_User_Rating_Enabled != true) {
-        validationErrors.push("Block user rating enabled is not valid");
-    }
-
-    if(inputs.Block_User_Rating_Enabled === true) {
-        if(inputs.Block_User_Rating > 5 || inputs.Block_User_Rating < 1) {
-            validationErrors.push("User blocked rating is not valid");
-        }
-    }
-
-    if(inputs.Block_Already_Locked != false && inputs.Block_Already_Locked != true) {
-        validationErrors.push("Block already locked users is not valid");
-    }
-
-    if(inputs.Block_Stats_Hidden != false && inputs.Block_Stats_Hidden != true) {
-        validationErrors.push("Block stat hidden users is not valid");
-    }
-
-    if(inputs.Only_Accept_Trusted != false && inputs.Only_Accept_Trusted != true) {
-        validationErrors.push("Only accept trusted users is not valid");
-    }
-
-    if(inputs.Require_DM != false && inputs.Require_DM != true) {
-        validationErrors.push("Require DM is not valid");
     }
 
     if(validationErrors.length) {
@@ -131,7 +86,7 @@ async function createTimerLock(inputs, models, req) {
         Shared: inputs.Shared,
         Shared_Code: srs({length: 20, alphanumeric: true}),
         TimerLockType_ID: TimerRecordID,
-        LockName: inputs.LockName,
+        Lock_Name: inputs.LockName, 
         Disabled: 0,
         Allow_Fakes: inputs.Allow_Fakes,
         Min_Fakes: inputs.Min_Fakes,
@@ -139,6 +94,8 @@ async function createTimerLock(inputs, models, req) {
         Checkins_Enabled: inputs.Checkins_Enabled,
         Checkins_Frequency: inputs.Checkins_Frequency,
         Checkins_Window: inputs.Checkins_Window,
+        Allow_Buyout: inputs.Allow_Buyout,
+        Start_Lock_Frozen: inputs.Start_Lock_Frozen,
         Disable_Keyholder_Decision: inputs.Disable_Keyholder_Decision,
         Limit_Users: inputs.Limit_Users,
         User_Limit_Amount: inputs.User_Limit_Amount,
@@ -150,10 +107,6 @@ async function createTimerLock(inputs, models, req) {
         Only_Accept_Trusted: inputs.Only_Accept_Trusted,
         Require_DM: inputs.Require_DM
     });
-
-
-
-
 
 }
 module.exports = createTimerLock;

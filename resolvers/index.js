@@ -12,6 +12,9 @@ const loadLock = require('../mutations/loadLock');
 const changeUserSettings = require('../mutations/changeUserSettings');
 const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
+const KHUnfreeze = require('../mutations/KHUnfreeze');
+const KHReset = require('../mutations/KHReset');
+const applyCard = require('../mutations/applyCard')
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -91,6 +94,15 @@ const resolvers = {
     },
     async emergencyUnlock(root, args, { models, req }) {
       return emergencyUnlock(args, models, req);
+    },
+    async KHUnfreeze(root, args, {models, req}) {
+      return KHUnfreeze(args, models, req);
+    },
+    async KHReset(root, args, {models, req}) {
+      return KHReset(args, models, req);
+    },
+    async applyCard(root, args, {models, req}) {
+      return applyCard(args, models, req);
     }
   },
 
@@ -125,16 +137,19 @@ const resolvers = {
   },
   LoadedLock: {
     async Lockee (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getLockeeUser();
     },
     async Keyholder (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getKeyholderUser();
     },
     async CreatedLock (LoadedLock) {
-      return LoadedLock.getCreatedLock();
+      return LoadedLock.getCreatedLock(); //
+    },
+    async Original_Lock_Deck (LoadedLock) {
+      return LoadedLock.getLoadedOriginalLock();
     },
     async CurrentFreeze (LoadedLock) {
-      return LoadedLock.getCurrentFreeze();
+      return LoadedLock.getFreeze();
     }
   },
   UserSetting: {

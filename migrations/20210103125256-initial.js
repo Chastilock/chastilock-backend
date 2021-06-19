@@ -65,18 +65,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: true
       },
-      Email_Validated: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
-      },
-      Validation_Code: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      Emergency_Keys: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -259,18 +247,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      Auto_Resets_Enabled: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      Reset_Frequency: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      Max_Resets: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -380,6 +356,18 @@ module.exports = {
         allowNull: true
       },
       Max_Fakes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Auto_Resets_Enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
+      Reset_Frequency: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      Max_Resets: {
         type: Sequelize.INTEGER,
         allowNull: true
       },
@@ -543,11 +531,11 @@ module.exports = {
         allowNull: false,
       },
       Started: {
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
         allowNull: false,
       },
       EndTime: {
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
         allowNull: true,
       },
       createdAt: {
@@ -634,23 +622,7 @@ module.exports = {
       Keyholder_Rating: {
         type: Sequelize.INTEGER,
         allowNull: true
-      },
-      Free_Unlock: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      Fake_Lock: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      Real_Lock: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "LoadedLocks",
-          key: "LoadedLock_ID"
-        }
-      },      
+      },     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

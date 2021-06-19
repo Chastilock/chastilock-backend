@@ -65,6 +65,10 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      Start_Lock_Frozen: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       Disable_Keyholder_Decision: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -110,6 +114,7 @@ module.exports = (sequelize) => {
 
     CreatedLock.associate = (models) => {
       CreatedLock.belongsTo(models.User, {foreignKey: "User_ID"});
+      CreatedLock.hasMany(models.LoadedLock, {foreignKey: "CreatedLock_ID"})
       CreatedLock.hasOne(models.OriginalLockType, {foreignKey: "Original_Deck_ID"})
       CreatedLock.hasOne(models.TimerLockType, {foreignKey: "Timer_Type_ID"})
 

@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
-      },
+      }, 
       Variable_Max_Greens: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,6 +22,10 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       Variable_Max_Doubles: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      Variable_Max_Resets: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -57,6 +61,10 @@ module.exports = (sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      Variable_Min_Resets: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       Variable_Min_Stickies: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -89,10 +97,6 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      Start_Lock_Frozen: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
       Auto_Resets_Enabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -100,11 +104,11 @@ module.exports = (sequelize) => {
       Reset_Frequency: {
         type: Sequelize.INTEGER,
         allowNull: true
-      },
+      }, 
       Max_Resets: {
         type: Sequelize.INTEGER,
         allowNull: true
-      },      
+      }     
     }, {sequelize}
     );
 

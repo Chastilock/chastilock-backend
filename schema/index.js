@@ -9,6 +9,7 @@ const typeDefs = gql`
     Username: String,
     Keyholder: Boolean,
     Lockee: Boolean,
+	  Emergency_Keys: Int
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
   }
@@ -24,12 +25,13 @@ const typeDefs = gql`
     Min_Fakes:Int
     Max_Fakes:Int
     Checkins_Enabled:Boolean!
-    Checkins_Frequency:Int
-    Checkins_Window:Int
+    Checkins_Frequency:Float
+    Checkins_Window:Float
     Allow_Buyout:Boolean!
+    Start_Lock_Frozen:Boolean!
     Disable_Keyholder_Decision:Boolean!
     Limit_Users:Boolean!
-    User_Limit_Amount:Int!
+    User_Limit_Amount:Int
     Block_Test_Locks:Boolean!
     Block_User_Rating_Enabled:Boolean!
     Block_User_Rating:Int
@@ -45,8 +47,8 @@ const typeDefs = gql`
     Variable_Max_Reds: Int!
     Variable_Max_Freezes: Int!
     Variable_Max_Doubles: Int!
-    Variable_Max_Stickies: Int!
     Variable_Max_Resets: Int!
+    Variable_Max_Stickies: Int!
     Variable_Max_AddRed: Int!
     Variable_Max_RemoveRed: Int!
     Variable_Max_RandomRed: Int!
@@ -54,8 +56,8 @@ const typeDefs = gql`
     Variable_Min_Reds: Int!
     Variable_Min_Freezes: Int!
     Variable_Min_Doubles: Int!
-    Variable_Min_Stickies: Int!
     Variable_Min_Resets: Int!
+    Variable_Min_Stickies: Int!
     Variable_Min_AddRed: Int!
     Variable_Min_RemoveRed: Int!
     Variable_Min_RandomRed: Int!
@@ -63,7 +65,6 @@ const typeDefs = gql`
     Cumulative:Boolean!
     Multiple_Greens_Required:Boolean!
     Hide_Card_Info:Boolean!
-    Start_Lock_Frozen:Boolean!
     Auto_Resets_Enabled:Boolean!
     Reset_Frequency:Int
     Max_Resets:Int
@@ -89,16 +90,24 @@ const typeDefs = gql`
     Lockee: User!
     Keyholder: User
     Code: String!
+    Original_Lock_Deck: LoadedOriginalLock
+    Timed_Unlock_Time: String
+    Hide_Info: Boolean!
     Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
+    Trusted: Boolean!,
+    Cumulative: Boolean,
+    Chance_Period: Int,
+    Chances: Int,
+    Last_Pick_Time: String,            
+    Last_Chance_Time: String,
     CurrentFreeze: Freeze,
-    Chances: Int!,
     Unlocked: Boolean!,
     Lockee_Rating: Int,
     Keyholder_Rating: Int,
     Free_Unlock: Boolean!,
-    Fake_Lock: Boolean!
+    Real_Lock: Int
   }
 
   type LoadedOriginalLock {
@@ -106,6 +115,7 @@ const typeDefs = gql`
     Remaining_Red: Int!
     Remaining_Green: Int!,
     Found_Green: Int!,
+    Multiple_Greens_Required :Boolean!
     Remaining_Sticky: Int!,
     Remaining_Add1: Int!,
     Remaining_Add2: Int!,
@@ -115,15 +125,14 @@ const typeDefs = gql`
     Remaining_Freeze: Int!,
     Remaining_Double: Int!,
     Remaining_Reset: Int!,
-    Cumulative: Boolean!,
-    Hide_Card_Info: Boolean!
+    Remaining_GoAgain: Int!
   }
   type Freeze {
     Freeze_ID: Int!,
     Lock: LoadedLock!,
     Type: String!,
-    Started: Int!,
-    EndTime: Int
+    Started: String!,
+    EndTime: String
   }
   type UserSetting {
     Setting_ID: Int!,
@@ -157,6 +166,7 @@ const typeDefs = gql`
     User(id: Int!): User,
     Session(id: Int!): Session
     LoadedLock(id: Int!): LoadedLock
+    getSharedLockByShareCode(ShareCode: String!): CreatedLock!
     #Prod Queries!!
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
@@ -171,14 +181,16 @@ const typeDefs = gql`
     changePassword(OldPassword: String!, NewPassword: String!): User!
     upgradeAccount(Email: String!, Password: String!, Username: String!): User!
     logout: String!
-    createOriginalLock(LockName: String, Shared: Boolean!, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!, Chance_Period: Int!,  Cumulative: Boolean!, Multiple_Greens_Required: Boolean!, Hide_Card_Info: Boolean!, Allow_Fakes: Boolean!, Min_Fakes: Int, Max_Fakes: Int, Auto_Resets_Enabled: Boolean!, Reset_Frequency: Int, Max_Resets: Int, Checkins_Enabled: Boolean!, Checkins_Frequency: Int, Checkins_Window: Int, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Int, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
-    createTimerLock(LockName: String, Shared: Boolean!, Allow_Fakes: Boolean!, Timer_Min_Days: Int!,Timer_Min_Hours: Int!,Timer_Min_Minutes: Int!, Timer_Max_Days: Int!,Timer_Max_Hours: Int!,Timer_Max_Minutes: Int!, Hide_Timer:Boolean!, Checkins_Enabled: Boolean!, Checkins_Frequency: Int, Checkins_Window: Int, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Int, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
-    loadLock(ShareCode: String!, Code: String, Min_Fakes: Int, Max_Fakes: Int, Trust_Keyholder: Boolean!, Sent_DM: Boolean, Emergency_Keys: Boolean!, Emergency_Keys_Amount: Int, Test_Lock: Boolean!): LoadedLock!
+    createOriginalLock(LockName: String, Shared: Boolean!, Variable_Max_Greens: Int!, Variable_Max_Reds: Int!, Variable_Max_Freezes: Int!, Variable_Max_Doubles: Int!, Variable_Max_Resets: Int!, Variable_Max_Stickies: Int!, Variable_Max_AddRed: Int!, Variable_Max_RemoveRed: Int!, Variable_Max_RandomRed: Int!, Variable_Min_Greens: Int!, Variable_Min_Reds: Int!, Variable_Min_Freezes: Int!, Variable_Min_Doubles: Int!, Variable_Min_Resets: Int!, Variable_Min_Stickies: Int!, Variable_Min_AddRed: Int!, Variable_Min_RemoveRed: Int!, Variable_Min_RandomRed: Int!, Chance_Period: Int!,  Cumulative: Boolean!, Multiple_Greens_Required: Boolean!, Hide_Card_Info: Boolean!, Allow_Fakes: Boolean!, Min_Fakes: Int, Max_Fakes: Int, Auto_Resets_Enabled: Boolean!, Reset_Frequency: Int, Max_Resets: Int, Checkins_Enabled: Boolean!, Checkins_Frequency: Float, Checkins_Window: Float, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Int, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
+    createTimerLock(LockName: String, Shared: Boolean!, Allow_Fakes: Boolean!, Min_Fakes: Int, Max_Fakes: Int, Timer_Min_Days: Int!,Timer_Min_Hours: Int!,Timer_Min_Minutes: Int!, Timer_Max_Days: Int!,Timer_Max_Hours: Int!,Timer_Max_Minutes: Int!, Hide_Timer:Boolean!, Checkins_Enabled: Boolean!, Checkins_Frequency: Float, Checkins_Window: Float, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Int, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
+    loadLock(ShareCode: String!, Code: String, Min_Fakes: Int, Max_Fakes: Int, Trust_Keyholder: Boolean!, Sent_DM: Boolean, Emergency_Keys: Boolean!, Emergency_Keys_Amount: Int, Test_Lock: Boolean!): [LoadedLock!]!
     changeUserSettings(Allow_Duplicate_Characters: Boolean!, Show_Combo_To_Keyholder: Boolean!, Share_Stats: Boolean!): UserSetting!
     # Needs testing!!
     KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
+    KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
+    KHReset(LoadedLock_ID: Int!): LoadedLock!
   }`;
 
 module.exports = typeDefs
