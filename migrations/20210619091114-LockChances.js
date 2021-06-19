@@ -26,8 +26,7 @@ module.exports = {
       await queryInterface.addColumn("LoadedOriginalLocks", "Last_Auto_Reset", {
         type: Sequelize.DATE,
         allowNull: true
-      }),
-
+      })
     ]
   },
 
@@ -38,8 +37,7 @@ module.exports = {
       await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Last_Calulated"),
       await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Paused"),
       await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Frequency"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Last_Auto_Reset"),
-
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Last_Auto_Reset")
     ]
   }
 };
