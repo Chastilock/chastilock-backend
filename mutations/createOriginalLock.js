@@ -1,6 +1,6 @@
 const { AuthenticationError, ForbiddenError, UserInputError } = require('apollo-server-express');
 const srs = require('secure-random-string');
-const MAX_CARDS = require('../helpers/max_cards')
+const { MAX_CARDS } = require('../helpers/max_cards')
 const { validateCommonInputs } = require('../helpers/validatelockcreation')
 
 async function createOriginalLock(inputs, models, req) {

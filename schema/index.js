@@ -160,20 +160,6 @@ const typeDefs = gql`
   }
 
   input DeckInput {
-    GREEN: Int
-    RED: Int
-    STICKY: Int
-    YELLOW_PLUS1: Int
-    YELLOW_PLUS2: Int
-    YELLOW_PLUS3: Int
-    YELLOW_MINUS1: Int
-    YELLOW_MINUS2: Int
-    FREEZE: Int
-    DOUBLE: Int
-    RESET: Int
-  }
-
-  type Deck {
     GREEN: Int!
     RED: Int!
     STICKY: Int!
@@ -185,8 +171,22 @@ const typeDefs = gql`
     FREEZE: Int!
     DOUBLE: Int!
     RESET: Int!
-    GO_AGAIN: Int!
-    TOTAL: Int! #just to see how this works
+  }
+
+  type Deck {
+    GREEN: Int
+    RED: Int
+    STICKY: Int
+    YELLOW_PLUS1: Int
+    YELLOW_PLUS2: Int
+    YELLOW_PLUS3: Int
+    YELLOW_MINUS1: Int
+    YELLOW_MINUS2: Int
+    FREEZE: Int
+    DOUBLE: Int
+    RESET: Int
+    GO_AGAIN: Int
+    TOTAL: Int #just to see how this works
   }
 
   type Query {
@@ -221,8 +221,7 @@ const typeDefs = gql`
     KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
-    KHEditCards(LoadedLock_ID: Int!, deck: DeckInput!) : LoadedLock!
-    explore(deck: DeckInput!) : Deck!
+    KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
   }`;
 
 module.exports = typeDefs

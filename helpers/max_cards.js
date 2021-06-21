@@ -21,5 +21,20 @@ const MAX_CARDS = {
   YELLOW_REMOVE_RED: 299, /* Same as CK */
   YELLOW_RANDOM_RED: 299 /* Same as CK */
 };
+const MIN_CARDS = {
+  // for cards in a deck
+    GREEN : 1, /* Same as CK */
+    RED : 0, /* Same as CK */
+    STICKY : 0, /* Same as CK */
+    YELLOW_PLUS1 : 0, /* Same as CK */
+    YELLOW_PLUS2 : 0, /* Same as CK */
+    YELLOW_PLUS3 : 0, /* Same as CK */
+    YELLOW_MINUS1 : 0, /* Same as CK */
+    YELLOW_MINUS2 : 0, /* Same as CK */
+    FREEZE : 0, /* Same as CK */
+    DOUBLE : 0, /* Same as CK */
+    RESET : 0, /* Same as CK */
+    GO_AGAIN: 0
+}
 
-module.exports = MAX_CARDS;
+module.exports =  { MIN_CARDS, MAX_CARDS };
