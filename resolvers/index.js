@@ -15,6 +15,7 @@ const emergencyUnlock = require('../mutations/emergencyUnlock');
 const KHUnfreeze = require('../mutations/KHUnfreeze');
 const KHReset = require('../mutations/KHReset');
 const applyCard = require('../mutations/applyCard')
+const explore = require('../mutations/explore')
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -103,7 +104,11 @@ const resolvers = {
     },
     async applyCard(root, args, {models, req}) {
       return applyCard(args, models, req);
+    },
+    async explore(root, args, {models, req}) {
+      return explore(args, models, req);
     }
+
   },
 
   User: {
