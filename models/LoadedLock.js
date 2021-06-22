@@ -53,6 +53,10 @@ module.exports = (sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: false
         },
+        Last_KH_Change: {
+            type: Sequelize.DATE,
+            allowNull: true
+        },
         Cumulative: {
             type: Sequelize.BOOLEAN,
             allowNull: true
