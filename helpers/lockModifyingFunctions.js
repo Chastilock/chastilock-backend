@@ -39,8 +39,6 @@ async function hardResetLock(lock) {
 
         // delete old deck from DB
         await oldDeck.destroy()
-
-
     } else if (lock.Timed_Unlock_Time) { 
         /** @type {TimerLockType} */
         timed = await TimerLockType.findByPk(createdLock.TimerLockType_ID);

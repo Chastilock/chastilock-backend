@@ -4,9 +4,7 @@ const { LoadedLock, LoadedOriginalLock } = require('../models')
 const { CardMap } = require('../classes/cardMap')
 
 // TODO: If/when trust structure is changed, then the trust code below will need to be revised.
-// TODO: Eventually will need the ability to have hidden edits.
-// TODO: Probably will eventually need to have a lastKHEdit field for keeping track of last modification
-//       by untrusted keyholders.
+// TODO: Eventually will need the ability to have hidden edits. Parameter included for now and ignored.
 
 /*
     KHEditCards(
@@ -66,18 +64,14 @@ async function KHEditCards(inputs, models, req) {
 
 //TODO:  If/when Trusted structure is revise, modification will be needed.
 if (!LockSearch.Trusted) {
-    // in CK, untrusted KHs can only modify every half interval
+    // TODO: add Last_KH_Change to DB, models and schema, and uncomment following code after checking
+    // In CK, untrusted KHs can only modify every half interval
     // need to check units here. Date.now and lastKHmod will both be millisecs since Epoch, I think.
     // chance period is minutes, so conversion factor is 60000; so half inteval = 30000
-
-    // TODO: add lastKHModification to DB, models and schema, and uncomment following code after checking
-    // in CK, untrusted KHs can only modify every half interval
-    // need to check units here. Date.now and lastKHmod will both be millisecs since Epoch, I think.
-    // chance period is minutes, so conversion factor is 60000; so half inteval = 30000
-    /*
-    if( (Date.now() - LockSearch.lastKHModification ) < (LockSearch.Chance_Period * 30000) ){
+   if(LockSearch.Last_KH_Change &&       //KH has modified lock previously
+        (Date.now() - LockSearch.Last_KH_Change ) < (LockSearch.Chance_Period * 30000) ){
       validationErrors.push("Premature attempt by UNTRUSTED keyholder to modify lock")
-    }*/
+    }
     // deck is input values; loadedCards is the current cards
     if (loadedCards.Multiple_Greens_Required && deck.GREEN > loadedCards.Remaining_Green) {
       validationErrors.push("Untrusted keyholders cannot add green cards if multiple greens are required")
@@ -118,7 +112,9 @@ if (!LockSearch.Trusted) {
   loadedCards.Remaining_Double = deck.DOUBLE
   loadedCards.Remaining_Reset = deck.RESET 
   // ??? TODO: Possibly update GoAgain cards here ???
-  await loadedCards.save();
+  await loadedCards.save()
+  LockSearch.Last_KH_Change = Date.now()
+  await LockSearch.save()
 
   return LockSearch
 }
