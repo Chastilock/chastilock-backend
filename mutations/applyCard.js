@@ -2,6 +2,8 @@ const { AuthenticationError, ApolloError,  UserInputError } = require('apollo-se
 const { LoadedLock, Freeze } = require("../models");
 const { applyCardToLockDeck } = require('../helpers/cardApplierFunctions');
 
+//TODO: replace validation of chances (line 35) when chance structure finalized
+
 async function applyCard(inputs, models, req) {
 
   if(req.AppFound === false) {
@@ -28,9 +30,10 @@ async function applyCard(inputs, models, req) {
   // TODO: ??? To be determined - Do we need code to check for pending autoresets here ???
 
   // TODO: replace next 2 lines with appropriate code once chance code is written
-  if (lock.Chances < 1) {
-    validationErrors.push("The lockee has no chances");
-  }
+  // commented out for now, so that applying cards can be run repeatedly during testing
+  //if (lock.Chances < 1) {
+  //  validationErrors.push("The lockee has no chances");
+  //}
 
   // TODO: ?? Refactor to move the code to a helper function called ?isFrozen that will return boolean?
   // presumably the lockee wouldn't be drawing cards if frozen, but

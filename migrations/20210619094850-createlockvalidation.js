@@ -55,7 +55,8 @@ module.exports = {
       allowNull: true,
       after: "Last_Pick_Time"
     });
-    await queryInterface.removeColumn("LoadedLocks", "Fake_Lock");
+    // Causes Error when migration is run since column "Fake_Lock" isn't in the Jan 3 migration
+    // await queryInterface.removeColumn("LoadedLocks", "Fake_Lock");
 
     await queryInterface.addColumn("LoadedOriginalLocks", "Multiple_Greens_Required", {
       type: Sequelize.BOOLEAN,
