@@ -1,5 +1,6 @@
-const { AuthenticationError, ApolloError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError, UserInputError } = require('apollo-server-express');
 const { unfreezeLock } = require('../helpers/lockModifyingFunctions');
+const { LoadedLock, Freeze } = require('../models')
 
 async function KHFreeze(inputs, models, req) {
     if(req.AppFound === false) {
@@ -9,11 +10,8 @@ async function KHFreeze(inputs, models, req) {
         throw new AuthenticationError("Session is not valid");
     }
 
-    const LockSearch = await models.LoadedLock.findOne({
-        where: {
-            LoadedLock_ID: inputs.LoadedLock_ID
-        }
-    });
+    /** @type { LoadedLock } */
+    const LockSearch = await LoadedLock.findByPk(inputs.LoadedLock_ID);
 
     if(!LockSearch) {
         throw new ApolloError("Lock is not found", 404);
@@ -22,19 +20,20 @@ async function KHFreeze(inputs, models, req) {
     if(LockSearch.Keyholder != req.Authenticated) {
         throw new AuthenticationError("Access denied");
     }
+    const date = (inputs.EndTime) ? parseInt(inputs.EndTime) : undefined
 
     validationErrors = []
-    //TODO: Need to sort trusted stuff out
+
     if (!LockSearch.Trusted) {
         validationErrors.push("Untrusted keyholders cannot freeze the lock")
-    }
-    //TODO: Should probably validate EndTime if provided
-    if (inputs.EndTime) {
-        if (inputs.EndTime - Date.now() <= 0) {
-            validationErros.push("The end time of a freeze must be in the future")
+    } // tested
+
+
+    if (date) {
+        if (date - Date.now() <= 0) {
+            validationErrors.push("The end time of a freeze must be in the future")
         }
-    }
-    // not tested
+    } // tested
 
     if (validationErrors.length) {
         throw new UserInputError("Cannot freeze lock", {
@@ -48,39 +47,47 @@ async function KHFreeze(inputs, models, req) {
     //       lock that's already KH frozen.  I chose the modification of existing KH freeze option.
     //       TODO: Is this option OK?
     if (LockSearch.Current_Freeze_ID) { // lock already frozen
+        /** @type { Freeze } */
         existingFreeze = await Freeze.findByPk(LockSearch.Current_Freeze_ID)
         if (!existingFreeze) {
             throw Error ('DB Error: could not find the freeze record')
         }
         if (existingFreeze.Type == "KH") { // already existing KH freeze, change endTime if provided
-            if (inputs.EndTime) {
-                existingFreeze.EndTime = inputs.EndTime
+            if (date) { // if end date provided, change it
+                existingFreeze.EndTime = date
                 await existingFreeze.save()
                 LockSearch.Last_KH_Change = Date.now()
                 await LockSearch.save()
-                return LockSearch // no need to create freeze so return here.
-            } 
+                // tested
+            } else if (existingFreeze.EndTime) { //existing Endtime in current KH Freeze, but not in current freeze request
+                    existingFreeze.EndTime = null; // remove existing EndTime to match current Freeze request
+                    await existingFreeze.save()
+                    LockSearch.Last_KH_Change = Date.now()
+                    await LockSearch.save()
+            } // tested
+            return LockSearch // done so return here
         }
         else if (existingFreeze.Type == "Card") { //already existing Card freeze
-            unfreezeLock(LockSearch)
+            await unfreezeLock(LockSearch) // tested
         }
     }
-    // above not yet tested
+    // tested
     
+    // if got here KH froze a lock that was either unfrozen or was previously card frozen 
     // now add the requested KH freeze
-    const Freeze = await models.Freeze.create({
-        Lock_ID = LockSearch.LoadedLock_ID,
+    /** @type { Freeze } */
+    const theFreeze = await Freeze.create({
+        Lock_ID: LockSearch.LoadedLock_ID,
         Type: "KH",
         Started: Date.now(),
-        EndTime: inputs.EndTime || null
+        EndTime: date || null
     });
     
-    LockSearch.set({
-        Current_Freeze_ID: Freeze.Freeze_ID,
-        Last_KH_Change: Date.now()
-    });
+    LockSearch.Current_Freeze_ID = theFreeze.Freeze_ID
+    LockSearch.Last_KH_Change = Date.now()
     await LockSearch.save();
-    return Freeze;
+    // tested
+    return LockSearch;
 
 }
 module.exports = KHFreeze;

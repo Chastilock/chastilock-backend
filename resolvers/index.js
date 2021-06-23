@@ -156,6 +156,11 @@ const resolvers = {
       return LoadedLock.getFreeze();
     }
   },
+  Freeze: {
+    async Lock (Freeze) {
+      return Freeze.getLoadedLock();
+    }
+  },
   UserSetting: {
     async User (UserSetting) {
       return UserSetting.getUser();

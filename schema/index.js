@@ -97,7 +97,7 @@ const typeDefs = gql`
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
     Trusted: Boolean!,
-    Last_KH_Change: Int,
+    Last_KH_Change: String,
     Cumulative: Boolean,
     Chance_Period: Int,
     Chances: Int,
@@ -219,7 +219,7 @@ const typeDefs = gql`
     KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
     KHReset(LoadedLock_ID: Int!): LoadedLock!
     # Needs testing!!
-    KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
+    KHFreeze(LoadedLock_ID: Int!, EndTime: String): LoadedLock!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
