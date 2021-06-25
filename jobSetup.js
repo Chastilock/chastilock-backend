@@ -7,6 +7,16 @@ const bree = new Bree({
             name: 'handleFreeze',
             timeout: '1s',
             interval: '20s'
+        },
+        {
+            name: 'handleAutoResets',
+            timeout: '1s',
+            interval: '20s'
+        },
+        {
+            name: 'updateChancesLeft',
+            timeout: '1s',
+            interval: '20s'
         }
     ]
 });

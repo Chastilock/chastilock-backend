@@ -62,13 +62,9 @@ const handleFreeze = async function() {
             if(CurrentFreeze) {
                 ThisLock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
                 console.log(`Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
-            }   
-        
-
-        //Check if a autoreset should have happened and action it if it should have
-
-        //Update chances left
-
+            }
+            
+            await ThisLock.save()
     };
 
 }
