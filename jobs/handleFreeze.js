@@ -1,6 +1,7 @@
 const { LoadedLock, Freeze } = require("../models");
+const { Op } = require("sequelize")
 
-const UpdateLock = async function() {
+const handleFreeze = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
     const CurrentlyRunningLocks = await LoadedLock.findAll({
         where: {
@@ -8,7 +9,7 @@ const UpdateLock = async function() {
         }
     });
     //Loop through the locks
-    CurrentlyRunningLocks.forEach(Lock => {
+    for(const Lock of CurrentlyRunningLocks) {
         console.log(`Updating LoadedLock: ${Lock.LoadedLock_ID}`);
 
         const ThisLock = await LoadedLock.findOne({
@@ -39,17 +40,37 @@ const UpdateLock = async function() {
                     ThisLock.set({Current_Freeze_ID: null})
                 }
             }
-        } else {
-            console.log(`Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
-               
         }
+            console.log(`Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
+            //TESTED THIS AND IT WORKS!!
+            const CurrentFreeze = await Freeze.findOne({
+                where: {
+                    [Op.and]: [
+                        {
+                            Started: {
+                                [Op.lt]: CurrentDateAndTime
+                            }
+                        },
+                        {
+                            EndTime: {
+                                [Op.gt]: CurrentDateAndTime
+                            }
+                        }
+                    ]
+                }
+            });
+            if(CurrentFreeze) {
+                ThisLock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
+                console.log(`Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
+            }   
+        
 
         //Check if a autoreset should have happened and action it if it should have
 
         //Update chances left
 
-    });
+    };
 
 }
-module.exports = updateLock;
-UpdateLock();
+module.exports = handleFreeze;
+handleFreeze();

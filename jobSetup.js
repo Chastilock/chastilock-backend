@@ -4,9 +4,9 @@ const Graceful = require('@ladjs/graceful')
 const bree = new Bree({
     jobs: [
         {
-            name: 'updateLock',
+            name: 'handleFreeze',
             timeout: '1s',
-            interval: '1m'
+            interval: '20s'
         }
     ]
 });
