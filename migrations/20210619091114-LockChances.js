@@ -26,6 +26,7 @@ module.exports = {
       await queryInterface.addColumn("LoadedOriginalLocks", "Auto_Resets_Frequency", {
         type: Sequelize.INTEGER,
         allowNull: true,
+        comment: "Frequency in minutes",
         after: "Auto_Resets_Paused"
       }),
       await queryInterface.addColumn("LoadedOriginalLocks", "Auto_Resets_Time_Left", {

@@ -88,7 +88,8 @@ async function loadOriginalLockType(CreatedLock) {
       Cumulative: LockDetails.Cumulative,
       Hide_Card_Info: HideCardInfo,
       Chance_Period: LockDetails.Chance_Period,
-      Last_Auto_Reset: LastAutoReset
+      Last_Auto_Reset: LastAutoReset,
+      Auto_Resets_Frequency: LockDetails.Reset_Frequency,
     })
 
     return OriginalLockRecord;
