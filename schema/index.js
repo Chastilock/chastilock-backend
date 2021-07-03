@@ -171,6 +171,7 @@ const typeDefs = gql`
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
     sharedLock(id: String!): CreatedLock!
+me: User!
   }
 
   type Mutation {
