@@ -20,6 +20,7 @@ const applyCard = require('../mutations/applyCard')
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
 const sharedLock = require('../queries/sharedLock');
+const me = require('../queries/me');
 
 const resolvers = {
   Query: {     
@@ -51,6 +52,9 @@ const resolvers = {
     },
     async sharedLock(root, args, {models, req}) {
       return sharedLock(models, req, args);
+    },
+    async me(root, args, {models, req}) {
+      return me(models, req);
     }
 
   },
