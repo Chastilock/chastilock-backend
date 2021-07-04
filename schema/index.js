@@ -5,9 +5,9 @@ const typeDefs = gql`
     User_ID: ID!
     UUID: String!
     Email: String
-    Username: String,
-    Keyholder: Boolean,
-    Lockee: Boolean,
+    Username: String
+    Keyholder: Boolean
+    Lockee: Boolean
 	  Emergency_Keys: Int
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
@@ -40,8 +40,8 @@ const typeDefs = gql`
     Require_DM:Boolean!
   }
   type OriginalLockType {
-    Original_Deck_ID: ID!,
-    Lock: CreatedLock!,
+    Original_Deck_ID: ID!
+    Lock: CreatedLock!
     Variable_Max_Greens: Int!
     Variable_Max_Reds: Int!
     Variable_Max_Freezes: Int!
@@ -96,61 +96,61 @@ const typeDefs = gql`
     Hide_Info: Boolean!
     Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
-    Test_Lock: Boolean!,
-    Trusted: Boolean!,
-    Last_KH_Change: String,
-    Cumulative: Boolean,
-    Chance_Period: Int,
-    Chances: Int,
-    Last_Pick_Time: String,            
-    Last_Chance_Time: String,
-    CurrentFreeze: Freeze,
-    Unlocked: Boolean!,
-    Lockee_Rating: Int,
-    Keyholder_Rating: Int,
-    Free_Unlock: Boolean!,
+    Test_Lock: Boolean!
+    Trusted: Boolean!
+    Last_KH_Change: String
+    Cumulative: Boolean
+    Chance_Period: Int
+    Chances: Int
+    Last_Pick_Time: String            
+    Last_Chance_Time: String
+    CurrentFreeze: Freeze
+    Unlocked: Boolean!
+    Lockee_Rating: Int
+    Keyholder_Rating: Int
+    Free_Unlock: Boolean!
     Real_Lock: Int
   }
 
   type LoadedOriginalLock {
-    Original_Loaded_ID: Int!,
+    Original_Loaded_ID: Int!
     Remaining_Red: Int!
-    Remaining_Green: Int!,
-    Found_Green: Int!,
+    Remaining_Green: Int!
+    Found_Green: Int!
     Multiple_Greens_Required :Boolean!
-    Remaining_Sticky: Int!,
-    Remaining_Add1: Int!,
-    Remaining_Add2: Int!,
-    Remaining_Add3: Int!,
-    Remaining_Remove1: Int!,
-    Remaining_Remove2: Int!,
-    Remaining_Freeze: Int!,
-    Remaining_Double: Int!,
-    Remaining_Reset: Int!,
-    Cumulative: Boolean!,
-    Hide_Card_Info: Boolean!,
-    Chance_Period: Int!,
-    Chances_Remaining: Int!,
-    Chances_Last_Calulated: Int!,
-    Auto_Resets_Paused: Boolean,
-    Auto_Resets_Frequency: Int,
+    Remaining_Sticky: Int!
+    Remaining_Add1: Int!
+    Remaining_Add2: Int!
+    Remaining_Add3: Int!
+    Remaining_Remove1: Int!
+    Remaining_Remove2: Int!
+    Remaining_Freeze: Int!
+    Remaining_Double: Int!
+    Remaining_Reset: Int!
+    Cumulative: Boolean!
+    Hide_Card_Info: Boolean!
+    Chance_Period: Int!
+    Chances_Remaining: Int!
+    Chances_Last_Calulated: Int!
+    Auto_Resets_Paused: Boolean
+    Auto_Resets_Frequency: Int
     Last_Auto_Reset: Int
     Remaining_GoAgain: Int!
   }
   type Freeze {
-    Freeze_ID: Int!,
-    Lock: LoadedLock!,
-    Type: String!,
-    Started: String!,
+    Freeze_ID: Int!
+    Lock: LoadedLock!
+    Type: String!
+    Started: String!
     EndTime: String
   }
   type UserSetting {
-    Setting_ID: Int!,
-    User: User!,
-    Combo_Type: String!,
-    Allow_Duplicate_Characters: Boolean!,
-    Combo_Length: Int!,
-    Show_Combo_To_Keyholder: Boolean!,
+    Setting_ID: Int!
+    User: User!
+    Combo_Type: String!
+    Allow_Duplicate_Characters: Boolean!
+    Combo_Length: Int!
+    Show_Combo_To_Keyholder: Boolean!
     Share_Stats: Boolean!
   }
 
@@ -203,7 +203,7 @@ const typeDefs = gql`
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
     createdLock(id: Int!): CreatedLock
-    User(id: Int!): User,
+    User(id: Int!): User
     Session(id: Int!): Session
     LoadedLock(id: Int!): LoadedLock
     getSharedLockByShareCode(ShareCode: String!): CreatedLock!
