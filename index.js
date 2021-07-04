@@ -2,6 +2,7 @@ require('dotenv').config();
 const port = process.env.PORT || 4000;
 
 const express = require('express');
+const bree = require('./jobSetup');
 //These are our DB models. They are exposed from models/index.js
 const models = require('./models');
  
@@ -54,3 +55,5 @@ app.use((req, res) => {
 app.listen({ port }, () =>
   console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
 )
+
+bree.start();

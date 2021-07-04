@@ -505,10 +505,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
     },
-    Chance_Period: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
     createdAt: {
         allowNull: false,
         type: Sequelize.DATE

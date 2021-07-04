@@ -9,6 +9,13 @@ async function loadOriginalLockType(CreatedLock) {
     const OriginalLockID = CreatedLock.OriginalLockType_ID;
     const LockDetails = await OriginalLockType.findByPk(OriginalLockID);
 
+    let LastAutoReset
+    if(LockDetails.Auto_Resets_Enabled === true) {
+      LastAutoReset = new Date();
+    } else {
+      LastAutoReset = null;
+    }
+
     const HideCardInfo = LockDetails.Hide_Card_Info;
 
     if(!LockDetails) {
@@ -81,6 +88,8 @@ async function loadOriginalLockType(CreatedLock) {
       Remaining_Double: Doubles,
       Remaining_Reset: Resets,
       Remaining_GoAgain: GoAgainCards,
+      Last_Auto_Reset: LastAutoReset,
+      Auto_Resets_Frequency: LockDetails.Reset_Frequency,
       //Cumulative: LockDetails.Cumulative, //moved to LoadedLock
       //Hide_Card_Info: HideCardInfo,  //moved to LoadedLock
       //Chance_Period: LockDetails.Chance_Period //moved to LoadedLock

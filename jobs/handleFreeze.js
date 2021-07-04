@@ -10,7 +10,7 @@ const handleFreeze = async function() {
     });
     //Loop through the locks
     for(const Lock of CurrentlyRunningLocks) {
-        console.log(`Updating LoadedLock: ${Lock.LoadedLock_ID}`);
+        console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);
 
         const ThisLock = await LoadedLock.findOne({
             where: {
@@ -24,7 +24,7 @@ const handleFreeze = async function() {
         const Frozen = Lock.Current_Freeze_ID;
 
         if(Frozen != null) {
-            console.log(`Lock ${Lock.LoadedLock_ID} is currently frozen. Checking...`)
+            console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} is currently frozen. Checking...`)
             const FreezeRecord = await Freeze.findOne({
                 where: {
                     Freeze_ID: Frozen
@@ -36,12 +36,12 @@ const handleFreeze = async function() {
             } else {
                 //Check if the freeze has ended
                 if(FreezeRecord.EndTime != null && FreezeRecord.EndTime < CurrentDateAndTime) {
-                    console.log(`Freeze is scheduled to have ended already. Removing Freeze...`)
+                    console.log(`Freeze Job: Freeze is scheduled to have ended already. Removing Freeze...`)
                     ThisLock.set({Current_Freeze_ID: null})
                 }
             }
         }
-            console.log(`Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
+            console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
             //TESTED THIS AND IT WORKS!!
             const CurrentFreeze = await Freeze.findOne({
                 where: {
@@ -61,7 +61,7 @@ const handleFreeze = async function() {
             });
             if(CurrentFreeze) {
                 ThisLock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
-                console.log(`Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
+                console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
             }
             
             await ThisLock.save()
