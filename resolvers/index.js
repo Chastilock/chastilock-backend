@@ -12,11 +12,17 @@ const loadLock = require('../mutations/loadLock');
 const changeUserSettings = require('../mutations/changeUserSettings');
 const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
+const KHUnfreeze = require('../mutations/KHUnfreeze');
+const KHReset = require('../mutations/KHReset');
+const applyCard = require('../mutations/applyCard');
+const { remainingSeconds, earliestEndTime } = require('../helpers/timeFunctions');
+const KHEditCards = require('../mutations/KHEditCards');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
 const sharedLock = require('../queries/sharedLock');
+const me = require('../queries/me');
 
 const resolvers = {
   Query: {     
@@ -48,6 +54,9 @@ const resolvers = {
     },
     async sharedLock(root, args, {models, req}) {
       return sharedLock(models, req, args);
+    },
+    async me(root, args, {models, req}) {
+      return me(models, req);
     }
 
   },
@@ -91,6 +100,18 @@ const resolvers = {
     },
     async emergencyUnlock(root, args, { models, req }) {
       return emergencyUnlock(args, models, req);
+    },
+    async KHUnfreeze(root, args, {models, req}) {
+      return KHUnfreeze(args, models, req);
+    },
+    async KHReset(root, args, {models, req}) {
+      return KHReset(args, models, req);
+    },
+    async applyCard(root, args, {models, req}) {
+      return applyCard(args, models, req);
+    },
+    async KHEditCards(root, args, {models, req}) {
+      return KHEditCards(args, models, req);
     }
   },
 
@@ -125,16 +146,30 @@ const resolvers = {
   },
   LoadedLock: {
     async Lockee (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getLockeeUser();
     },
     async Keyholder (LoadedLock) {
-      return LoadedLock.getUser();
+      return LoadedLock.getKeyholderUser();
     },
     async CreatedLock (LoadedLock) {
-      return LoadedLock.getCreatedLock();
+      return LoadedLock.getCreatedLock(); //
+    },
+    async Original_Lock_Deck (LoadedLock) {
+      return LoadedLock.getLoadedOriginalLock();
     },
     async CurrentFreeze (LoadedLock) {
-      return LoadedLock.getCurrentFreeze();
+      return LoadedLock.getFreeze();
+    },
+    async Earliest_Unlock_Time (LoadedLock) {
+      return earliestEndTime(LoadedLock)
+    },
+    async Seconds_Remaining(LoadedLock) {
+      return remainingSeconds(LoadedLock)
+    }
+  },
+  Freeze: {
+    async Lock (Freeze) {
+      return Freeze.getLoadedLock();
     }
   },
   UserSetting: {

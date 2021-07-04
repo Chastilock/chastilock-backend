@@ -22,6 +22,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        Multiple_Greens_Required: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
         Remaining_Sticky: {
             type: Sequelize.INTEGER,
             allowNull: false,
