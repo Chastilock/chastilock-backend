@@ -26,7 +26,6 @@ async function hardResetLock(lock) {
         //lock.Last_Chance_Time = Date.now()
 
         // get old deck
-        oldDeck_ID = lock.Original_Lock_Deck
         /** @type LoadedOriginalLock */
         oldDeck = await LoadedOriginalLock.findByPk(lock.Original_Lock_Deck)
 
@@ -39,8 +38,6 @@ async function hardResetLock(lock) {
 
         // delete old deck from DB
         await oldDeck.destroy()
-
-
     } else if (lock.Timed_Unlock_Time) { 
         /** @type {TimerLockType} */
         timed = await TimerLockType.findByPk(createdLock.TimerLockType_ID);
@@ -69,6 +66,11 @@ async function unfreezeLock(lock) {
     // record end time, but don't delete freeze record, so we can calculate total freeze time
     freeze.EndTime = Date.now() 
     await freeze.save()
+    if (lock.Timed_Unlock_Time) { // timed lock
+        const freezelength = freeze.EndTime - freeze.Started // milliseconds
+        const oldUnlockTime = lock.Timed_Unlock_Time.getTime() // msecs since epoch
+        lock.Timed_Unlock_Time = new Date(freezelength + oldUnlockTime)
+    }
     // unlink the lock from the freeze to unfreeze it
     lock.Current_Freeze_ID = null
     await lock.save()

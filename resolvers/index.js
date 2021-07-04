@@ -14,7 +14,9 @@ const KHFreeze = require('../mutations/KHFreeze');
 const emergencyUnlock = require('../mutations/emergencyUnlock');
 const KHUnfreeze = require('../mutations/KHUnfreeze');
 const KHReset = require('../mutations/KHReset');
-const applyCard = require('../mutations/applyCard')
+const applyCard = require('../mutations/applyCard');
+const { remainingSeconds, earliestEndTime } = require('../helpers/timeFunctions');
+const KHEditCards = require('../mutations/KHEditCards');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -107,6 +109,9 @@ const resolvers = {
     },
     async applyCard(root, args, {models, req}) {
       return applyCard(args, models, req);
+    },
+    async KHEditCards(root, args, {models, req}) {
+      return KHEditCards(args, models, req);
     }
   },
 
@@ -154,6 +159,17 @@ const resolvers = {
     },
     async CurrentFreeze (LoadedLock) {
       return LoadedLock.getFreeze();
+    },
+    async Earliest_Unlock_Time (LoadedLock) {
+      return earliestEndTime(LoadedLock)
+    },
+    async Seconds_Remaining(LoadedLock) {
+      return remainingSeconds(LoadedLock)
+    }
+  },
+  Freeze: {
+    async Lock (Freeze) {
+      return Freeze.getLoadedLock();
     }
   },
   UserSetting: {

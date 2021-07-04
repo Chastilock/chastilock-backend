@@ -1,7 +1,7 @@
 const { UserInputError } = require("apollo-server-errors");
 const { LoadedOriginalLock, LoadedLock, CreatedLock, Freeze } = require("../models");
 const { loadOriginalLockType } = require('./loadOriginalLockType');
-const MAX_CARDS = require('./max_cards')
+const { MAX_CARDS } = require('./max_cards')
 const { CardType } = require('graphql')
 
 

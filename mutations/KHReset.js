@@ -44,7 +44,9 @@ async function KHReset(inputs, models, req) {
             });
     }
 
-    await hardResetLock(LockSearch) // also saves
+    await hardResetLock(LockSearch)
+    LockSearch.Last_KH_Change = Date.now()
+    await LockSearch.save()
 
     return LockSearch
 }

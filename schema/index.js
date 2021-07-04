@@ -91,11 +91,14 @@ const typeDefs = gql`
     Code: String!
     Original_Lock_Deck: LoadedOriginalLock
     Timed_Unlock_Time: String
+    Earliest_Unlock_Time: String
+    Seconds_Remaining: Int
     Hide_Info: Boolean!
     Emergency_Keys_Enabled: Boolean!
     Emergency_Keys_Amount: Int
     Test_Lock: Boolean!,
     Trusted: Boolean!,
+    Last_KH_Change: String,
     Cumulative: Boolean,
     Chance_Period: Int,
     Chances: Int,
@@ -158,6 +161,36 @@ const typeDefs = gql`
     GO_AGAIN
   }
 
+  input DeckInput {
+    GREEN: Int!
+    RED: Int!
+    STICKY: Int!
+    YELLOW_PLUS1: Int!
+    YELLOW_PLUS2: Int!
+    YELLOW_PLUS3: Int!
+    YELLOW_MINUS1: Int!
+    YELLOW_MINUS2: Int!
+    FREEZE: Int!
+    DOUBLE: Int!
+    RESET: Int!
+  }
+
+  type Deck {
+    GREEN: Int
+    RED: Int
+    STICKY: Int
+    YELLOW_PLUS1: Int
+    YELLOW_PLUS2: Int
+    YELLOW_PLUS3: Int
+    YELLOW_MINUS1: Int
+    YELLOW_MINUS2: Int
+    FREEZE: Int
+    DOUBLE: Int
+    RESET: Int
+    GO_AGAIN: Int
+    TOTAL: Int #just to see how this works
+  }
+
   type Query {
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
@@ -185,12 +218,13 @@ me: User!
     createTimerLock(LockName: String, Shared: Boolean!, Allow_Fakes: Boolean!, Min_Fakes: Int, Max_Fakes: Int, Timer_Min_Days: Int!,Timer_Min_Hours: Int!,Timer_Min_Minutes: Int!, Timer_Max_Days: Int!,Timer_Max_Hours: Int!,Timer_Max_Minutes: Int!, Hide_Timer:Boolean!, Checkins_Enabled: Boolean!, Checkins_Frequency: Float, Checkins_Window: Float, Allow_Buyout: Boolean!, Start_Lock_Frozen: Boolean!, Disable_Keyholder_Decision: Boolean!, Limit_Users: Boolean!, User_Limit_Amount: Int, Block_Test_Locks: Boolean!, Block_User_Rating_Enabled: Boolean!, Block_User_Rating: Int, Block_Already_Locked: Boolean!, Block_Stats_Hidden: Boolean!, Only_Accept_Trusted: Boolean!, Require_DM: Boolean!): CreatedLock!
     loadLock(ShareCode: String!, Code: String, Min_Fakes: Int, Max_Fakes: Int, Trust_Keyholder: Boolean!, Sent_DM: Boolean, Emergency_Keys: Boolean!, Emergency_Keys_Amount: Int, Test_Lock: Boolean!): [LoadedLock!]!
     changeUserSettings(Allow_Duplicate_Characters: Boolean!, Show_Combo_To_Keyholder: Boolean!, Share_Stats: Boolean!): UserSetting!
-    # Needs testing!!
-    KHFreeze(LoadedLock_ID: Int!, EndTime: Int): Freeze!
-    emergencyUnlock(Lock_ID: Int): LoadedLock!
-    applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
     KHReset(LoadedLock_ID: Int!): LoadedLock!
+    # Needs testing!!
+    KHFreeze(LoadedLock_ID: Int!, EndTime: String): LoadedLock!
+    emergencyUnlock(Lock_ID: Int): LoadedLock!
+    applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
+    KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
   }`;
 
 module.exports = typeDefs

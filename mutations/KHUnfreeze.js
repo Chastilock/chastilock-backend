@@ -31,7 +31,9 @@ async function KHUnfreeze(inputs, models, req) {
             invalidArgs: ["The lock was not frozen."]
         });
     }
-    await unfreezeLock(LockSearch) // also saves LockSearch
+    await unfreezeLock(LockSearch) 
+    LockSearch.Last_KH_Change = Date.now()
+    await LockSearch.save()
 
     return LockSearch
 }
