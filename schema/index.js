@@ -5,7 +5,6 @@ const typeDefs = gql`
     User_ID: ID!
     UUID: String!
     Email: String
-    Password: String
     Username: String,
     Keyholder: Boolean,
     Lockee: Boolean,
