@@ -46,6 +46,9 @@ jobs:
         with:
           input: ci/k8s/dev.template.yaml
           output: ci/k8s/dev.yaml
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
       - name: deploy to cluster
         uses: steebchen/kubectl@v2.0.0
         with:

@@ -5,7 +5,6 @@ const typeDefs = gql`
     User_ID: ID!
     UUID: String!
     Email: String
-    Password: String
     Username: String,
     Keyholder: Boolean,
     Lockee: Boolean,
@@ -204,6 +203,7 @@ const typeDefs = gql`
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
     sharedLock(id: String!): CreatedLock!
+me: User!
   }
 
   type Mutation {
