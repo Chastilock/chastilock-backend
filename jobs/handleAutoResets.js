@@ -1,5 +1,6 @@
 const { LoadedLock, LoadedOriginalLock } = require("../models");
-const { Op } = require("sequelize")
+const { Op } = require("sequelize");
+const { hardResetLock } = require("../helpers/lockModifyingFunctions");
 
 const handleAutoResets = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
@@ -32,8 +33,7 @@ const handleAutoResets = async function() {
                     
                     if(DiferenceMins > LoadedOriginalLockRecord.Auto_Resets_Frequency) {
                         console.log(`Auto Reset Job: Auto Resetting...`);
-                        //KHReset
-                        //TODO: Implement KH Resets
+                        hardResetLock(Lock)
                         LoadedOriginalLockRecord.set({Last_Auto_Reset: new Date()});
                         await LoadedOriginalLockRecord.save()
                     } else {
