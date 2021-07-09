@@ -99,11 +99,6 @@ const typeDefs = gql`
     Test_Lock: Boolean!
     Trusted: Boolean!
     Last_KH_Change: String
-    Cumulative: Boolean
-    Chance_Period: Int
-    Chances: Int
-    Last_Pick_Time: String            
-    Last_Chance_Time: String
     CurrentFreeze: Freeze
     Unlocked: Boolean!
     Lockee_Rating: Int
