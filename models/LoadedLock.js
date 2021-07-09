@@ -57,26 +57,6 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             allowNull: true
         },
-        Cumulative: {
-            type: Sequelize.BOOLEAN,
-            allowNull: true
-        },
-        Chance_Period: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
-        Chances: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
-        Last_Pick_Time: {
-            type: Sequelize.DATE,
-            allowNull: true     
-        },            
-        Last_Chance_Time: {
-            type: Sequelize.DATE,
-            allowNull: true   
-        },
         Current_Freeze_ID: {
           type: Sequelize.INTEGER,
           allowNull: true

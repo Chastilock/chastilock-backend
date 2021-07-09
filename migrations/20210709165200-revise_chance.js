@@ -13,7 +13,7 @@ module.exports = {
     await queryInterface.addColumn("LoadedLocks", "Cumulative", {
       type: Sequelize.BOOLEAN,
       allowNull: true,
-      after: "Trusted"
+      after: "Last_KH_Change"
     });
     await queryInterface.addColumn("LoadedLocks", "Chance_Period", {
       type: Sequelize.INTEGER,
