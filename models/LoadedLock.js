@@ -109,7 +109,8 @@ module.exports = (sequelize) => {
         LoadedLock.belongsTo(models.User, {as: "LockeeUser", foreignKey: "Lockee"});
         LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
         LoadedLock.belongsTo(models.Freeze, {foreignKey: "Current_Freeze_ID"})
-        LoadedLock.belongsTo(models.LoadedLock, {foreignKey: "Real_Lock"})  
+        LoadedLock.belongsTo(models.LoadedLock, {foreignKey: "Real_Lock"})
+        LoadedLock.hasMany(models.LogItem, {foreignKey: "Lock_ID"})
     }; 
     
     return LoadedLock;
