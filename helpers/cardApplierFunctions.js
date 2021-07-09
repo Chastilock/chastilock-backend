@@ -5,8 +5,7 @@ const { MAX_CARDS } = require('./max_cards')
 const { CardType } = require('graphql')
 
 
-//TODO: Freeze, Red, Sticky and Reset cards modify chances.  Need to modify code for them once
-// the chance functionality is written.  It possible we may also need to modify code for other cards if it turns out to 
+//TODO: Freeze, Red, Sticky and Reset cards modify chances.  It's possible we may also need to modify code for other cards if it turns out to
 // be important to keep track of when the last draw occurred.
 
 /**
@@ -55,6 +54,8 @@ async function applyCardToLockDeck(card, lock) {
       invalidArgs: "Invalid type of card"
     });    
   }
+  // TODO:  Probably need to add code here to update a field to keep track of when last card drawn for non-cumulative locks
+  // That should be located here, since the above fxn calls may throw errors if the card can not be applied.
 }
 
 /**
@@ -71,12 +72,8 @@ async function applyRedCard(deck, lock) {
       invalidArgs: "Red drawn, but not in deck"
     });
   }
+  deck.Chances_Remaining--;
   await deck.save();
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
-  await lock.save();
 }
 
 /**
@@ -112,11 +109,8 @@ async function applyStickyCard(deck, lock) {
       invalidArgs: "Sticky drawn, but not in deck"
     });
   }
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
-  await lock.save();
+  deck.Chances_Remaining--;
+  await deck.save();
 }
 
 /**
@@ -261,10 +255,7 @@ async function applyFreezeCard(deck, lock) {
   lock.set({
     Current_Freeze_ID: freeze.Freeze_ID
   });
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
+  deck.Chances_Remaining--;
   await deck.save();
   await lock.save();
 }
@@ -331,9 +322,8 @@ async function applyResetCard(deck, lock) {
     });
   }
 
-  // TODO: replace next 2 lines with appropriate code once chance code is written
-  lock.Chances = 1
-  lock.Last_Chance_Time = Date.now()
+  deck.Chances_Remaining--;
+  deck.Chances_Last_Calulated = Date.now()
 
   // need to find and retrieve fields from OriginalLockType
   /**
@@ -348,7 +338,7 @@ async function applyResetCard(deck, lock) {
   }
   // use code in loadOriginalLockType, but it actually creates a LoadedOriginalLock
   // record in DB, so will need to delete it at end
-  // TODO: refactor loadOriginalLock to expose and use helper function that does not actually 
+  // TODO: ?? refactor loadOriginalLock to expose and use helper function that does not actually 
   // create a record in the DB
   /** @type {LoadedOriginalDeck} */
   const newDeck = await loadOriginalLockType(crLock);
