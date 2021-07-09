@@ -15,6 +15,24 @@ const updateChancesLeft = async function() {
         if(Lock.Original_Lock_Deck === null) {
             console.log(`Calculate Chances: Not a original lock type. Skiping....`)
         } else {
+            const OriginalLock = await Lock.getLoadedOriginalLock();
+            
+            if(Lock.Cumulative) {
+
+            } else {
+                const LastDrawn = OriginalLock.Last_Drawn;
+                const LastDrawnAsDate = new Date(LastDrawn);
+
+                const Now = new Date();
+                const TimeSinceDraw = Now.getTime() - LastDrawnAsDate.getTime();
+                const DiferenceMins = Math.round(((TimeSinceDraw % 86400000) % 3600000) / 60000);
+
+
+                if(DiferenceMins >= Lock.Chance_Period) {
+                    OriginalLock.set({Chances_Remaining: 1});
+                    await OriginalLock.save();
+                }
+            }
         }
     }
 }
