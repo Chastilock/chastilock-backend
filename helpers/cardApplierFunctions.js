@@ -54,8 +54,8 @@ async function applyCardToLockDeck(card, lock) {
       invalidArgs: "Invalid type of card"
     });    
   }
-  // TODO:  Probably need to add code here to update a field to keep track of when last card drawn for non-cumulative locks
-  // That should be located here, since the above fxn calls may throw errors if the card can not be applied.
+  deck.Last_Drawn = Date.now()
+  await deck.save()
 }
 
 /**
@@ -73,7 +73,6 @@ async function applyRedCard(deck, lock) {
     });
   }
   deck.Chances_Remaining--;
-  await deck.save();
 }
 
 /**
@@ -92,7 +91,6 @@ async function applyGreenCard(deck, lock) {
     });
   }
   deck.Found_Green++;
-  await deck.save();
 }
 
 /**
@@ -110,7 +108,6 @@ async function applyStickyCard(deck, lock) {
     });
   }
   deck.Chances_Remaining--;
-  await deck.save();
 }
 
 /**
@@ -132,7 +129,6 @@ async function applyYellowPlus1Card(deck, lock) {
   if(deck.Remaining_Red > MAX_CARDS.RED){
     deck.Remaining_Red = MAX_CARDS.RED;
   }
-  await deck.save();
 }
 
 /**
@@ -154,7 +150,6 @@ async function applyYellowPlus2Card(deck, lock) {
     if(deck.Remaining_Red > MAX_CARDS.RED){
       deck.Remaining_Red = MAX_CARDS.RED;
     }
-    await deck.save();
 }
 
 /**
@@ -176,7 +171,6 @@ async function applyYellowPlus3Card(deck, lock) {
   if(deck.Remaining_Red > MAX_CARDS.RED){
     deck.Remaining_Red = MAX_CARDS.RED;
   }
-  await deck.save();
 }
 
 /**
@@ -198,7 +192,6 @@ async function applyYellowMinus1Card(deck, lock) {
   if(deck.Remaining_Red < 0) {
     deck.Remaining_Red = 0;
   }
-  await deck.save();
 }
 
 /**
@@ -220,7 +213,6 @@ async function applyYellowMinus2Card(deck, lock) {
   if(deck.Remaining_Red < 0) {
     deck.Remaining_Red = 0;
   }
-  await deck.save();
 }
 
 /**
@@ -256,7 +248,6 @@ async function applyFreezeCard(deck, lock) {
     Current_Freeze_ID: freeze.Freeze_ID
   });
   deck.Chances_Remaining--;
-  await deck.save();
   await lock.save();
 }
 
@@ -302,7 +293,6 @@ async function applyDoubleCard(deck, lock) {
   if(deck.Remaining_Remove2 > MAX_CARDS.YELLOW_MINUS2){
     deck.Remaining_Remove2 = MAX_CARDS.YELLOW_MINUS2;
   }
-  await deck.save();
 }
 
 /**
@@ -353,7 +343,6 @@ async function applyResetCard(deck, lock) {
   deck.Remaining_Remove2 = newDeck.Remaining_Remove2;
   // clean up by removing newDeck record from DB
   await newDeck.destroy();
-  await deck.save();
   await lock.save();
 }
 
@@ -372,7 +361,6 @@ async function applyGoAgainCard(deck, lock) {
       invalidArgs: "Go Again card drawn, but not in deck"
     });
   }
-  await deck.save();
 }
 
 module.exports = { applyCardToLockDeck }
