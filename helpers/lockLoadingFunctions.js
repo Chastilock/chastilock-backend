@@ -82,7 +82,7 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     Timed_Unlock_Time: params.Timed_Unlock_Time,
     Hide_Info: params.Hide_Info,
     Emergency_Keys_Enabled: inputs.Emergency_Keys,
-    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount, 
+    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount || 1, 
     Test_Lock: inputs.Test_Lock,
     Trusted: inputs.Trust_Keyholder,
     // Last_KH_Change not initialized, so NULL until first change
