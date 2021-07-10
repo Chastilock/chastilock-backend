@@ -231,18 +231,15 @@ async function applyFreezeCard(deck, lock) {
     });
   }
   // create and add freeze
-  // not sure of units for Deck.Chance_Period and Freeze.EndTime, but both are ints
-  // Freeze.Started is initialized with Date.now() which is milliseconds since 1970
-  // Freeze.EndTime should probably be the same
   // ChancePeriod is validated to range of 1 - 1440, so appears to be Minutes, so multiply
   // duration by 60 to get seconds, and 1000 to get ms.
-  const freezeLength = lock.Chance_Period * (2 + 2 * Math.random()) * 60000 // milliseconds
+  const freezeLength = Math.floor(deck.Chance_Period * (2 + (2 * Math.random())) * 60000) // milliseconds
   /** @type { Freeze } */
   const freeze = await Freeze.create({
     Lock_ID: lock.LoadedLock_ID,
     Type: "Card",
     Started: Date.now(),
-    EndTime:Date.now() + freezeLength
+    EndTime: Date.now() + freezeLength
   });
   lock.set({
     Current_Freeze_ID: freeze.Freeze_ID
