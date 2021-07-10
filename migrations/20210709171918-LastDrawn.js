@@ -10,6 +10,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('LoadedLocks','Last_Drawn')
+    await queryInterface.removeColumn('LoadedOriginalLocks','Last_Drawn')
   }
 };
