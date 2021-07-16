@@ -70,7 +70,7 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        Chances_Last_Calulated: {
+        Chances_Last_Awarded: {
             type: Sequelize.DATE,
             allowNull: false
         },
