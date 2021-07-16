@@ -27,9 +27,11 @@ const updateChancesLeft = async function() {
                 const TimeSinceDraw = Now.getTime() - LastDrawnAsDate.getTime();
                 const DiferenceMins = Math.round(((TimeSinceDraw % 86400000) % 3600000) / 60000);
 
-
                 if(DiferenceMins >= Lock.Chance_Period) {
-                    OriginalLock.set({Chances_Remaining: 1});
+                    OriginalLock.set({
+                        Chances_Remaining: 1,
+                        Chances_Last_Awarded: new Date()
+                    });
                     await OriginalLock.save();
                 }
             }
