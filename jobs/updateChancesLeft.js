@@ -30,15 +30,15 @@ const updateChancesLeft = async function() {
 
                 const Now = new Date();
                 const TimeSinceChance = Now.getTime() - LastChanceAsDate.getTime();
+
                 const DiferenceMins = Math.floor(TimeSinceChance / 60000);
-                console.log(`Calculate Chances: It has been ${DiferenceMins} since we gave them a chance`);
+                console.log(`Calculate Chances: It has been ${DiferenceMins} minutes since we gave them a chance`);
 
                 const ChancesToAdd = Math.floor(DiferenceMins / Lock.Chance_Period);
                 console.log(`Calculate Chances: Their draw interval is ${Lock.Chance_Period} minutes so we need to award ${ChancesToAdd} chances`);
 
-
                 if (ChancesToAdd > 0) {
-                    const TimeOfLastChance = new Date();
+                    const TimeOfLastChance = new Date(LastChance);
                     TimeOfLastChance.setMinutes(LastChanceAsDate.getMinutes() + (ChancesToAdd * Lock.Chance_Period));
                     const NewChanceTotal = LoadedOriginalRecord.Chances_Remaining + ChancesToAdd;
 
@@ -47,6 +47,7 @@ const updateChancesLeft = async function() {
                         Chances_Last_Awarded: TimeOfLastChance
                     });
                     await LoadedOriginalRecord.save();
+                    console.log(`Calculate Chances: We awarded ${ChancesToAdd} chances, which gives them a total of ${NewChanceTotal} chances`);
 
                 } else {
                     console.log(`Calculate Chances: We don't have any chances to give yet. Skipping...`);
