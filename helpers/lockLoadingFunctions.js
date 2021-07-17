@@ -52,15 +52,8 @@ async function findVariableProperties(createdLock) {
   deck_ID = deck.Original_Loaded_ID  //Original_Loaded_ID //Original_Loaded_ID
   params = {
     Deck_ID: deck_ID,
-    Chance_Period: lock.Chance_Period,
-    Cumulative: lock.Cumulative,
-    Chances: 1,
-    Last_Chance_Time: Date.now(),
     Hide_Info: lock.Hide_Card_Info,
-    Start_Lock_Frozen: lock.Start_Lock_Frozen, // included for future use
-    Auto_Resets_Enabled: lock.Auto_Resets_Enabled, // included for future use
-    Reset_Frequency: lock.Reset_Frequency, // included for future use
-    Max_Resets: lock.Max_Resets // included for future use
+    Start_Lock_Frozen: lock.Start_Lock_Frozen
   }
   return params
 }
@@ -89,15 +82,10 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     Timed_Unlock_Time: params.Timed_Unlock_Time,
     Hide_Info: params.Hide_Info,
     Emergency_Keys_Enabled: inputs.Emergency_Keys,
-    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount, 
+    Emergency_Keys_Amount: inputs.Emergency_Keys_Amount || 1, 
     Test_Lock: inputs.Test_Lock,
     Trusted: inputs.Trust_Keyholder,
     // Last_KH_Change not initialized, so NULL until first change
-    Cumulative: params.Cumulative,
-    Chance_Period: params.Chance_Period,
-    Chances: params.Chances,
-    //Last_Pick_Time not initialized, so NULL until first pick
-    Last_Chance_Time: params.Last_Chance_Time,
     // Current_Freeze_ID: not initialized, so starts as NULL.  Added below
     // Lockee_Rating, KeyholderRating  - left NULL at start of lock
     Unlocked: false,
@@ -105,11 +93,10 @@ async function createLoadedLock(createdLock, User_ID, inputs, is_real_lock, real
     Real_Lock: real_lock_link
   })
 
-  // add support for start_Lock_Frozen
   if (createdLock.Start_Lock_Frozen === true) {
     const freeze = await Freeze.create({
       Lock_ID: loadedLock.LoadedLock_ID,
-      Type: "KH", // same string as used in KHFreeze mutation implementation
+      Type: "KH", 
       Started: Date.now()
       //EndTime:  // end time not initialized, so NULL
     })

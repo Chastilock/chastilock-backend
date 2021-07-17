@@ -55,9 +55,6 @@ module.exports = {
       allowNull: true,
       after: "Last_Pick_Time"
     });
-    // Causes Error when migration is run since column "Fake_Lock" isn't in the Jan 3 migration
-    // await queryInterface.removeColumn("LoadedLocks", "Fake_Lock");
-
     await queryInterface.addColumn("LoadedOriginalLocks", "Multiple_Greens_Required", {
       type: Sequelize.BOOLEAN,
       allowNull: false,
@@ -82,5 +79,37 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     // not supported
-  }
+  await queryInterface.addColumn("OriginalLockTypes", "Start_Lock_Frozen", {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  });
+  await queryInterface.removeColumn("OriginalLockTypes", "Variable_Min_Resets");
+  await queryInterface.removeColumn("OriginalLockTypes", "Variable_Max_Resets");
+
+  await queryInterface.addColumn("LoadedOriginalLocks", "Chance_Period", {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  });
+  await queryInterface.addColumn("LoadedOriginalLocks","Hide_Card_Info", {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  });
+  await queryInterface.addColumn("LoadedOriginalLocks","Cumulative", {
+      type: Sequelize.BOOLEAN,
+      allowNull: false
+  });
+  await queryInterface.removeColumn("LoadedOriginalLocks", "Multiple_Greens_Required");
+  await queryInterface.removeColumn("LoadedLocks", "Last_Chance_Time");
+  await queryInterface.removeColumn("LoadedLocks", "Last_Pick_Time");
+  await queryInterface.removeColumn("LoadedLocks", "Chances");
+  await queryInterface.removeColumn("LoadedLocks", "Chance_Period");
+  await queryInterface.removeColumn("LoadedLocks", "Cumulative");
+  await queryInterface.removeColumn("LoadedLocks", "Trusted");
+  await queryInterface.removeColumn("LoadedLocks", "Hide_Info");
+  await queryInterface.removeColumn("LoadedLocks", "Timed_Unlock_Time");
+  await queryInterface.removeColumn("CreatedLocks", "Start_Lock_Frozen");
+
+
+
+}
 };

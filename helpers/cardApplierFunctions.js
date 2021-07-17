@@ -5,8 +5,7 @@ const { MAX_CARDS } = require('./max_cards')
 const { CardType } = require('graphql')
 
 
-//TODO: Freeze, Red, Sticky and Reset cards modify chances.  Need to modify code for them once
-// the chance functionality is written.  It possible we may also need to modify code for other cards if it turns out to 
+//TODO: Freeze, Red, Sticky and Reset cards modify chances.  It's possible we may also need to modify code for other cards if it turns out to
 // be important to keep track of when the last draw occurred.
 
 /**
@@ -55,6 +54,8 @@ async function applyCardToLockDeck(card, lock) {
       invalidArgs: "Invalid type of card"
     });    
   }
+  deck.Last_Drawn = Date.now()
+  await deck.save()
 }
 
 /**
@@ -71,12 +72,7 @@ async function applyRedCard(deck, lock) {
       invalidArgs: "Red drawn, but not in deck"
     });
   }
-  await deck.save();
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
-  await lock.save();
+  deck.Chances_Remaining--;
 }
 
 /**
@@ -95,7 +91,6 @@ async function applyGreenCard(deck, lock) {
     });
   }
   deck.Found_Green++;
-  await deck.save();
 }
 
 /**
@@ -112,11 +107,7 @@ async function applyStickyCard(deck, lock) {
       invalidArgs: "Sticky drawn, but not in deck"
     });
   }
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
-  await lock.save();
+  deck.Chances_Remaining--;
 }
 
 /**
@@ -138,7 +129,6 @@ async function applyYellowPlus1Card(deck, lock) {
   if(deck.Remaining_Red > MAX_CARDS.RED){
     deck.Remaining_Red = MAX_CARDS.RED;
   }
-  await deck.save();
 }
 
 /**
@@ -160,7 +150,6 @@ async function applyYellowPlus2Card(deck, lock) {
     if(deck.Remaining_Red > MAX_CARDS.RED){
       deck.Remaining_Red = MAX_CARDS.RED;
     }
-    await deck.save();
 }
 
 /**
@@ -182,7 +171,6 @@ async function applyYellowPlus3Card(deck, lock) {
   if(deck.Remaining_Red > MAX_CARDS.RED){
     deck.Remaining_Red = MAX_CARDS.RED;
   }
-  await deck.save();
 }
 
 /**
@@ -204,7 +192,6 @@ async function applyYellowMinus1Card(deck, lock) {
   if(deck.Remaining_Red < 0) {
     deck.Remaining_Red = 0;
   }
-  await deck.save();
 }
 
 /**
@@ -226,7 +213,6 @@ async function applyYellowMinus2Card(deck, lock) {
   if(deck.Remaining_Red < 0) {
     deck.Remaining_Red = 0;
   }
-  await deck.save();
 }
 
 /**
@@ -245,27 +231,20 @@ async function applyFreezeCard(deck, lock) {
     });
   }
   // create and add freeze
-  // not sure of units for Deck.Chance_Period and Freeze.EndTime, but both are ints
-  // Freeze.Started is initialized with Date.now() which is milliseconds since 1970
-  // Freeze.EndTime should probably be the same
   // ChancePeriod is validated to range of 1 - 1440, so appears to be Minutes, so multiply
   // duration by 60 to get seconds, and 1000 to get ms.
-  const freezeLength = lock.Chance_Period * (2 + 2 * Math.random()) * 60000 // milliseconds
+  const freezeLength = Math.floor(deck.Chance_Period * (2 + (2 * Math.random())) * 60000) // milliseconds
   /** @type { Freeze } */
   const freeze = await Freeze.create({
     Lock_ID: lock.LoadedLock_ID,
     Type: "Card",
     Started: Date.now(),
-    EndTime:Date.now() + freezeLength
+    EndTime: Date.now() + freezeLength
   });
   lock.set({
     Current_Freeze_ID: freeze.Freeze_ID
   });
-
-  // TODO: replace next line with appropriate code once chance code is written
-  lock.Chances--;
-
-  await deck.save();
+  deck.Chances_Remaining--;
   await lock.save();
 }
 
@@ -311,7 +290,6 @@ async function applyDoubleCard(deck, lock) {
   if(deck.Remaining_Remove2 > MAX_CARDS.YELLOW_MINUS2){
     deck.Remaining_Remove2 = MAX_CARDS.YELLOW_MINUS2;
   }
-  await deck.save();
 }
 
 /**
@@ -331,9 +309,8 @@ async function applyResetCard(deck, lock) {
     });
   }
 
-  // TODO: replace next 2 lines with appropriate code once chance code is written
-  lock.Chances = 1
-  lock.Last_Chance_Time = Date.now()
+  deck.Chances_Remaining--;
+  deck.Chances_Last_Awarded = Date.now()
 
   // need to find and retrieve fields from OriginalLockType
   /**
@@ -348,7 +325,7 @@ async function applyResetCard(deck, lock) {
   }
   // use code in loadOriginalLockType, but it actually creates a LoadedOriginalLock
   // record in DB, so will need to delete it at end
-  // TODO: refactor loadOriginalLock to expose and use helper function that does not actually 
+  // TODO: ?? refactor loadOriginalLock to expose and use helper function that does not actually 
   // create a record in the DB
   /** @type {LoadedOriginalDeck} */
   const newDeck = await loadOriginalLockType(crLock);
@@ -363,7 +340,6 @@ async function applyResetCard(deck, lock) {
   deck.Remaining_Remove2 = newDeck.Remaining_Remove2;
   // clean up by removing newDeck record from DB
   await newDeck.destroy();
-  await deck.save();
   await lock.save();
 }
 
@@ -382,7 +358,6 @@ async function applyGoAgainCard(deck, lock) {
       invalidArgs: "Go Again card drawn, but not in deck"
     });
   }
-  await deck.save();
 }
 
 module.exports = { applyCardToLockDeck }
