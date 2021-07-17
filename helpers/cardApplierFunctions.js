@@ -310,7 +310,7 @@ async function applyResetCard(deck, lock) {
   }
 
   deck.Chances_Remaining--;
-  deck.Chances_Last_Calulated = Date.now()
+  deck.Chances_Last_Awarded = Date.now()
 
   // need to find and retrieve fields from OriginalLockType
   /**

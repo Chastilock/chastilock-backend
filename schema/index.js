@@ -127,7 +127,7 @@ const typeDefs = gql`
     Hide_Card_Info: Boolean!
     Chance_Period: Int!
     Chances_Remaining: Int!
-    Chances_Last_Calulated: String
+    Chances_Last_Awarded: String!
     Last_Drawn: String
     Auto_Resets_Paused: Boolean
     Auto_Resets_Frequency: Int

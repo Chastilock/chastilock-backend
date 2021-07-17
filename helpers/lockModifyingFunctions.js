@@ -45,7 +45,7 @@ async function hardResetLock(lock) {
         oldDeck.Remaining_Reset = newDeck.Remaining_Reset
         oldDeck.Remaining_GoAgain = newDeck.Remaining_GoAgain
         oldDeck.Chances_Remaining = 1
-        oldDeck.Chances_Last_Calulated = Date.now()
+        oldDeck.Chances_Last_Awarded = Date.now()
         // other fields in oldDeck may have been modified from original settings, so not copied.
         await oldDeck.save()
         // delete new deck from DB

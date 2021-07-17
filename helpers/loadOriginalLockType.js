@@ -87,7 +87,7 @@ async function loadOriginalLockType(CreatedLock) {
       Hide_Card_Info: LockDetails.Hide_Card_Info,
       Chance_Period: LockDetails.Chance_Period,
       Chances_Remaining: 1,
-      Chances_Last_Calulated: Date.now(),
+      Chances_Last_Awarded: Date.now(),
       Last_Drawn: null, // will be initialized when the next card is drawn
       Auto_Resets_Paused: false, // is this the correct initialization??
       Auto_Resets_Frequency: LockDetails.Reset_Frequency,
