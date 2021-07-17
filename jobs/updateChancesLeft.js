@@ -15,18 +15,46 @@ const updateChancesLeft = async function() {
         if(Lock.Original_Lock_Deck === null) {
             console.log(`Calculate Chances: Not a original lock type. Skiping....`)
         } else {
+
+            const LoadedOriginalRecord = await LoadedOriginalLock.findOne({
+                where: {
+                    Original_Loaded_ID: Lock.Original_Lock_Deck
+                }
+            });
             
             if(Lock.Cumulative) {
                 console.log(`Calculate Chances: Cumulative chances. Working...`);
 
+                const LastChance = LoadedOriginalRecord.Chances_Last_Awarded;
+                const LastChanceAsDate = new Date(LastChance);
+
+                const Now = new Date();
+                const TimeSinceChance = Now.getTime() - LastChanceAsDate.getTime();
+                const DiferenceMins = Math.floor(TimeSinceChance / 60000);
+                console.log(`Calculate Chances: It has been ${DiferenceMins} since we gave them a chance`);
+
+                const ChancesToAdd = Math.floor(DiferenceMins / Lock.Chance_Period);
+                console.log(`Calculate Chances: Their draw interval is ${Lock.Chance_Period} minutes so we need to award ${ChancesToAdd} chances`);
+
+
+                if (ChancesToAdd > 0) {
+                    const TimeOfLastChance = new Date();
+                    TimeOfLastChance.setMinutes(LastChanceAsDate.getMinutes() + (ChancesToAdd * Lock.Chance_Period));
+                    const NewChanceTotal = LoadedOriginalRecord.Chances_Remaining + ChancesToAdd;
+
+                    LoadedOriginalRecord.set({
+                        Chances_Remaining: NewChanceTotal,
+                        Chances_Last_Awarded: TimeOfLastChance
+                    });
+                    await LoadedOriginalRecord.save();
+
+                } else {
+                    console.log(`Calculate Chances: We don't have any chances to give yet. Skipping...`);
+                }
+
             } else {
                 console.log(`Calculate Chances: Non-cumulative chances. Working...`);
-                const LoadedOriginalRecord = await LoadedOriginalLock.findOne({
-                    where: {
-                        Original_Loaded_ID: Lock.Original_Lock_Deck
-                    }
-                });
-
+                
                 const LastDrawn = LoadedOriginalRecord.Last_Drawn;
                 const LastDrawnAsDate = new Date(LastDrawn);
 
