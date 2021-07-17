@@ -74,6 +74,10 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             allowNull: false
         },
+        Last_Drawn: {
+            type: Sequelize.DATE,
+            allowNull: true
+        },
         Auto_Resets_Paused: {
             type: Sequelize.BOOLEAN,
             allowNull: true

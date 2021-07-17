@@ -1,6 +1,6 @@
 //Update chances left
-const { LoadedLock } = require("../models");
-const { Op } = require("sequelize")
+const { LoadedLock, LoadedOriginalLock } = require("../models");
+const { Op } = require("sequelize");
 
 const updateChancesLeft = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
@@ -15,21 +15,27 @@ const updateChancesLeft = async function() {
         if(Lock.Original_Lock_Deck === null) {
             console.log(`Calculate Chances: Not a original lock type. Skiping....`)
         } else {
-            const OriginalLock = await Lock.getLoadedOriginalLock();
             
             if(Lock.Cumulative) {
 
             } else {
-                const LastDrawn = OriginalLock.Last_Drawn;
+
+                const LoadedOriginalRecord = await LoadedOriginalLock.findOne({
+                    where: {
+                        Original_Loaded_ID: Lock.Original_Lock_Deck
+                    }
+                });
+
+                const LastDrawn = LoadedOriginalRecord.Last_Drawn;
                 const LastDrawnAsDate = new Date(LastDrawn);
 
                 const Now = new Date();
                 const TimeSinceDraw = Now.getTime() - LastDrawnAsDate.getTime();
                 const DiferenceMins = Math.round(((TimeSinceDraw % 86400000) % 3600000) / 60000);
 
-                console.log(`Original Lock: ${OriginalLock}`)
+                console.log(LoadedOriginalRecord)
 
-                console.log(`Last Drawn: ${LastDrawn}`)
+                console.log(LastDrawn)
                 
                 console.log(`TimeSinceDraw: ${TimeSinceDraw}`)
                 console.log(`Difference in mins: ${DiferenceMins}`)

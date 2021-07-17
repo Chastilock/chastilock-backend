@@ -129,6 +129,7 @@ const typeDefs = gql`
     Remaining_Reset: Int!
     Chances_Remaining: Int!
     Chances_Last_Awarded: Int!
+    Last_Drawn: Int!
     Auto_Resets_Paused: Boolean
     Auto_Resets_Frequency: Int
     Last_Auto_Reset: Int
