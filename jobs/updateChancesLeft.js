@@ -17,9 +17,10 @@ const updateChancesLeft = async function() {
         } else {
             
             if(Lock.Cumulative) {
+                console.log(`Calculate Chances: Cumulative chances. Working...`);
 
             } else {
-
+                console.log(`Calculate Chances: Non-cumulative chances. Working...`);
                 const LoadedOriginalRecord = await LoadedOriginalLock.findOne({
                     where: {
                         Original_Loaded_ID: Lock.Original_Lock_Deck
@@ -31,24 +32,26 @@ const updateChancesLeft = async function() {
 
                 const Now = new Date();
                 const TimeSinceDraw = Now.getTime() - LastDrawnAsDate.getTime();
-                const DiferenceMins = Math.round(((TimeSinceDraw % 86400000) % 3600000) / 60000);
-
-                console.log(LoadedOriginalRecord)
-
-                console.log(LastDrawn)
-                
-                console.log(`TimeSinceDraw: ${TimeSinceDraw}`)
-                console.log(`Difference in mins: ${DiferenceMins}`)
+                const DiferenceMins = Math.floor(TimeSinceDraw / 60000);
 
                 if(DiferenceMins >= Lock.Chance_Period) {
-                    OriginalLock.set({
-                        Chances_Remaining: 1,
-                        Chances_Last_Awarded: new Date()
-                    });
-                    await OriginalLock.save();
+
+                    console.log(`Calculate Chances: It's been more than their chance period since they last drew a card...`);
+
+                    if(LoadedOriginalRecord.Chances_Remaining != 1) {
+                    console.log(`Calculate Chances: They don't already have a chance so lets give them one`);
+                        LoadedOriginalRecord.set({
+                            Chances_Remaining: 1,
+                            Chances_Last_Awarded: new Date()
+                        });
+                        await LoadedOriginalRecord.save();
+                    } else {
+                        console.log(`Calculate Chances: They already have a chance so skipping...`);
+                    }
                 }
             }
         }
+        console.log(`Calculate Chances: Finished working on LoadedLockID: ${Lock.LoadedLock_ID}`);
     }
 }
 module.exports = updateChancesLeft;
