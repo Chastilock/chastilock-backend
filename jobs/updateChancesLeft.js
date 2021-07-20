@@ -22,6 +22,13 @@ const updateChancesLeft = async function() {
                 }
             });
             
+          if (Lock.Current_Freeze_ID) { // frozen locks don't get chances
+                LoadedOriginalRecord.Chances_Last_Awarded = Date.now();
+                // I don't think we need to worry about non-cumulative locks and Last_Drawn, since currently
+                // in CK they automatically get one chance if they don't have one at the time that they unfreeze
+                await LoadedOriginalRecord.save();
+          } else {
+
             if(Lock.Cumulative) {
                 console.log(`Calculate Chances: Cumulative chances. Working...`);
 
@@ -79,6 +86,7 @@ const updateChancesLeft = async function() {
                     }
                 }
             }
+          }
         }
         console.log(`Calculate Chances: Finished working on LoadedLockID: ${Lock.LoadedLock_ID}`);
     }
