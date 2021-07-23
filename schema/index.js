@@ -195,6 +195,11 @@ const typeDefs = gql`
     GO_AGAIN: Int
     TOTAL: Int #just to see how this works
   }
+  type Bot {
+    Bot_ID: Int!
+    Bot_Name: String!
+    Bot_Blurb: String!
+  }
 
   type Query {
     allUsers: [User!]!
