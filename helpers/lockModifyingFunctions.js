@@ -64,31 +64,51 @@ async function hardResetLock(lock) {
 }
 
 /**
- * Unfreezes a Loaded 
+ * Unfreezes a LoadedLock
  * @param { LoadedLock } lock 
  * @returns { void }
  */
 async function unfreezeLock(lock) {
     /** @type { Freeze } */
     const freeze = await Freeze.findByPk(lock.Current_Freeze_ID)
-    if (!freeze) { // freeze supposed to exist, but not found in DB
-        // TODO: ??? fix by setting LockSearch.Current_Freeze_ID = undefined and saving ???
-        throw new Error("DB error: Lock is frozen, but freeze record does not exist.")
+    if (freeze) {
+        freeze.EndTime = Date.now()
+        await freeze.save()
+        updateLockAfterFreezeEnd(lock, freeze)
     }
-    // record end time, but don't delete freeze record, so we can calculate total freeze time
-    freeze.EndTime = Date.now() 
-    await freeze.save()
-    if (lock.Timed_Unlock_Time) { // timed lock
-        const freezelength = freeze.EndTime - freeze.Started // milliseconds
-        const oldUnlockTime = lock.Timed_Unlock_Time.getTime() // msecs since epoch
-        lock.Timed_Unlock_Time = new Date(freezelength + oldUnlockTime)
-    }
-    // unlink the lock from the freeze to unfreeze it
     lock.Current_Freeze_ID = null
     await lock.save()
 }
 
+/**
+ * This function modifies a loadedLock appropriately whenever a freeze ends.  It does so by modifying the 
+ * unlock time for timed locks and by modifying the chances for a card lock.  It should only be called 
+ * for those freezes that have expired.  If there was no end time originally specified by the KH when freezing
+ * the the end time MUST have already been set by the calling code.
+ * @param {LoadedLock} lock
+ * @param {Freeze} freeze
+ * @returns { void }
+ */
+async function updateLockAfterFreezeEnd(lock, freeze) {
+    if (!freeze.EndTime) {
+        throw new Error("function updateLockAfterFreezeEnd called with a freeze that didn't have an end time")
+    }
+    if (lock.Timed_Unlock_Time) { // timed lock
+        const freezelength = freeze.EndTime - freeze.Started // milliseconds
+        const oldUnlockTime = lock.Timed_Unlock_Time.getTime() // msecs since epoch
+        lock.Timed_Unlock_Time = new Date(freezelength + oldUnlockTime)
+        await lock.save();
+    } else { // not a timed lock, so it's a card lock
+        /** @type LoadedOriginalLock */
+        deck = await LoadedOriginalLock.findByPk(lock.Original_Lock_Deck)
+        deck.Chances_Remaining++ // lock gets one additional chance when unfreezing
+        deck.Chances_Last_Awarded = Date.now()
+        await deck.save() //lock not changed here, only deck
+    }
+}
+
 module.exports = {
     hardResetLock,
-    unfreezeLock
+    unfreezeLock,
+    updateLockAfterFreezeEnd
 }
