@@ -4,6 +4,9 @@ const { hardResetLock } = require("../helpers/lockModifyingFunctions");
 
 const handleAutoResets = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
+    //TODO: For efficiency we should probably eventually change the search criteria here
+    //      to only find those locks that have unpaused autoresets, since the DB can probably
+    //      do that more efficiently than the apollo server.  This will also decrease memory usage.
     const CurrentlyRunningLocks = await LoadedLock.findAll({
         where: {
             Unlocked: false
@@ -29,12 +32,19 @@ const handleAutoResets = async function() {
                     const Now = new Date();
 
                     const Diference = Now.getTime() - LastReset.getTime();
-                    const DiferenceMins = Math.round(((Diference % 86400000) % 3600000) / 60000);
+
+                    const DiferenceMins = Math.floor(Diference / 60000); // gives elapsed minutes since last reset
                     
                     if(DiferenceMins > LoadedOriginalLockRecord.Auto_Resets_Frequency) {
                         console.log(`Auto Reset Job: Auto Resetting...`);
                         hardResetLock(Lock)
-                        LoadedOriginalLockRecord.set({Last_Auto_Reset: new Date()});
+                        const new_Reset_Time_Left = 
+                                 LoadedOriginalLockRecord.Auto_Resets_Time_Left - LoadedOriginalLockRecord.Auto_Resets_Frequency
+                        LoadedOriginalLockRecord.set({
+                            Last_Auto_Reset: new Date(),
+                            Auto_Resets_Time_Left: new_Reset_Time_Left
+
+                        });
                         await LoadedOriginalLockRecord.save()
                     } else {
                         console.log(`Auto Reset Job: No need to reset... yet 👿`);

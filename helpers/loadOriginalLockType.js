@@ -89,10 +89,10 @@ async function loadOriginalLockType(CreatedLock) {
       Chances_Remaining: 1,
       Chances_Last_Awarded: Date.now(),
       Last_Drawn: null, // will be initialized when the next card is drawn
-      Auto_Resets_Paused: false, // is this the correct initialization??
-      Auto_Resets_Frequency: LockDetails.Reset_Frequency,
-      Auto_Resets_Time_Left: LockDetails.Reset_Frequency, // is this the correct initialization??
-      Last_Auto_Reset: LastAutoReset
+      Auto_Resets_Paused: false, 
+      Auto_Resets_Frequency: LockDetails.Reset_Frequency, //minutes
+      Auto_Resets_Time_Left: LockDetails.Reset_Frequency * LockDetails.Max_Resets, //minutes
+      Last_Auto_Reset: Date.now()
     })
 
     return OriginalLockRecord;
