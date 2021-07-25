@@ -17,6 +17,11 @@ const bree = new Bree({
             name: 'updateChancesLeft',
             timeout: '1s',
             interval: '20s'
+        },
+        {
+            name: 'botAction',
+            timeout: '1s',
+            interval: '5m'
         }
     ]
 });
