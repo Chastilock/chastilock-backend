@@ -19,9 +19,10 @@ const bree = new Bree({
             interval: '20s'
         },
         {
+            //Looking to run this every 5 minutes in Prod
             name: 'botAction',
             timeout: '1s',
-            interval: '5m'
+            interval: '20s'
         }
     ]
 });
