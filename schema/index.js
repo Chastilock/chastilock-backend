@@ -199,6 +199,7 @@ const typeDefs = gql`
     Bot_ID: Int!
     Bot_Name: String!
     Bot_Blurb: String!
+    Bot_Difficulty: String!
   }
 
   type Query {
