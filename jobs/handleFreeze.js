@@ -63,6 +63,11 @@ const handleFreeze = async function() {
                             EndTime: {
                                 [Op.gt]: CurrentDateAndTime
                             }
+                        },
+                        {
+                            LockID: {
+                                [Op.eq]: Lock.LoadedLock_ID
+                            }
                         }
                     ]
                 }
