@@ -10,15 +10,9 @@ const handleFreeze = async function() {
         }
     });
     //Loop through the locks
-    for(const Lock of CurrentlyRunningLocks) {
-        console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);
-        // is this next part necessary?  Lock is already the Lock with which we wish to work, isn't it?
-        // aren't Lock and ThisLock just two different names for the same LoadedLock objet
-        //const ThisLock = await LoadedLock.findOne({
-        //    where: {
-        //        LoadedLock_ID: Lock.LoadedLock_ID
-        //    }
-        //});
+    for(let i = 0; i < CurrentlyRunningLocks.length; i++){
+        const Lock = CurrentlyRunningLocks[i];
+        console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);       
 
         //Check if the lock is frozen and update the loaded lock table as such
 
@@ -47,10 +41,8 @@ const handleFreeze = async function() {
             }
         }
 
-        // I think the following code will freeze all unfrozen locks, won't it?  Should this be inside of an if statement
-        // so that only certain unfrozen locks are frozen?  I'm not sure which locks those should be?
             console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
-            //TESTED THIS AND IT WORKS!!
+
             const CurrentFreeze = await Freeze.findOne({
                 where: {
                     [Op.and]: [
@@ -65,7 +57,7 @@ const handleFreeze = async function() {
                             }
                         },
                         {
-                            LockID: {
+                            Lock_ID: {
                                 [Op.eq]: Lock.LoadedLock_ID
                             }
                         }
@@ -76,7 +68,6 @@ const handleFreeze = async function() {
                 Lock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
                 console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
             }
-            
             await Lock.save()
     };
 
