@@ -19,6 +19,18 @@ module.exports = {
       Bot_Difficulty: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      Max_Time_Before_Updates: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });  
   },

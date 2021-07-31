@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        Bot_KH: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+        },
         Code: {
             type: Sequelize.STRING,
             allowNull: false
@@ -86,6 +90,7 @@ module.exports = (sequelize) => {
     LoadedLock.associate = (models) => {
         LoadedLock.belongsTo(models.CreatedLock, {foreignKey: "CreatedLock_ID"})
         LoadedLock.belongsTo(models.User, {as: "KeyholderUser", foreignKey: "Keyholder"});
+        LoadedLock.belongsTo(models.Bot, {foreignKey: "Bot_KH"});
         LoadedLock.belongsTo(models.User, {as: "LockeeUser", foreignKey: "Lockee"});
         LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
         LoadedLock.belongsTo(models.Freeze, {foreignKey: "Current_Freeze_ID"})
