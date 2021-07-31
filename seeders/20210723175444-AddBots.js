@@ -6,7 +6,8 @@ module.exports = {
     {
       Bot_Name: "EvilEye",
       Bot_Blurb: "While this bot's ultimate goal is world domination, he still has time to keep a very watchful eye on his lockees",
-      Bot_Difficulty: "7/10"
+      Bot_Difficulty: "7/10",
+      Max_
     },
     {
       Bot_Name: "Herman",
