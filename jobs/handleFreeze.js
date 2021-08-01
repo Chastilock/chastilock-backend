@@ -10,7 +10,7 @@ const handleFreeze = async function() {
         }
     });
     //Loop through the locks
-    for(Lock of CurrentlyRunningLocks) {
+    for(const Lock of CurrentlyRunningLocks) {
         console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);
         // is this next part necessary?  Lock is already the Lock with which we wish to work, isn't it?
         // aren't Lock and ThisLock just two different names for the same LoadedLock objet
