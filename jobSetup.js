@@ -3,7 +3,7 @@ const Graceful = require('@ladjs/graceful')
 
 const bree = new Bree({
     jobs: [
-        /* {
+        {
             name: 'handleFreeze',
             timeout: '1s',
             interval: '20s'
@@ -17,12 +17,12 @@ const bree = new Bree({
             name: 'updateChancesLeft',
             timeout: '1s',
             interval: '20s'
-        }, */
+        },
         {
-            //Looking to run this every 5 minutes in Prod
+            //Looking to run this every 15 minutes in Prod
             name: 'botAction',
-            timeout: '1s',
-            interval: '20s'
+            timeout: '5m',
+            interval: '15m'
         }
     ]
 });
