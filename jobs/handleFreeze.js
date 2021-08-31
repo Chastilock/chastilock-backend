@@ -10,15 +10,9 @@ const handleFreeze = async function() {
         }
     });
     //Loop through the locks
-    for(const Lock of CurrentlyRunningLocks) {
-        console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);
-        // is this next part necessary?  Lock is already the Lock with which we wish to work, isn't it?
-        // aren't Lock and ThisLock just two different names for the same LoadedLock objet
-        //const ThisLock = await LoadedLock.findOne({
-        //    where: {
-        //        LoadedLock_ID: Lock.LoadedLock_ID
-        //    }
-        //});
+    for(let i = 0; i < CurrentlyRunningLocks.length; i++){
+        const Lock = CurrentlyRunningLocks[i];
+        console.log(`Freeze Job: Updating LoadedLock: ${Lock.LoadedLock_ID}`);       
 
         //Check if the lock is frozen and update the loaded lock table as such
 
@@ -35,22 +29,24 @@ const handleFreeze = async function() {
             if (FreezeRecord === null) {
                 console.log(`Freeze doesn't exist. Fixing...`)
                 Lock.set({Current_Freeze_ID: null})
+                await Lock.save()
             } else {
                 //Check if the freeze has ended
                 if(FreezeRecord.EndTime != null && FreezeRecord.EndTime < CurrentDateAndTime) {
                     console.log(`Freeze Job: Freeze is scheduled to have ended already. Removing Freeze...`)
-                    // need code here to handle timed locks which need their end time adjusted beacuse of the freeze
-                    // and to give card locks an additional chance
                     updateLockAfterFreezeEnd(Lock, FreezeRecord)
                     Lock.set({Current_Freeze_ID: null})
+                    await Lock.save()
                 }
             }
         }
 
-        // I think the following code will freeze all unfrozen locks, won't it?  Should this be inside of an if statement
-        // so that only certain unfrozen locks are frozen?  I'm not sure which locks those should be?
             console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} is not currently frozen, but should it be... 👿`);
-            //TESTED THIS AND IT WORKS!!
+            // find any KH freeze for this lock that should have started; 
+            // TODO: I don't believe this will find a keyholder freeze that has null for the end time. Note also
+            // that there may potentially be many overlapping KH freezes and this will only find one of them.  
+            // If there are overlapping freezes, the result of the following code is indeterminate as to which one
+            // of them it is working with.  It probably shouldn't make a difference?
             const CurrentFreeze = await Freeze.findOne({
                 where: {
                     [Op.and]: [
@@ -63,18 +59,44 @@ const handleFreeze = async function() {
                             EndTime: {
                                 [Op.gt]: CurrentDateAndTime
                             }
+                        },
+                        {
+                            Lock_ID: {
+                                [Op.eq]: Lock.LoadedLock_ID
+                            }
+                        },
+                        {
+                            Type: {
+                                [Op.eq]: "KH"
+                            }
                         }
                     ]
                 }
             });
             if(CurrentFreeze) {
-                Lock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
-                console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
+                // if the found freeze is already applied to the lock, no need to do anything, so
+                // test for inequality.  Following code will run if Lock.Current_Freeze_ID is null or if
+                // the ID's are different.
+                if(CurrentFreeze.Freeze_ID !== Lock.Current_Freeze_ID)
+                {
+                    // if there's a previous freeze, end it and set its end time to be the start time of 
+                    // the current freeze, so there's no overlap or gap to mess up freeze time stats.
+                    if (Lock.Current_Freeze_ID)  // might be null, so test
+                    {
+                        const OldFreeze = await Freeze.findByPk(Lock.Current_Freeze_ID);
+                        OldFreeze.EndTime = CurrentFreeze.StartTime;
+                        OldFreeze.save();
+                    }
+                    // then add the new freeze & save it
+                    Lock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
+                    await Lock.save()
+                    console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
+                }
             }
-            
-            await Lock.save()
+            // await Lock.save()
+            // moved save() to inside of those if's where appropriate
+            // otherwise code would save every running lock every time the job runs with lots of DB churn?
     };
-
 }
 module.exports = handleFreeze;
 handleFreeze();
