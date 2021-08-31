@@ -10,11 +10,16 @@ async function loadlock(req, res) {
             Shared_Code: LockID,
             Shared: 1
         }
-    })
+    });
 
     if(LockSearch) {
 
         const QR = await QRAsDataURL(LockID);
+        
+        if(LockSearch.OriginalLockType_ID != null) {
+            const LockType = await CreatedLock.getOriginalLockType();
+            console.log(LockType)
+        }
 
         res.render("loadlock", {
             LockName: LockSearch.Lock_Name,
