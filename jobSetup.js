@@ -17,7 +17,13 @@ const bree = new Bree({
             name: 'updateChancesLeft',
             timeout: '1s',
             interval: '20s'
-        }
+        },
+        /* {
+            //Looking to run this every 15 minutes in Prod
+            name: 'botAction',
+            timeout: '5m',
+            interval: '15m'
+        } */
     ]
 });
 

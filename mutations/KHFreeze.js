@@ -41,6 +41,9 @@ async function KHFreeze(inputs, models, req) {
         });
       }
 
+    // TODO: ??? Need code here to update chances before freezing lock???  If we're checking chances every 20 seconds
+    // with a server job then it's probably not necessary.
+
     // An already existing current card freeze should be ended
     // An already existing KH freeze should be either be modified or it should be ended and 
     //       new KH freeze created.  Alternatively, a KH could be prevented from KH freezing a 
@@ -50,9 +53,9 @@ async function KHFreeze(inputs, models, req) {
         /** @type { Freeze } */
         existingFreeze = await Freeze.findByPk(LockSearch.Current_Freeze_ID)
         if (!existingFreeze) {
-            throw Error ('DB Error: could not find the freeze record')
-        }
-        if (existingFreeze.Type == "KH") { // already existing KH freeze, change endTime if provided
+            LockSearch.Current_Freeze_ID = null
+            await LockSearch.save()
+        } else if (existingFreeze.Type == "KH") { // already existing KH freeze, change endTime if provided
             if (date) { // if end date provided, change it
                 existingFreeze.EndTime = date
                 await existingFreeze.save()
@@ -69,7 +72,10 @@ async function KHFreeze(inputs, models, req) {
         }
         else if (existingFreeze.Type == "Card") { //already existing Card freeze
             await unfreezeLock(LockSearch) // tested
+        } else {
+            throw Error("Unknown freeze type - neither KH nor Card")
         }
+
     }
     // tested
     

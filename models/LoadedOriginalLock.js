@@ -66,13 +66,29 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        Cumulative: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
+        Hide_Card_Info: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
+        Chance_Period: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
         Chances_Remaining: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        Chances_Last_Calulated: {
+        Chances_Last_Awarded: {
             type: Sequelize.DATE,
             allowNull: false
+        },
+        Last_Drawn: {
+            type: Sequelize.DATE,
+            allowNull: true
         },
         Auto_Resets_Paused: {
             type: Sequelize.BOOLEAN,

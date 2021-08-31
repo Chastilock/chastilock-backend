@@ -118,9 +118,12 @@ module.exports = {
 
     await queryInterface.removeColumn('LoadedLocks', 'Real_Lock');
     await queryInterface.removeColumn('LoadedLocks', 'Free_Unlock');
-    await queryInterface.changeColumn('LoadedLocks', 'Hide_Info', {
+    // issue with changing type back to DATE if BOOLEAN records already exist
+    await queryInterface.removeColumn('LoadedLocks', 'Hide_Info');
+    await queryInterface.addColumn("LoadedLocks", "Hide_Info", {
       type: Sequelize.DATE,
       allowNull: true,
+      after: "Timed_Unlock_Time"
     });
   }
 };

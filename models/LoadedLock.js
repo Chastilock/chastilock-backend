@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        Bot_KH: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+        },
         Code: {
             type: Sequelize.STRING,
             allowNull: false
@@ -57,26 +61,6 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             allowNull: true
         },
-        Cumulative: {
-            type: Sequelize.BOOLEAN,
-            allowNull: true
-        },
-        Chance_Period: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
-        Chances: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
-        Last_Pick_Time: {
-            type: Sequelize.DATE,
-            allowNull: true     
-        },            
-        Last_Chance_Time: {
-            type: Sequelize.DATE,
-            allowNull: true   
-        },
         Current_Freeze_ID: {
           type: Sequelize.INTEGER,
           allowNull: true
@@ -106,6 +90,7 @@ module.exports = (sequelize) => {
     LoadedLock.associate = (models) => {
         LoadedLock.belongsTo(models.CreatedLock, {foreignKey: "CreatedLock_ID"})
         LoadedLock.belongsTo(models.User, {as: "KeyholderUser", foreignKey: "Keyholder"});
+        LoadedLock.belongsTo(models.Bot, {foreignKey: "Bot_KH"});
         LoadedLock.belongsTo(models.User, {as: "LockeeUser", foreignKey: "Lockee"});
         LoadedLock.belongsTo(models.LoadedOriginalLock, {foreignKey: "Original_Lock_Deck"})
         LoadedLock.belongsTo(models.Freeze, {foreignKey: "Current_Freeze_ID"})

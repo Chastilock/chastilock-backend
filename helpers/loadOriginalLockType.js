@@ -9,6 +9,16 @@ async function loadOriginalLockType(CreatedLock) {
     const OriginalLockID = CreatedLock.OriginalLockType_ID;
     const LockDetails = await OriginalLockType.findByPk(OriginalLockID);
 
+    // moved validation up to here, since no sense trying to do the rest if the lock template can't be found
+    if(!LockDetails) {
+      Errors.push("Cannot find lock");
+    }
+    if(Errors.length) {
+      throw new UserInputError("Unable to load lock", {
+        invalidArgs: Errors
+      })
+    }
+
     let LastAutoReset
     if(LockDetails.Auto_Resets_Enabled === true) {
       LastAutoReset = new Date();
@@ -17,10 +27,6 @@ async function loadOriginalLockType(CreatedLock) {
     }
 
     const HideCardInfo = LockDetails.Hide_Card_Info;
-
-    if(!LockDetails) {
-        Errors.push("Cannot find lock");
-    }
 
     const Reds = await RandomInt(LockDetails.Variable_Min_Reds, LockDetails.Variable_Max_Reds);
     const Greens = await RandomInt(LockDetails.Variable_Min_Greens, LockDetails.Variable_Max_Greens);
@@ -35,11 +41,6 @@ async function loadOriginalLockType(CreatedLock) {
 
     const RandomSplit = await SplitNumberInto2Rand(TotalRandomReds);
 
-    // ? was += intended instead of =+ ?
-    //TotalAddReds =+ RandomSplit.Num1  // same as TotalAddReds = RandomSplit.Num1
-    //TotalRemoveReds =+ RandomSplit.Num2
-
-    //const AddRedSplit = await SplitNumberInto3Rand(TotalAddReds); // skewed 50% to Add1
     const AddRedSplit = split(TotalAddReds, 3)
 
     let Add1 = AddRedSplit[0]
@@ -51,7 +52,6 @@ async function loadOriginalLockType(CreatedLock) {
     let Remove1 = RemoveRedSplit.Num1
     let Remove2 = RemoveRedSplit.Num2
 
-    // const SplitRandom = await SplitNumberInto5Rand(TotalRandomReds); //skewed 87.5% adds, only 12.5 removes
     const SplitRandom = split(TotalRandomReds, 5)
     Add1 = Add1 + SplitRandom[0]
     Add2 = Add2 + SplitRandom[1]
@@ -67,11 +67,6 @@ async function loadOriginalLockType(CreatedLock) {
       GoAgainCards = Math.floor((RandomPercentage / 100) * TotalCards); // must be whole number
     }
 
-    if(Errors.length) {
-      throw new UserInputError("Unable to load lock", {
-        invalidArgs: Errors
-      })
-    }
     /** @type {LoadedOriginalLock} */
     const OriginalLockRecord = await LoadedOriginalLock.create({
       Remaining_Red: Reds,
@@ -88,11 +83,16 @@ async function loadOriginalLockType(CreatedLock) {
       Remaining_Double: Doubles,
       Remaining_Reset: Resets,
       Remaining_GoAgain: GoAgainCards,
-      Last_Auto_Reset: LastAutoReset,
-      Auto_Resets_Frequency: LockDetails.Reset_Frequency,
-      //Cumulative: LockDetails.Cumulative, //moved to LoadedLock
-      //Hide_Card_Info: HideCardInfo,  //moved to LoadedLock
-      //Chance_Period: LockDetails.Chance_Period //moved to LoadedLock
+      Cumulative: LockDetails.Cumulative,
+      Hide_Card_Info: LockDetails.Hide_Card_Info,
+      Chance_Period: LockDetails.Chance_Period,
+      Chances_Remaining: 1,
+      Chances_Last_Awarded: Date.now(),
+      Last_Drawn: null, // will be initialized when the next card is drawn
+      Auto_Resets_Paused: false, 
+      Auto_Resets_Frequency: LockDetails.Reset_Frequency, //minutes
+      Auto_Resets_Time_Left: LockDetails.Reset_Frequency * LockDetails.Max_Resets, //minutes
+      Last_Auto_Reset: Date.now()
     })
 
     return OriginalLockRecord;
