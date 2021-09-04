@@ -11,6 +11,9 @@ const typeDefs = gql`
 	  Emergency_Keys: Int
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
+    Joined_CK_Timestamp: Int
+    CK_Username: String,
+    CK_UserID: Int
   }
   type CreatedLock {
     Lock_ID: ID!
@@ -112,7 +115,7 @@ const typeDefs = gql`
     Remaining_Red: Int!
     Remaining_Green: Int!
     Found_Green: Int!
-    Multiple_Greens_Required :Boolean!
+    Multiple_Greens_Required: Boolean!
     Remaining_Sticky: Int!
     Remaining_Add1: Int!
     Remaining_Add2: Int!
@@ -215,7 +218,7 @@ const typeDefs = gql`
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
     sharedLock(id: String!): CreatedLock!
-me: User!
+    me: User!
   }
 
   type Mutation {
@@ -237,6 +240,7 @@ me: User!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
+    ChastikeyImport(CKUsername: String!, TransferCode: String!): User!
   }`;
 
 module.exports = typeDefs

@@ -46,8 +46,19 @@ module.exports = (sequelize) => {
       Emergency_Keys: {
         type: Sequelize.INTEGER,
         allowNull: true
+      },
+      Joined_CK_Timestamp: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      CK_Username: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      CK_UserID: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       }
-
     }, {sequelize}
     );
 
