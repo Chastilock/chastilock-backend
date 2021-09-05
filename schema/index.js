@@ -206,6 +206,15 @@ const typeDefs = gql`
     Bot_Difficulty: String!
   }
 
+  type ChastikeyImport {
+    Transfer_ID: Int!
+    User: User!
+    Chastikey_Username: String!
+    Expires: String!
+    Started: String!
+    Complete: String
+  }
+
   type Query {
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
@@ -235,12 +244,11 @@ const typeDefs = gql`
     changeUserSettings(Allow_Duplicate_Characters: Boolean!, Show_Combo_To_Keyholder: Boolean!, Share_Stats: Boolean!): UserSetting!
     KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
     KHReset(LoadedLock_ID: Int!): LoadedLock!
-    # Needs testing!!
     KHFreeze(LoadedLock_ID: Int!, EndTime: String): LoadedLock!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
-    ChastikeyImport(CKUsername: String!, TransferCode: String!): User!
+    fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
   }`;
 
 module.exports = typeDefs

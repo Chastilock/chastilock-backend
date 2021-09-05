@@ -76,8 +76,6 @@ async function ChastikeyImport(inputs, models, req) {
     });
     ThisUser.save(); */
 
-
-
 }
 module.exports = ChastikeyImport;
 ChastikeyImport({CKUsername: "Havok", TransferCode: "562626261"}, null, null)
