@@ -213,6 +213,11 @@ const typeDefs = gql`
     Expires: String!
     Started: String!
     Complete: String
+    NumOfKeyholderLocks: Int!
+    NumOfLockeeLocks: Int!
+    AverageLockeeRating: Int!
+    AverageKeyholderRating: Int!
+    Keyholders_Moved_Over: Boolean
   }
 
   type Query {
@@ -249,6 +254,8 @@ const typeDefs = gql`
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
     fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
+    importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!): ChastikeyImport!
+    restartChastikeyImport: String!
   }`;
 
 module.exports = typeDefs

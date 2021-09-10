@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
       },
       Data: {
         type: Sequelize.TEXT('long'),
-        allowNull: false
+        allowNull: true
       },
       Expires: {
         type: Sequelize.DATE,
@@ -31,6 +31,26 @@ module.exports = (sequelize) => {
       },
       Complete: {
         type: Sequelize.DATE,
+        allowNull: true
+      },
+      NumOfKeyholderLocks: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      NumOfLockeeLocks: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      AverageLockeeRating: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      AverageKeyholderRating: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      Keyholders_Moved_Over: {
+        type: Sequelize.BOOLEAN,
         allowNull: true
       }
     }, {sequelize}

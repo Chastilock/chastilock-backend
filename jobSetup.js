@@ -18,6 +18,11 @@ const bree = new Bree({
             timeout: '1s',
             interval: '20s'
         },
+        {
+            name: 'deleteExpiredImports',
+            timeout: '60s',
+            interval: '5m'
+        }
         /* {
             //Looking to run this every 15 minutes in Prod
             name: 'botAction',

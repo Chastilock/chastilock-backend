@@ -108,7 +108,11 @@ module.exports = (sequelize) => {
       Require_DM: {
         type: Sequelize.BOOLEAN,
         allowNull: false
-      }
+      },
+      Imported_From_CK: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      } 
     }, {sequelize}
     );
 
