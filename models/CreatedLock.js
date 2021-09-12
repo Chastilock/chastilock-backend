@@ -112,7 +112,11 @@ module.exports = (sequelize) => {
       Imported_From_CK: {
         type: Sequelize.BOOLEAN,
         allowNull: true
-      } 
+      },
+      CK_ShareID: {
+        type: Sequelize.STRING,
+        allowNull: true
+      }
     }, {sequelize}
     );
 

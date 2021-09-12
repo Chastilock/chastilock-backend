@@ -104,6 +104,14 @@ async function importChastikeyData(inputs, models, req) {
                     LimitUsers = true;
                 }
 
+                let BlockUserRating = null;
+                if(i.minRatingRequired === 0) {
+                    BlockUserRating = false;
+                } else {
+                    BlockUserRating = true;
+                }
+                
+
                 models.CreatedLock.create({
                     User_ID: req.Authenticated,
                     Shared: 1,
@@ -123,13 +131,19 @@ async function importChastikeyData(inputs, models, req) {
                     Limit_Users: LimitUsers,
                     User_Limit_Amount: i.maxUsers,
                     Block_Test_Locks: i.blockTestLocks,
-                    Block_User_Rating_Enabled: false,
+                    Block_User_Rating_Enabled: BlockUserRating,
+                    Block_User_Rating: i.minRatingRequired,
                     Block_Already_Locked: i.blockUsersAlreadyLocked,
                     Block_Stats_Hidden: i.blockUsersWithStatsHidden,
                     Only_Accept_Trusted: i.forceTrust,
                     Require_DM: i.requireContactFirst,
-                    Imported_From_CK: true
+                    Imported_From_CK: true,
+                    CK_ShareID: i.shareID
                 })
+            } else {
+                //Timed KH Locks to import
+
+                
             }
         };
     }
