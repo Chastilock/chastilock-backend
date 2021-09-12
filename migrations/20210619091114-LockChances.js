@@ -43,14 +43,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return [
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Chance_Period"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Remaining"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Last_Calulated"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Paused"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Frequency"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Time_Left"),
-      await queryInterface.removeColumn("LoadedOriginalLocks", "Last_Auto_Reset")
-    ]
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Chance_Period");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Remaining");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Chances_Last_Calulated");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Paused");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Frequency");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Auto_Resets_Time_Left");
+      await queryInterface.removeColumn("LoadedOriginalLocks", "Last_Auto_Reset");
   }
 };

@@ -2,37 +2,44 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.addColumn("Users", "Joined_CK_Timestamp", {
+    await queryInterface.addColumn("Users", "Joined_CK_Timestamp", {
         type: Sequelize.DATE,
         allowNull: true,
         after: "Emergency_Keys"
     });
 
-    queryInterface.addColumn("Users", "CK_Username", {
+    await queryInterface.addColumn("Users", "CK_Username", {
       type: Sequelize.STRING,
       allowNull: true,
       after: "Joined_CK_Timestamp"
     });
     
-    queryInterface.addColumn("Users", "CK_UserID", {
+    await queryInterface.addColumn("Users", "CK_UserID", {
       type: Sequelize.INTEGER,
       allowNull: true,
       after: "CK_Username"
     });
 
-    queryInterface.addColumn("CreatedLocks", "Imported_From_CK", {
+    await queryInterface.addColumn("CreatedLocks", "Imported_From_CK", {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       after: "Require_DM"
     });
 
-    queryInterface.addColumn("OriginalLockTypes", "Imported_From_CK", {
+    await queryInterface.addColumn("OriginalLockTypes", "Imported_From_CK", {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       after: "Max_Resets"
     });
 
-    queryInterface.createTable("ChastikeyImports", {
+    await queryInterface.addColumn("CreatedLocks", "CK_ShareID", {
+      type: Sequelize.STRING,
+      allowNull: true,
+      after: "Imported_From_CK"
+    });
+
+
+    await queryInterface.createTable("ChastikeyImports", {
       Transfer_ID: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -98,11 +105,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.removeColumn("Users", "Joined_CK_Timestamp");
-    queryInterface.removeColumn("Users", "CK_Username");
-    queryInterface.removeColumn("Users", "CK_UserID");
-    queryInterface.removeColumn("OriginalLockTypes", "Imported_From_CK");
-    queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");
-    queryInterface.dropTable("ChastikeyImports");
+    await queryInterface.removeColumn("Users", "Joined_CK_Timestamp");
+    await queryInterface.removeColumn("Users", "CK_Username");
+    await queryInterface.removeColumn("Users", "CK_UserID");
+    await queryInterface.removeColumn("OriginalLockTypes", "Imported_From_CK");
+    await queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");
+    await queryInterface.removeColumn("CreatedLocks", "CK_ShareID");
+    await queryInterface.dropTable("ChastikeyImports");
   }
 };

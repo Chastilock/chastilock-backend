@@ -97,6 +97,13 @@ async function importChastikeyData(inputs, models, req) {
                     AllowBuyout = true;
                 }
 
+                let LimitUsers = null;
+                if(i.maxUsers === 0) {
+                    LimitUsers = false;
+                } else {
+                    LimitUsers = true;
+                }
+
                 models.CreatedLock.create({
                     User_ID: req.Authenticated,
                     Shared: 1,
@@ -113,11 +120,10 @@ async function importChastikeyData(inputs, models, req) {
                     Allow_Buyout: AllowBuyout,
                     Start_Lock_Frozen: i.startLockFrozen,
                     Disable_Keyholder_Decision: i.keyholderDecisionDisabled,
-                    Limit_Users: false, //TODO: this needs looking at!
-                    //User_Limit_Amount: inputs.User_Limit_Amount,
+                    Limit_Users: LimitUsers,
+                    User_Limit_Amount: i.maxUsers,
                     Block_Test_Locks: i.blockTestLocks,
-                    Block_User_Rating_Enabled: false, //TODO: This needs looking at
-                    //Block_User_Rating: inputs.Block_User_Rating,
+                    Block_User_Rating_Enabled: false,
                     Block_Already_Locked: i.blockUsersAlreadyLocked,
                     Block_Stats_Hidden: i.blockUsersWithStatsHidden,
                     Only_Accept_Trusted: i.forceTrust,

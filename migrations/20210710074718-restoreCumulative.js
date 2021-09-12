@@ -17,14 +17,7 @@ module.exports = {
       allowNull: false,
       after: 'Hide_Card_Info'
     });
-
-
-
-
-
-
-
-
+    
   },
 
   down: async (queryInterface, Sequelize) => {
