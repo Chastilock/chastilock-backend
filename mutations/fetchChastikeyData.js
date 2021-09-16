@@ -39,8 +39,6 @@ async function fetchChastikeyData(inputs, models, req) {
     const Response = await fetch('https://api.chastikey.com/v0.5/transferdata.php', options);
     const JSONData = await Response.json();
 
-    console.log(JSONData)
-
     if(JSONData.response.status != 200) {
         throw new UserInputError("Something went wrong. It is likely the code is incorrect or has expired. Please try again.");
     }
@@ -70,7 +68,7 @@ async function fetchChastikeyData(inputs, models, req) {
     let KeyholdersMovedOver = true;
 
    for (const i of JSONData.lockeeLocks) {
-    console.log(i.keyholderID)
+
         if(i.keyholderID != 0) {
             const CheckForKH = await models.User.findOne({
                 where: {
