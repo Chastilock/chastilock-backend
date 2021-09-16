@@ -32,6 +32,12 @@ module.exports = {
       after: "Max_Resets"
     });
 
+    await queryInterface.addColumn("TimerLockTypes", "Imported_From_CK", {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      after: "Hide_Timer"
+    });
+
     await queryInterface.addColumn("CreatedLocks", "CK_ShareID", {
       type: Sequelize.STRING,
       allowNull: true,
@@ -109,6 +115,7 @@ module.exports = {
     await queryInterface.removeColumn("Users", "CK_Username");
     await queryInterface.removeColumn("Users", "CK_UserID");
     await queryInterface.removeColumn("OriginalLockTypes", "Imported_From_CK");
+    await queryInterface.removeColumn("TimerLockTypes", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "CK_ShareID");
     await queryInterface.dropTable("ChastikeyImports");

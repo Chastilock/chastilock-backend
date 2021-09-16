@@ -70,6 +70,19 @@ const typeDefs = gql`
     Auto_Resets_Enabled:Boolean!
     Reset_Frequency:Int
     Max_Resets:Int
+    Imported_From_CK: Boolean
+  }
+
+  type TimerLockType {
+    Timer_Type_ID: Int!
+    Max_Days: Int!
+    Max_Hours: Int!
+    Max_Minutes: Int!
+    Min_Days: Int!
+    Min_Hours: Int!
+    Min_Minutes: Int!
+    Hide_Timer: Boolean!
+    Imported_From_CK: Boolean
   }
 
   type App {
