@@ -246,6 +246,15 @@ async function importChastikeyData(inputs, models, req) {
         };
     }
 
+    if(inputs.LockeeImportActiveLocks) {
+        
+        for (let index = 0; index < DataToImport.lockeeLocks.length; index++) {
+        
+        
+        
+        }
+    }
+
     ImportRecord.set({
         Complete: new Date,
         Data: null
