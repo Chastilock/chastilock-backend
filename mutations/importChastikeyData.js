@@ -172,7 +172,8 @@ async function importChastikeyData(inputs, models, req) {
                     Min_Days: MinDays,
                     Min_Hours: MinHours,
                     Min_Minutes: MinMinutes,
-                    Hide_Timer: i.timerHidden
+                    Hide_Timer: i.timerHidden,
+                    Imported_From_CK: true
                 })
             
                 const TimerRecordID = TimerRecord.Timer_Type_ID;
