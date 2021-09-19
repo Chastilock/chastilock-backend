@@ -249,9 +249,125 @@ async function importChastikeyData(inputs, models, req) {
     if(inputs.LockeeImportActiveLocks) {
         
         for (let index = 0; index < DataToImport.lockeeLocks.length; index++) {
-        
-        
-        
+
+            console.log("Importing Lockee lock")
+          
+            const i = DataToImport.lockeeLocks[index];
+
+            let KeyholderFoundBool = false;
+            
+            if(i.keyholderID != 0) {
+                KeyholderFound = await models.User.findOne({
+                    where: {
+                        CK_UserID: i.keyholderID
+                    }
+                });
+
+                if(KeyholderFound === true) {
+                    KeyholderFoundBool = true;
+                }
+            }
+
+            if((i.keyholderID === 0) || (KeyholderFoundBool == true) || (KeyholderFoundBool === false && inputs.ImportLoadedLocksWithMissingKH === true)) {
+                
+                const CreatedLockRecord = await models.CreatedLock.findOne({
+                    where: {
+                        CK_ShareID: i.shareID
+                    }
+                })
+
+                let CreatedLockID = null;
+
+                if(CreatedLockRecord != null) {
+                    CreatedLockID = CreatedLockRecord.Lock_ID
+                }
+
+                let Keyholder = null;
+                if(i.keyholderID != 0) {
+                    const KeyholderSearch = await models.User.findOne({
+                        where: {
+                            CK_UserID: i.keyholderID
+                        }
+                    })
+
+                    if(KeyholderSearch) {
+                        Keyholder = KeyholderSearch.User_ID
+                    }
+
+                }
+
+                const Emergency_Keys_Enabled = !i.keysDisabled
+
+                const FreeUnlock = false
+                if(i.botChosen) {
+                    FreeUnlock = true
+                }
+                
+                if(i.fixed === 1) {
+
+                    const UnlockTime = new Date;
+                    UnlockTime.addMinutes(i.minutes);
+
+                    models.LoadedLock.create({
+                        CreatedLock_ID: CreatedLockID,
+                        Lockee: req.Authenticated,
+                        Keyholder: Keyholder,
+                        Code: i.combination,
+                        Timed_Unlock_Time: UnlockTime,
+                        Hide_Info: i.timerHidden,
+                        Emergency_Keys_Enabled: Emergency_Keys_Enabled,
+                        Emergency_Keys_Amount: 1,
+                        Test_Lock: false,
+                        Trusted: i.trustKeyholder,
+                        Unlocked: false,
+                        Free_Unlock: FreeUnlock,
+                    });
+                } else {
+                    const LoadedOriginal = await models.LoadedOriginalLock.create({
+                        Remaining_Red: i.redCards,
+                        Remaining_Green: i.greenCards,
+                        Found_Green: i.greenCardsPickedSinceReset,
+                        Multiple_Greens_Required: i.multipleGreensRequired,
+                        Remaining_Sticky: i.stickyCards,
+                        Remaining_Add1: i.yellowAdd1Cards,
+                        Remaining_Add2: i.yellowAdd2Cards,
+                        Remaining_Add3: i.yellowAdd3Cards,
+                        Remaining_Remove1: i.yellowMinus1Cards,
+                        Remaining_Remove2: i.yellowMinus2Cards,
+                        Remaining_Freeze: i.freezeCards,
+                        Remaining_Double: i.doubleUpCards,
+                        Remaining_Reset: i.resetCards,
+                        Remaining_GoAgain: i.goAgainCards,
+                        Cumulative: i.cumulative,
+                        Hide_Card_Info: i.cardInfoHidden,
+                        Chance_Period: i.regularity * 60,
+                        Chances_Remaining: 0, //TODO: Needs fixing!
+                        Chances_Last_Awarded: new Date(),
+                        Last_Drawn: new Date(i.timestampLastPicked * 1000), //Last Picked from API always seems to be 0
+                        Auto_Resets_Paused: i.autoResetsPaused,
+                        Auto_Resets_Frequency: i.autoResetFrequencyInSeconds * 60,
+                        Auto_Resets_Time_Left: i.maxAutoResets - i.noOfTimesAutoReset,
+                        Last_Auto_Reset: new Date(i.timestampLastAutoReset * 1000)
+                    });
+
+                    models.LoadedLock.create({
+                        CreatedLock_ID: CreatedLockID,
+                        Lockee: req.Authenticated,
+                        Keyholder: Keyholder || null,
+                        Code: i.combination,
+                        Original_Lock_Deck: LoadedOriginal.Original_Loaded_ID,
+                        Hide_Info: i.cardInfoHidden,
+                        Emergency_Keys_Enabled: Emergency_Keys_Enabled,
+                        Emergency_Keys_Amount: 1,
+                        Test_Lock: false,
+                        Trusted: i.trustKeyholder,
+                        Unlocked: false,
+                        Free_Unlock: FreeUnlock,
+                        Imported_From_CK: true,
+                        CK_ShareID: i.shareID
+                    });
+                }
+            }
         }
     }
 
@@ -260,6 +376,18 @@ async function importChastikeyData(inputs, models, req) {
         Data: null
     });
     ImportRecord.save();
+
+    const UserRecord = await models.User.findOne({
+        where: {
+            User_ID: req.Authenticated
+        }
+    });
+   UserRecord.set({
+       Joined_CK_Timestamp: new Date(DataToImport.userData.timestampJoined),
+       CK_Username: DataToImport.userData.username,
+       CK_UserID: DataToImport.userData.id
+   });
+   UserRecord.save(); 
 
     return ImportRecord;
 
