@@ -84,6 +84,14 @@ module.exports = (sequelize) => {
         Real_Lock: { 
             allowNull: true,
             type: Sequelize.INTEGER
+        },
+        Imported_From_CK: {
+            type: Sequelize.BOOLEAN,
+            allowNull: true
+          },
+        CK_ShareID: {
+            type: Sequelize.STRING,
+            allowNull: true
         }           
     }, {sequelize});
     

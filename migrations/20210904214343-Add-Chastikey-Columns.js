@@ -50,6 +50,17 @@ module.exports = {
       after: "Imported_From_CK"
     });
 
+    await queryInterface.addColumn("LoadedLocks", "Imported_From_CK", {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      after: "Real_Lock"
+    });
+
+    await queryInterface.addColumn("LoadedLocks", "CK_ShareID", {
+      type: Sequelize.STRING,
+      allowNull: true,
+      after: "Imported_From_CK"
+    });
 
     await queryInterface.createTable("ChastikeyImports", {
       Transfer_ID: {
@@ -124,6 +135,8 @@ module.exports = {
     await queryInterface.removeColumn("TimerLockTypes", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "CK_ShareID");
+    await queryInterface.removeColumn("LoadedLocks", "Imported_From_CK");
+    await queryInterface.removeColumn("LoadedLocks", "CK_ShareID");
     await queryInterface.dropTable("ChastikeyImports");
     await queryInterface.changeColumn("LoadedLocks", "CreatedLock_ID", {
       type: Sequelize.INTEGER,
