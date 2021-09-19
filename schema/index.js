@@ -267,7 +267,7 @@ const typeDefs = gql`
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
     fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
-    importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, Import_Loaded_Locks_With_Missing_KH: Boolean!): ChastikeyImport!
+    importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, ImportLoadedLocksWithMissingKH: Boolean!): ChastikeyImport!
     restartChastikeyImport: String!
   }`;
 
