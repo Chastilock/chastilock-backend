@@ -2,6 +2,12 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+
+    await queryInterface.changeColumn("LoadedLocks", "CreatedLock_ID", {
+      type: Sequelize.INTEGER,
+      allowNull: true
+    })
+
     await queryInterface.addColumn("Users", "Joined_CK_Timestamp", {
         type: Sequelize.DATE,
         allowNull: true,
@@ -119,5 +125,9 @@ module.exports = {
     await queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "CK_ShareID");
     await queryInterface.dropTable("ChastikeyImports");
+    await queryInterface.changeColumn("LoadedLocks", "CreatedLock_ID", {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    })
   }
 };

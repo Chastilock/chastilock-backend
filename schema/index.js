@@ -101,7 +101,7 @@ const typeDefs = gql`
 
   type LoadedLock {
     LoadedLock_ID: Int!
-    CreatedLock: CreatedLock!
+    CreatedLock: CreatedLock
     Lockee: User!
     Keyholder: User
     Code: String!

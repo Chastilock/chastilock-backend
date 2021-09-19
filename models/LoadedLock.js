@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
         },
         CreatedLock_ID: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         Lockee: {
             type: Sequelize.INTEGER,
