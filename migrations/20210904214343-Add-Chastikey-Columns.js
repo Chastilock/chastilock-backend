@@ -62,6 +62,30 @@ module.exports = {
       after: "Imported_From_CK"
     });
 
+    await queryInterface.addColumn("Users", "CK_Lockee_Rating", {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+      after: "CK_UserID"
+    });
+
+    await queryInterface.addColumn("Users", "CK_Lockee_TotalRatings", {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      after: "CK_Lockee_Rating"
+    });
+
+    await queryInterface.addColumn("Users", "CK_KH_Rating", {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+      after: "CK_Lockee_TotalRatings"
+    });
+
+    await queryInterface.addColumn("Users", "CK_KH_TotalRatings", {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      after: "CK_KH_Rating"
+    });
+
     await queryInterface.createTable("ChastikeyImports", {
       Transfer_ID: {
         type: Sequelize.INTEGER,
@@ -131,6 +155,10 @@ module.exports = {
     await queryInterface.removeColumn("Users", "Joined_CK_Timestamp");
     await queryInterface.removeColumn("Users", "CK_Username");
     await queryInterface.removeColumn("Users", "CK_UserID");
+    await queryInterface.removeColumn("Users", "CK_Lockee_Rating");
+    await queryInterface.removeColumn("Users", "CK_Lockee_TotalRatings");
+    await queryInterface.removeColumn("Users", "CK_KH_Rating");
+    await queryInterface.removeColumn("Users", "CK_KH_TotalRatings");
     await queryInterface.removeColumn("OriginalLockTypes", "Imported_From_CK");
     await queryInterface.removeColumn("TimerLockTypes", "Imported_From_CK");
     await queryInterface.removeColumn("CreatedLocks", "Imported_From_CK");

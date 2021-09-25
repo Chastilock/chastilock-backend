@@ -323,6 +323,32 @@ async function importChastikeyData(inputs, models, req) {
                         Free_Unlock: FreeUnlock,
                     });
                 } else {
+                    //Calculate chances on imported locks. 
+                    //TODO: It seems slightly off right now but not sure what is wrong. Some kind of rounding issue.
+                    let ChancesLeft = 0;
+
+                    if(i.cumulative) {
+                        const TimeLocked = i.timestampLocked * 1000;
+                        const TimeNow = new Date();
+
+                        const TotalLockedTime = (TimeNow.getTime() / 1000) - (TimeLocked / 1000);
+
+                        const TotalTimeFrozen = i.totalTimeFrozen * 1000;
+
+                        const TotalLockedTimeMinusFreezy = TotalLockedTime - TotalTimeFrozen * 1000;
+
+                        const NumOfMins = TotalLockedTimeMinusFreezy / 60;
+
+                        ChancesLeft = Math.floor(NumOfMins / (i.regularity * 60) - (i.noOfTurns)) + 1; //We add 1 as you get a chance before you have chosen any cards etc
+
+                    } else {
+
+                        if((new Date().getTime() / 6000) - (i.timestampLastPicked / 60) >= i.regularity) {
+                            ChancesLeft = 1;
+                        }
+                        
+                    }
+
                     const LoadedOriginal = await models.LoadedOriginalLock.create({
                         Remaining_Red: i.redCards,
                         Remaining_Green: i.greenCards,
@@ -341,9 +367,9 @@ async function importChastikeyData(inputs, models, req) {
                         Cumulative: i.cumulative,
                         Hide_Card_Info: i.cardInfoHidden,
                         Chance_Period: i.regularity * 60,
-                        Chances_Remaining: 0, //TODO: Needs fixing!
+                        Chances_Remaining: ChancesLeft,
                         Chances_Last_Awarded: new Date(),
-                        Last_Drawn: new Date(i.timestampLastPicked * 1000), //Last Picked from API always seems to be 0
+                        Last_Drawn: new Date(i.timestampLastPicked * 1000),
                         Auto_Resets_Paused: i.autoResetsPaused,
                         Auto_Resets_Frequency: i.autoResetFrequencyInSeconds * 60,
                         Auto_Resets_Time_Left: i.maxAutoResets - i.noOfTimesAutoReset,
@@ -371,23 +397,44 @@ async function importChastikeyData(inputs, models, req) {
         }
     }
 
+    const UserRecord = await models.User.findOne({
+        where: {
+            User_ID: req.Authenticated
+        }
+    });
+
+    if(inputs.LockeeImportRating) {
+
+        UserRecord.set({
+            CK_Lockee_Rating: DataToImport.lockeeData.averageLockeeRating,
+            CK_Lockee_TotalRatings: DataToImport.lockeeData.noOfLockeeRatings
+        });
+        UserRecord.save();
+
+    }
+
+    if(inputs.KeyholderImportRating) {
+
+        UserRecord.set({
+            CK_KH_Rating: DataToImport.keyholderData.averageRating,
+            CK_KH_TotalRatings: DataToImport.keyholderData.noOfKeyholderRatings
+        });
+        UserRecord.save(); 
+    }
+
     ImportRecord.set({
         Complete: new Date,
         Data: null
     });
     ImportRecord.save();
 
-    const UserRecord = await models.User.findOne({
-        where: {
-            User_ID: req.Authenticated
-        }
-    });
-   UserRecord.set({
-       Joined_CK_Timestamp: new Date(DataToImport.userData.timestampJoined),
+
+    UserRecord.set({
+       Joined_CK_Timestamp: new Date(DataToImport.userData.timestampJoined * 1000),
        CK_Username: DataToImport.userData.username,
        CK_UserID: DataToImport.userData.id
-   });
-   UserRecord.save(); 
+    });
+    UserRecord.save(); 
 
     return ImportRecord;
 

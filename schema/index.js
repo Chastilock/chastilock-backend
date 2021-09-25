@@ -12,8 +12,12 @@ const typeDefs = gql`
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
     Joined_CK_Timestamp: Int
-    CK_Username: String,
+    CK_Username: String
     CK_UserID: Int
+    CK_Lockee_Rating: Float
+    CK_Lockee_TotalRatings: Int
+    CK_KH_Rating: Float
+    CK_KH_TotalRatings: Int
   }
   type CreatedLock {
     Lock_ID: ID!

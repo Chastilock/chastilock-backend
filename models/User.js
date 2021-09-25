@@ -58,6 +58,22 @@ module.exports = (sequelize) => {
       CK_UserID: {
         type: Sequelize.INTEGER,
         allowNull: true
+      },
+      CK_Lockee_Rating: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      CK_Lockee_TotalRatings: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      CK_KH_Rating: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      CK_KH_TotalRatings: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       }
     }, {sequelize}
     );
