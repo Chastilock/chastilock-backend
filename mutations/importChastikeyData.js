@@ -325,28 +325,42 @@ async function importChastikeyData(inputs, models, req) {
                 } else {
                     //Calculate chances on imported locks. 
                     //TODO: It seems slightly off right now but not sure what is wrong. Some kind of rounding issue.
+                    const time = new Date().getTime() / 1000;
+                    const TimeOfLastChance = new Date();
                     let ChancesLeft = 0;
 
-                    if(i.cumulative) {
-                        const TimeLocked = i.timestampLocked * 1000;
-                        const TimeNow = new Date();
 
-                        const TotalLockedTime = (TimeNow.getTime() / 1000) - (TimeLocked / 1000);
+                    const LatestTimestamp = Math.max(i.timestampLocked - Math.floor(3600 * i.regularity), i.timestampLastAutoReset, i.timestampLastFullReset, i.timestampLastPicked)
 
-                        const TotalTimeFrozen = i.totalTimeFrozen * 1000;
-
-                        const TotalLockedTimeMinusFreezy = TotalLockedTime - TotalTimeFrozen * 1000;
-
-                        const NumOfMins = TotalLockedTimeMinusFreezy / 60;
-
-                        ChancesLeft = Math.floor(NumOfMins / (i.regularity * 60) - (i.noOfTurns)) + 1; //We add 1 as you get a chance before you have chosen any cards etc
-
+                    if (i.lockFrozenByCard == 1 || i.lockFrozenByKeyholder == 1) {
+                        ChancesLeft = i.chancesAccumulatedBeforeFreeze;
                     } else {
 
-                        if((new Date().getTime() / 6000) - (i.timestampLastPicked / 60) >= i.regularity) {
-                            ChancesLeft = 1;
+                        if (i.regularity == 0.016667) { ChancesLeft = (time - LatestTimestamp) / 60; }
+                        if (i.regularity == 0.25) { ChancesLeft = (time - LatestTimestamp) / 60 / 15; }
+                        if (i.regularity == 0.5) { ChancesLeft = (time - LatestTimestamp) / 60 / 30; }
+                        if (i.regularity == 1) { ChancesLeft = (time - LatestTimestamp) / 60 / 60; }
+                        if (i.regularity == 3) { ChancesLeft = (time - LatestTimestamp) / 60 / 60 / 3; }
+                        if (i.regularity == 6) { ChancesLeft = (time - LatestTimestamp) / 60 / 60 / 6; }
+                        if (i.regularity == 12) { ChancesLeft = (time - LatestTimestamp) / 60 / 60 / 12; }
+                        if (i.regularity == 24) { ChancesLeft = (time - LatestTimestamp) / 60 / 60 / 24; }
+                        if (i.chancesAccumulatedBeforeFreeze > 0) {
+                            ChancesLeft = i.noOfChancesAccumulated + i.chancesAccumulatedBeforeFreeze;
                         }
+
+                        //Let's get the decimal so we can work out when the last chance would have been awarded
                         
+                        console.log(`ChancesLeft: ${ChancesLeft}`)
+                        const decimal = ChancesLeft - Math.floor(ChancesLeft);
+                        //We now have any decimal so we can discard it
+                        ChancesLeft = Math.floor(ChancesLeft);
+
+                        const NumberOfMinutesSinceChance = i.regularity * decimal * 60;
+                        TimeOfLastChance.setTime(TimeOfLastChance.getTime() - (NumberOfMinutesSinceChance * 60000));
+
+                    }
+                    if (i.noOfChancesAccumulated > 1 && i.cumulative == 0) { 
+                        i.noOfChancesAccumulated = 1; 
                     }
 
                     const LoadedOriginal = await models.LoadedOriginalLock.create({
@@ -368,7 +382,7 @@ async function importChastikeyData(inputs, models, req) {
                         Hide_Card_Info: i.cardInfoHidden,
                         Chance_Period: i.regularity * 60,
                         Chances_Remaining: ChancesLeft,
-                        Chances_Last_Awarded: new Date(),
+                        Chances_Last_Awarded: TimeOfLastChance,
                         Last_Drawn: new Date(i.timestampLastPicked * 1000),
                         Auto_Resets_Paused: i.autoResetsPaused,
                         Auto_Resets_Frequency: i.autoResetFrequencyInSeconds * 60,
@@ -396,7 +410,7 @@ async function importChastikeyData(inputs, models, req) {
             }
         }
     }
-
+    
     const UserRecord = await models.User.findOne({
         where: {
             User_ID: req.Authenticated
