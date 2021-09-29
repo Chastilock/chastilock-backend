@@ -114,3 +114,6 @@ config/
 
 #test.js in root
 test.js
+
+#test.json in root
+test.json

@@ -9,7 +9,14 @@ const handleAutoResets = async function() {
     //      do that more efficiently than the apollo server.  This will also decrease memory usage.
     const CurrentlyRunningLocks = await LoadedLock.findAll({
         where: {
-            Unlocked: false
+            [Op.and]: {
+                Unlocked: {
+                    [Op.eq]: false
+                },
+                Original_Lock_Deck: {
+                    [Op.ne]: null
+                }
+            }
         }
     });
     //Loop through the locks

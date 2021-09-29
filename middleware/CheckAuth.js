@@ -12,7 +12,7 @@ const CheckAuth = async (req, res, next) => {
     HTTPtoken = authorization.split(" ")[1];
   }
   //First, lets check we can verify the token 
-  if(HTTPtoken != "testtoken") { //TODO: this needs removing before full release
+  if(HTTPtoken != "testtoken" && HTTPtoken != "testtoken2") { //TODO: this needs removing before full release
     let decoded;
     try {
       decoded = jwt.verify(HTTPtoken, process.env.JWT_SECRET);

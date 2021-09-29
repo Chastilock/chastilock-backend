@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
         },
         CreatedLock_ID: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         Lockee: {
             type: Sequelize.INTEGER,
@@ -84,6 +84,14 @@ module.exports = (sequelize) => {
         Real_Lock: { 
             allowNull: true,
             type: Sequelize.INTEGER
+        },
+        Imported_From_CK: {
+            type: Sequelize.BOOLEAN,
+            allowNull: true
+          },
+        CK_ShareID: {
+            type: Sequelize.STRING,
+            allowNull: true
         }           
     }, {sequelize});
     

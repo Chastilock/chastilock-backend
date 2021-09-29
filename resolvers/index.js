@@ -17,12 +17,15 @@ const KHReset = require('../mutations/KHReset');
 const applyCard = require('../mutations/applyCard');
 const { remainingSeconds, earliestEndTime } = require('../helpers/timeFunctions');
 const KHEditCards = require('../mutations/KHEditCards');
+const fetchChastikeyData = require('../mutations/fetchChastikeyData');
+const importChastikeyData = require('../mutations/importChastikeyData');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
 const sharedLock = require('../queries/sharedLock');
 const me = require('../queries/me');
+const restartChastikeyImport = require('../mutations/restartChastikeyImport');
 
 const resolvers = {
   Query: {     
@@ -112,6 +115,15 @@ const resolvers = {
     },
     async KHEditCards(root, args, {models, req}) {
       return KHEditCards(args, models, req);
+    },
+    async fetchChastikeyData(root, args, {models, req}) {
+      return fetchChastikeyData(args, models, req);
+    },
+    async importChastikeyData(root, args, {models, req}) {
+      return importChastikeyData(args, models, req);
+    },
+    async restartChastikeyImport(root, args, {models, req}) {
+      return restartChastikeyImport(args, models, req);
     }
   },
 
@@ -176,7 +188,11 @@ const resolvers = {
     async User (UserSetting) {
       return UserSetting.getUser();
     }
+  },
+  ChastikeyImport: {
+    async User (ChastikeyImport) {
+      return ChastikeyImport.getUser();
+    }
   }
-
 }
 module.exports = resolvers

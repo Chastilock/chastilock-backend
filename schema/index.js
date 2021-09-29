@@ -11,6 +11,13 @@ const typeDefs = gql`
 	  Emergency_Keys: Int
     CreatedLocks: [CreatedLock]!
     Sessions: [Session]!
+    Joined_CK_Timestamp: Int
+    CK_Username: String
+    CK_UserID: Int
+    CK_Lockee_Rating: Float
+    CK_Lockee_TotalRatings: Int
+    CK_KH_Rating: Float
+    CK_KH_TotalRatings: Int
   }
   type CreatedLock {
     Lock_ID: ID!
@@ -67,6 +74,19 @@ const typeDefs = gql`
     Auto_Resets_Enabled:Boolean!
     Reset_Frequency:Int
     Max_Resets:Int
+    Imported_From_CK: Boolean
+  }
+
+  type TimerLockType {
+    Timer_Type_ID: Int!
+    Max_Days: Int!
+    Max_Hours: Int!
+    Max_Minutes: Int!
+    Min_Days: Int!
+    Min_Hours: Int!
+    Min_Minutes: Int!
+    Hide_Timer: Boolean!
+    Imported_From_CK: Boolean
   }
 
   type App {
@@ -85,7 +105,7 @@ const typeDefs = gql`
 
   type LoadedLock {
     LoadedLock_ID: Int!
-    CreatedLock: CreatedLock!
+    CreatedLock: CreatedLock
     Lockee: User!
     Keyholder: User
     Code: String!
@@ -112,7 +132,7 @@ const typeDefs = gql`
     Remaining_Red: Int!
     Remaining_Green: Int!
     Found_Green: Int!
-    Multiple_Greens_Required :Boolean!
+    Multiple_Greens_Required: Boolean!
     Remaining_Sticky: Int!
     Remaining_Add1: Int!
     Remaining_Add2: Int!
@@ -203,6 +223,32 @@ const typeDefs = gql`
     Bot_Difficulty: String!
   }
 
+  type ChastikeyImport {
+    Transfer_ID: Int!
+    User: User!
+    Chastikey_Username: String!
+    Expires: String!
+    Started: String!
+    Complete: String
+    NumOfKeyholderLocks: Int!
+    NumOfLockeeLocks: Int!
+    AverageLockeeRating: Int!
+    AverageKeyholderRating: Int!
+    Keyholders_Moved_Over: Boolean
+  }
+  type CKStat {
+    CKStats_ID: Int!
+    User: User
+    Keyholder_Level: Int
+    Keyholder_First_Time: Int
+    Keyholder_Locks_Managed: Int
+    Lockee_Average_Time_Locked: Int
+    Lockee_Cumulative_Time_Locked: Int
+    Lockee_Level: Int
+    Lockee_Longest_Lock: Int
+    Lockee_Completed_Locks: Int
+  }
+
   type Query {
     allUsers: [User!]!
     allCreatedLocks: [CreatedLock!]!
@@ -215,7 +261,7 @@ const typeDefs = gql`
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
     sharedLock(id: String!): CreatedLock!
-me: User!
+    me: User!
   }
 
   type Mutation {
@@ -232,11 +278,13 @@ me: User!
     changeUserSettings(Allow_Duplicate_Characters: Boolean!, Show_Combo_To_Keyholder: Boolean!, Share_Stats: Boolean!): UserSetting!
     KHUnfreeze(LoadedLock_ID: Int!) : LoadedLock!
     KHReset(LoadedLock_ID: Int!): LoadedLock!
-    # Needs testing!!
     KHFreeze(LoadedLock_ID: Int!, EndTime: String): LoadedLock!
     emergencyUnlock(Lock_ID: Int): LoadedLock!
     applyCard(LoadedLock_ID: Int!, Card: CardType!): LoadedLock!
     KHEditCards(LoadedLock_ID: Int!, Deck: DeckInput!, HiddenUpdate: Boolean!) : LoadedLock!
+    fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
+    importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, ImportLoadedLocksWithMissingKH: Boolean!): ChastikeyImport!
+    restartChastikeyImport: String!
   }`;
 
 module.exports = typeDefs

@@ -36,6 +36,10 @@ module.exports = (sequelize) => {
       Hide_Timer: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+      },
+      Imported_From_CK: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
       }
     }, {sequelize}
     );

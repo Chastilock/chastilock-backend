@@ -108,6 +108,10 @@ module.exports = (sequelize) => {
       Max_Resets: {
         type: Sequelize.INTEGER,
         allowNull: true
+      },
+      Imported_From_CK: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
       }     
     }, {sequelize}
     );

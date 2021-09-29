@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.addColumn('LoadedLocks', 'Bot_KH', {
+    await queryInterface.addColumn('LoadedLocks', 'Bot_KH', {
       type: Sequelize.INTEGER,
       allowNull: true,
       after: 'Keyholder',
@@ -14,6 +14,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.removeColumn('LoadedLocks', 'Bot_KH');
+    await queryInterface.removeColumn('LoadedLocks', 'Bot_KH');
   }
 };
