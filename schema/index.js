@@ -236,6 +236,18 @@ const typeDefs = gql`
     AverageKeyholderRating: Int!
     Keyholders_Moved_Over: Boolean
   }
+  type CKStat {
+    CKStats_ID: Int!
+    User: User
+    Keyholder_Level: Int
+    Keyholder_First_Time: Int
+    Keyholder_Locks_Managed: Int
+    Lockee_Average_Time_Locked: Int
+    Lockee_Cumulative_Time_Locked: Int
+    Lockee_Level: Int
+    Lockee_Longest_Lock: Int
+    Lockee_Completed_Locks: Int
+  }
 
   type Query {
     allUsers: [User!]!

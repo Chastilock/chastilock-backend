@@ -323,8 +323,7 @@ async function importChastikeyData(inputs, models, req) {
                         Free_Unlock: FreeUnlock,
                     });
                 } else {
-                    //Calculate chances on imported locks. 
-                    //TODO: It seems slightly off right now but not sure what is wrong. Some kind of rounding issue.
+                    
                     const time = new Date().getTime() / 1000;
                     const TimeOfLastChance = new Date();
                     let ChancesLeft = 0;
@@ -434,6 +433,39 @@ async function importChastikeyData(inputs, models, req) {
             CK_KH_TotalRatings: DataToImport.keyholderData.noOfKeyholderRatings
         });
         UserRecord.save(); 
+    }
+
+    if(inputs.LockeeImportStats || inputs.KeyholderImportStats) {
+        let CKStatsRecord = await models.CKStat.findOne({
+            where: {
+                User_ID: req.Authenticated
+            }
+        });
+
+        if(!CKStatsRecord) {
+            CKStatsRecord = await models.CKStat.create({
+                User_ID: req.Authenticated
+            });
+        }
+
+        if(inputs.LockeeImportStats) {
+            await CKStatsRecord.set({
+                Lockee_Average_Time_Locked: DataToImport.lockeeData.averageTimeLockedInSeconds,
+                Lockee_Cumulative_Time_Locked: DataToImport.lockeeData.cumulativeSecondsLocked,
+                Lockee_Level: DataToImport.lockeeData.lockeeLevel,
+                Lockee_Longest_Lock: DataToImport.lockeeData.longestCompletedLockInSeconds,
+                Lockee_Completed_Locks: DataToImport.lockeeData.totalNoOfCompletedLocks,
+            });
+        }
+        if(inputs.KeyholderImportStats) {
+            await CKStatsRecord.set({
+                Keyholder_Level: DataToImport.keyholderData.keyholderLevel,
+                Keyholder_First_Time: new Date(DataToImport.keyholderData.timestampFirstKeyheld * 1000),
+                Keyholder_Locks_Managed: DataToImport.keyholderData.totalLocksManaged
+            });
+        }
+
+        await CKStatsRecord.save();
     }
 
     ImportRecord.set({
