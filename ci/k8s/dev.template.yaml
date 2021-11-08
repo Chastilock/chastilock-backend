@@ -17,8 +17,6 @@ spec:
         - name: chastilock-backend
           image: ${DOCKER_IMAGE}
           imagePullPolicy: Always
-          args:
-          - '--ignore-db-dir=lost+found'
           env:
           - name: DATABASE
             value: "mysql://root:${MYSQL_PASSWORD}@mysql/chastilock"
@@ -125,8 +123,10 @@ spec:
       containers:
       - image: mysql:5.7
         name: mysql
+        args:
+        - '--ignore-db-dir=lost+found'
         env:
-          # Use secret in real usage
+        # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
           value: ${MYSQL_PASSWORD}
         ports:
