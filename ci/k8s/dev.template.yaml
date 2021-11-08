@@ -17,6 +17,8 @@ spec:
         - name: chastilock-backend
           image: ${DOCKER_IMAGE}
           imagePullPolicy: Always
+          args:
+          - '--ignore-db-dir=lost+found'
           env:
           - name: DATABASE
             value: "mysql://root:${MYSQL_PASSWORD}@mysql/chastilock"
