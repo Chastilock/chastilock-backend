@@ -148,5 +148,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
-  storageClassName: microk8s-hostpath
+      storage: 1Gi
+  storageClassName: do-block-storage
