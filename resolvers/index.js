@@ -7,6 +7,7 @@ const changePassword = require('../mutations/changePassword');
 const upgradeAccount = require('../mutations/upgradeAccount');
 const Logout = require('../mutations/logout');
 const createOriginalLock = require('../mutations/createOriginalLock');
+const editOriginalLock = require('../mutations/editOriginalLock');
 const createTimerLock = require('../mutations/createTimerLock');
 const loadLock = require('../mutations/loadLock');
 const changeUserSettings = require('../mutations/changeUserSettings');
@@ -88,6 +89,9 @@ const resolvers = {
     },
     async createOriginalLock(root, args, { models, req }) {
       return createOriginalLock(args, models, req);
+    },
+    async editOriginalLock(root, args, { models, req }) {
+      return editOriginalLock(args, models, req);
     },
     async createTimerLock(root, args, { models, req }) {
       return createTimerLock(args, models, req);
