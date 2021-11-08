@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: chastilock-backend
-          image: registry.k8s.lars.ninja/chastilock-backend:develop
+          image: ${DOCKER_IMAGE}
           imagePullPolicy: Always
           env:
           - name: DATABASE
@@ -121,7 +121,7 @@ spec:
         app: mysql
     spec:
       containers:
-      - image: mysql:5.6
+      - image: mysql:5.7
         name: mysql
         env:
           # Use secret in real usage
@@ -148,5 +148,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
-  storageClassName: microk8s-hostpath
+      storage: 1Gi
+  storageClassName: do-block-storage
