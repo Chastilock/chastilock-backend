@@ -100,7 +100,8 @@ const typeDefs = gql`
     Session_ID: Int!
     User: User!
     Token: String!
-    App: App!
+    App: App!,
+    Notification_Token: String
   }
 
   type LoadedLock {
