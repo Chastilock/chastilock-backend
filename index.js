@@ -16,6 +16,8 @@ const bodyParser = require('body-parser');
 const loadlock = require('./web/resolvers/loadlock');
 const activateemail = require('./web/resolvers/activateemail');
 
+const { NotifyAllUsers } = require('./helpers/notifications')
+
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const app = express();
@@ -57,3 +59,4 @@ app.listen({ port }, () =>
 )
 
 bree.start();
+NotifyAllUsers();
