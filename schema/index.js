@@ -287,6 +287,7 @@ const typeDefs = gql`
     fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
     importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, ImportLoadedLocksWithMissingKH: Boolean!): ChastikeyImport!
     restartChastikeyImport: String!
+    registerNotifictions(NotificationToken: String!): Session!
   }`;
 
 module.exports = typeDefs

@@ -20,13 +20,15 @@ const { remainingSeconds, earliestEndTime } = require('../helpers/timeFunctions'
 const KHEditCards = require('../mutations/KHEditCards');
 const fetchChastikeyData = require('../mutations/fetchChastikeyData');
 const importChastikeyData = require('../mutations/importChastikeyData');
+const restartChastikeyImport = require('../mutations/restartChastikeyImport');
+const registerNotifictions = require('../mutations/registerNotifications');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
 const myCreatedLocks = require('../queries/myCreatedLocks');
 const sharedLock = require('../queries/sharedLock');
 const me = require('../queries/me');
-const restartChastikeyImport = require('../mutations/restartChastikeyImport');
+
 
 const resolvers = {
   Query: {     
@@ -128,6 +130,9 @@ const resolvers = {
     },
     async restartChastikeyImport(root, args, {models, req}) {
       return restartChastikeyImport(args, models, req);
+    },
+    async registerNotifictions(root, args, {models, req}) {
+      return registerNotifictions(args, models, req);
     }
   },
 

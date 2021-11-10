@@ -5,10 +5,9 @@ const Op = Sequelize.Op
 
 let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
 
-async function NotifyAllUsers() {
+async function NotifyAllUsers(body, data) {
 
     let messages = [];
-
     const Tokens = await Session.findAll({
         where: {
             Notification_Token: {
@@ -19,7 +18,7 @@ async function NotifyAllUsers() {
 
     for(let Token of Tokens) {
         
-        if(!Expo.isExpoPushToken(pushToken)) {
+        if(!checkNotificationToken(pushToken)) {
             console.error(`Push token ${pushToken} is not a valid Expo push token`);
             continue;
         }
@@ -27,33 +26,12 @@ async function NotifyAllUsers() {
         messages.push({
             to: Token,
             sound: 'default',
-            body: 'This is a test notification',
-            data: { 
-                //insert some data here to take us to the right part of the app or a link to open etc
-            },
+            body: body,
+            data
         })
     }
 
-    let chunks = expo.chunkPushNotifications(messages);
-    let tickets = [];
-    (async () => {
-    // Send the chunks to the Expo push notification service. There are
-    // different strategies you could use. A simple one is to send one chunk at a
-    // time, which nicely spreads the load out over time:
-        for (let chunk of chunks) {
-            try {
-                let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-                console.log(ticketChunk);
-                tickets.push(...ticketChunk);
-                // NOTE: If a ticket contains an error code in ticket.details.error, you
-                // must handle it appropriately. The error codes are listed in the Expo
-                // documentation:
-                // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    })();
+    sendMessages(messages);
 }
 
 function sendMessages(messages) {
@@ -79,7 +57,16 @@ function sendMessages(messages) {
     })();
 }
 
+function checkNotificationToken(Token) {
+    if(Expo.isExpoPushToken(Token)) {
+        return true;
+    } else {
+        return false
+    }
+}
+
 module.exports = {
     NotifyAllUsers,
-    sendMessages
+    sendMessages,
+    checkNotificationToken
 }
