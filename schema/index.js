@@ -288,6 +288,7 @@ const typeDefs = gql`
     importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, ImportLoadedLocksWithMissingKH: Boolean!): ChastikeyImport!
     restartChastikeyImport: String!
     registerNotifictions(NotificationToken: String!): Session!
+    deregisterNotifictions: Session!
   }`;
 
 module.exports = typeDefs

@@ -22,6 +22,7 @@ const fetchChastikeyData = require('../mutations/fetchChastikeyData');
 const importChastikeyData = require('../mutations/importChastikeyData');
 const restartChastikeyImport = require('../mutations/restartChastikeyImport');
 const registerNotifictions = require('../mutations/registerNotifications');
+const deregisterNotifictions = require('../mutations/deregisterNotifications');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -133,6 +134,9 @@ const resolvers = {
     },
     async registerNotifictions(root, args, {models, req}) {
       return registerNotifictions(args, models, req);
+    },
+    async deregisterNotifictions(root, args, {models, req}) {
+      return deregisterNotifictions(args, models, req);
     }
   },
 
