@@ -28,12 +28,12 @@ const bree = new Bree({
             timeout: '60s',
             interval: '2m'
         },
-        {
-            //Looking to run this every 15 minutes in Prod
-            name: 'botAction',
-            timeout: '5m',
-            interval: '15m'
-        }
+        // {
+        //     //Looking to run this every 15 minutes in Prod
+        //     name: 'botAction',
+        //     timeout: '5m',
+        //     interval: '15m'
+        // },
     ]
 });
 

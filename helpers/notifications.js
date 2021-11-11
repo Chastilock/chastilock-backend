@@ -18,21 +18,44 @@ async function NotifyAllUsers(body, data) {
 
     for(let Token of Tokens) {
         
-        if(!checkNotificationToken(pushToken)) {
-            console.error(`Push token ${pushToken} is not a valid Expo push token`);
+        if(!checkNotificationToken(Token)) {
+            console.error(`Push token ${Token} is not a valid Expo push token`);
             continue;
         }
 
         messages.push({
             to: Token,
             sound: 'default',
-            body: body,
+            body,
             data
         })
     }
 
     sendMessages(messages);
 }
+
+async function addMessagesForSingleUser(UserID, messages, body, data) {
+
+    const Tokens = await Session.findAll({
+        where: {
+            Notification_Token: {
+                [Op.ne]: null,
+                User_ID: UserID
+            }
+        }
+    });
+
+    for(let Token of Tokens) {
+        messages.push({
+            to: Token,
+            sound: 'default',
+            body,
+            data
+        });
+    }
+    return messages;
+}
+
 
 function sendMessages(messages) {
     let chunks = expo.chunkPushNotifications(messages);
@@ -68,5 +91,6 @@ function checkNotificationToken(Token) {
 module.exports = {
     NotifyAllUsers,
     sendMessages,
-    checkNotificationToken
+    checkNotificationToken,
+    addMessagesForSingleUser
 }
