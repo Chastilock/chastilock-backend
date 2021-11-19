@@ -1,6 +1,8 @@
 const { LoadedLock, Freeze } = require("../models");
 const { Op } = require("sequelize")
 const { updateLockAfterFreezeEnd } = require("../helpers/lockModifyingFunctions")
+const { addMessagesForSingleUser, sendMessages } = require('../helpers/notifications');
+
 
 const handleFreeze = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
@@ -91,6 +93,10 @@ const handleFreeze = async function() {
                     Lock.set({Current_Freeze_ID: CurrentFreeze.Freeze_ID});
                     await Lock.save()
                     console.log(`Freeze Job: Lock ${Lock.LoadedLock_ID} needs freezing 😁 so have done it!!`);
+                    
+                    const NotiMessages = [];
+                    NotiMessages = await addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock has been frozen by your KH`, {view: "myLoadedLocks"});
+                    sendMessages(NotiMessages);
                 }
             }
             // await Lock.save()

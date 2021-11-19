@@ -97,7 +97,9 @@ const updateChancesLeft = async function() {
         }
         console.log(`Calculate Chances: Finished working on LoadedLockID: ${Lock.LoadedLock_ID}`);
     }
-    sendMessages(NotiMessages);
+    if(NotiMessages.length > 0) {
+        sendMessages(NotiMessages);
+    }
 }
 module.exports = updateChancesLeft;
 updateChancesLeft();

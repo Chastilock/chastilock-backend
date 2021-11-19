@@ -1,6 +1,8 @@
 const { AuthenticationError, ApolloError, UserInputError } = require('apollo-server-express');
 const { unfreezeLock } = require('../helpers/lockModifyingFunctions');
 const { LoadedLock, Freeze } = require('../models')
+const { addMessagesForSingleUser, sendMessages } = require('../helpers/notifications');
+
 
 async function KHFreeze(inputs, models, req) {
     if(req.AppFound === false) {
@@ -92,6 +94,11 @@ async function KHFreeze(inputs, models, req) {
     LockSearch.Current_Freeze_ID = theFreeze.Freeze_ID
     LockSearch.Last_KH_Change = Date.now()
     await LockSearch.save();
+
+    const NotiMessages = []
+    NotiMessages = await addMessagesForSingleUser(LockSearch.Lockee, NotiMessages, `Your lock has been frozen by your KH`, {view: "myLoadedLocks"});
+    sendMessages(NotiMessages);
+
     // tested
     return LockSearch;
 
