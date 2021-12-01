@@ -1,6 +1,8 @@
 require('dotenv').config();
 const port = process.env.PORT || 4000;
 
+const pug = require("pug");
+
 const express = require('express');
 const bree = require('./jobSetup');
 //These are our DB models. They are exposed from models/index.js
@@ -15,6 +17,8 @@ const rateLimiter = require('./middleware/rateLimiter')
 const bodyParser = require('body-parser');
 const loadlock = require('./web/resolvers/loadlock');
 const activateemail = require('./web/resolvers/activateemail');
+
+const sendemail = require('./helpers/email');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -33,6 +37,7 @@ app.use(rateLimiter);
 app.use(CheckApp);
 app.use(CheckAuth);
 
+//sendemail(6, "ActivateEmail");
 
 app.set('views', './web/views');
 app.set('view engine', 'pug');
@@ -43,6 +48,10 @@ app.use('/lock/:lockid', async function(req, res) {
 
 app.use('/activate/:code', async function(req, res) {
   await activateemail(req, res);
+})
+
+app.use('/activateemail/', async function(req, res) {
+  res.send(pug.renderFile('web/views/emails/activateemail.pug'))
 })
 
 server.applyMiddleware({ app });
