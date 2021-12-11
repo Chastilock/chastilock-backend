@@ -18,8 +18,6 @@ const bodyParser = require('body-parser');
 const loadlock = require('./web/resolvers/loadlock');
 const activateemail = require('./web/resolvers/activateemail');
 
-const sendemail = require('./helpers/email');
-
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const app = express();
@@ -37,8 +35,6 @@ app.use(rateLimiter);
 app.use(CheckApp);
 app.use(CheckAuth);
 
-//sendemail(6, "ActivateEmail");
-
 app.set('views', './web/views');
 app.set('view engine', 'pug');
 
@@ -50,13 +46,11 @@ app.use('/activate/:code', async function(req, res) {
   await activateemail(req, res);
 })
 
-app.use('/activateemail/', async function(req, res) {
-  res.send(pug.renderFile('web/views/emails/activateemail.pug'))
-})
+app.use("/static", express.static('public'))
 
 server.applyMiddleware({ app });
 
-app.use((req, res) => {
+app.use("/", (req, res) => {
   res.status(200).send('Hello from GraphQL server! 👋🏻');
   res.end();
 });

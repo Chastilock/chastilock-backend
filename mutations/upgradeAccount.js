@@ -64,7 +64,7 @@ const DataToSet = {
 }
 authenticatedUser.set(DataToSet);
 await authenticatedUser.save();
-//TODO: need to send email validation email here
+sendemail(authenticatedUser.User_ID, "ActivateEmail");
 return authenticatedUser;
 
 }
