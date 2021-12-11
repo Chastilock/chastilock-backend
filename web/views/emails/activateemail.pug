@@ -3,16 +3,18 @@ html(lang="en")
   head
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width")
-    style
-        include activateemail.css
-  body
-    div(id="wrapper")
-      p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At risus viverra adipiscing at in tellus integer feugiat. Elementum nisi quis eleifend quam adipiscing vitae proin. Feugiat nisl pretium fusce id. Et ligula ullamcorper malesuada proin libero nunc consequat. A diam sollicitudin tempor id eu nisl nunc. Nibh tellus molestie nunc non blandit. Consectetur adipiscing elit pellentesque habitant morbi. Senectus et netus et malesuada fames ac. Eu sem integer vitae justo eget magna. Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus. Sit amet nisl suscipit adipiscing bibendum est.
-
-      p Egestas tellus rutrum tellus pellentesque eu tincidunt tortor. Velit egestas dui id ornare arcu odio ut sem. At risus viverra adipiscing at in tellus integer. Nec feugiat nisl pretium fusce id. Ut sem viverra aliquet eget sit amet tellus. Cursus metus aliquam eleifend mi in nulla. Orci phasellus egestas tellus rutrum tellus. Elementum nisi quis eleifend quam. Nibh nisl condimentum id venenatis a condimentum vitae sapien. Maecenas pharetra convallis posuere morbi leo. Id diam vel quam elementum pulvinar etiam. Ipsum dolor sit amet consectetur.
-
-      p Diam sollicitudin tempor id eu nisl nunc mi ipsum faucibus. Velit ut tortor pretium viverra suspendisse potenti. Elementum nibh tellus molestie nunc non blandit massa. Ultricies mi eget mauris pharetra et ultrices neque ornare aenean. Amet cursus sit amet dictum sit amet. Nunc sed velit dignissim sodales ut eu. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel. Mi proin sed libero enim sed faucibus turpis in. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Et tortor at risus viverra adipiscing at in tellus. Semper eget duis at tellus at. A lacus vestibulum sed arcu non odio euismod. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Iaculis nunc sed augue lacus viverra vitae congue eu. Nunc aliquet bibendum enim facilisis gravida neque convallis a cras. Eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada. Arcu odio ut sem nulla pharetra diam sit amet. At volutpat diam ut venenatis tellus in metus vulputate. Donec adipiscing tristique risus nec feugiat. Id volutpat lacus laoreet non curabitur gravida arcu ac tortor.
-
-      p In nibh mauris cursus mattis molestie a iaculis at erat. Viverra mauris in aliquam sem fringilla ut morbi. In iaculis nunc sed augue lacus viverra vitae congue. Nisl nunc mi ipsum faucibus vitae aliquet. Rhoncus mattis rhoncus urna neque. Enim praesent elementum facilisis leo vel fringilla. Tortor aliquam nulla facilisi cras fermentum odio eu. Dui faucibus in ornare quam viverra orci. Purus faucibus ornare suspendisse sed nisi. Sed ullamcorper morbi tincidunt ornare massa. Ut pharetra sit amet aliquam id diam. Et netus et malesuada fames ac turpis. Tristique risus nec feugiat in fermentum. Cursus metus aliquam eleifend mi. Consequat id porta nibh venenatis. In metus vulputate eu scelerisque felis imperdiet proin.
-
-      p Vivamus at augue eget arcu. Etiam sit amet nisl purus in mollis nunc sed id. Odio aenean sed adipiscing diam donec adipiscing tristique risus. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Amet tellus cras adipiscing enim eu. Eu scelerisque felis imperdiet proin fermentum leo vel orci porta. Volutpat sed cras ornare arcu dui vivamus arcu felis. Purus in massa tempor nec feugiat nisl pretium. Tortor at risus viverra adipiscing at in tellus integer. Maecenas ultricies mi eget mauris pharetra et ultrices neque ornare. Ullamcorper a lacus vestibulum sed arcu non odio. Sit amet mattis vulputate enim nulla aliquet porttitor.
+  body(style="padding: 3%; align-items: center; display: block")
+    div#wrapper(style="width: 98%; padding: 10px; margin: auto;")
+      div#logowrapper(style="height: 150px; vertical-align: middle;")
+        img#logo(src="https://chastilock.org/static/chastilock-logo.png" style="width: 150px; height: 150px; vertical-align: middle;")
+        span#logoname(style="font-size: 36px; vertical-align: middle;") Chastilock
+      
+      div#text(style="font-size: 19px;")
+        p Hey there #{Username}, 
+          
+        p 
+          | Thanks for joining Chastilock! Please click 
+          a(href=`https://api.chastilock.org/activate/${Validation_Code}`) here to activate your account.
+          |  This will allow us to send you emails. Currently this is just used to reset your password should you forget it. As always your date is kept sucurely and is never shared with 3rd parties.
+        p We hope you have fun!
+        p Chastilock Team!
