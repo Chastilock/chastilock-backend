@@ -1,6 +1,7 @@
 //Update chances left
 const { LoadedLock, LoadedOriginalLock } = require("../models");
 const { Op } = require("sequelize");
+const { addMessagesForSingleUser, sendMessages } = require("../helpers/notifications");
 
 const updateChancesLeft = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
@@ -9,6 +10,8 @@ const updateChancesLeft = async function() {
             Unlocked: false
         }
     });
+
+    const NotiMessages = [];
     //Loop through the locks
     for(const Lock of CurrentlyRunningLocks) {
         console.log(`Calculate Chances: Working on LoadedLockID: ${Lock.LoadedLock_ID}`)
@@ -54,6 +57,9 @@ const updateChancesLeft = async function() {
                         Chances_Last_Awarded: TimeOfLastChance
                     });
                     await LoadedOriginalRecord.save();
+
+                    NotiMessages = addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock is ready to try again`, {screen: "myLoadedLocks"});
+
                     console.log(`Calculate Chances: We awarded ${ChancesToAdd} chances, which gives them a total of ${NewChanceTotal} chances`);
 
                 } else {
@@ -81,6 +87,7 @@ const updateChancesLeft = async function() {
                             Chances_Last_Awarded: new Date()
                         });
                         await LoadedOriginalRecord.save();
+                        NotiMessages = addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock is ready to try again`, {screen: "myLoadedLocks"});
                     } else {
                         console.log(`Calculate Chances: They already have a chance so skipping...`);
                     }
@@ -89,6 +96,9 @@ const updateChancesLeft = async function() {
           }
         }
         console.log(`Calculate Chances: Finished working on LoadedLockID: ${Lock.LoadedLock_ID}`);
+    }
+    if(NotiMessages.length > 0) {
+        sendMessages(NotiMessages);
     }
 }
 module.exports = updateChancesLeft;

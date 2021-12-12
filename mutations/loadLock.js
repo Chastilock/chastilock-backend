@@ -2,6 +2,8 @@ const { AuthenticationError, ApolloError, ForbiddenError, UserInputError } = req
 const { getLockeeRating } = require('../helpers/ratings');
 const { RandomInt } = require('../helpers/random')
 const { createLoadedLock } = require('../helpers/lockLoadingFunctions');
+const { addMessagesForSingleUser, sendMessages } = require('../helpers/notifications');
+const { getUsername } = require('../helpers/user');
 
 // TODO: ??? Possibly ??? Should there be a limit on the number of locks that a user can load?
 // I think CK app uses 20 as limit.
@@ -239,6 +241,12 @@ async function loadLock(inputs, models, req) {
      * realLock is the LoadedLock object that is the real lock.
      * @type {LoadedLock} */
     const realLock = await createLoadedLock(LockSearch, req.Authenticated, inputs, true);
+    const NotiMessages = [];
+
+    if(req.Authenticated != LockSearch.User_ID) {
+        NotiMessages = await addMessagesForSingleUser(LockSearch.User_ID, NotiMessages, `${getUsername(req.Authenticated)} has loaded your lock called ${LockSearch.Lock_Name}`, {view: "LoadedLockees", createdLock: LockSearch.LockID});
+        sendMessages(NotiMessages);
+    }
 
     if (minFakes > 0) { 
         const NumOfFakes = await RandomInt(minFakes, maxFakes);

@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError, ForbiddenError, ApolloError } = req
 const Bcypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { ValidateEmail, CheckUsernameAvailable, CheckEmailAvailable } = require("../helpers/validation");
+const sendemail = require("../helpers/email.js")
 
 async function createUser(inputs, models, req) {
 
@@ -52,7 +53,7 @@ async function createUser(inputs, models, req) {
   const Validation_Code = uuidv4();
   const NewUser = await models.User.create({UUID, Email: inputs.Email, Password: hashedPassword, Username: inputs.Username, Email_Validated: false, Validation_Code});
   await models.UserSetting.create({User_ID: NewUser.User_ID, Combo_Type: "123", Allow_Duplicate_Characters: true, Combo_Length: 4, Show_Combo_To_Keyholder: false, Share_Stats: true});
-  //TODO: need to send email validation email here
+  sendemail(NewUser.User_ID, "ActivateEmail");
   return NewUser;
 
 }

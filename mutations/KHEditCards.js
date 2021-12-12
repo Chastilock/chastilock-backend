@@ -2,6 +2,8 @@ const { AuthenticationError, ApolloError, UserInputError } = require('apollo-ser
 const {MIN_CARDS, MAX_CARDS } = require('../helpers/max_cards');
 const { LoadedLock, LoadedOriginalLock } = require('../models')
 const { CardMap } = require('../classes/cardMap')
+const { addMessagesForSingleUser, sendMessages } = require('../helpers/notifications');
+
 
 // TODO: If/when trust structure is changed, then the trust code below will need to be revised.
 // TODO: Eventually will need the ability to have hidden edits. Parameter included for now and ignored.
@@ -115,6 +117,11 @@ if (!LockSearch.Trusted) {
   await loadedCards.save()
   LockSearch.Last_KH_Change = Date.now()
   await LockSearch.save()
+
+  const NotiMessages = [];
+  NotiMessages = await addMessagesForSingleUser(LockSearch.Lockee, NotiMessages, `Your lock has been edited by your KH`, {view: "myLoadedLocks"});
+  sendMessages(NotiMessages);
+  
 
   return LockSearch
 }

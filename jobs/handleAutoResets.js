@@ -1,6 +1,7 @@
 const { LoadedLock, LoadedOriginalLock } = require("../models");
 const { Op } = require("sequelize");
 const { hardResetLock } = require("../helpers/lockModifyingFunctions");
+const { addMessagesForSingleUser, sendMessages } = require("../helpers/notifications");
 
 const handleAutoResets = async function() {
     //This will include all locks (test and fakes) but not unlocked locks
@@ -20,6 +21,9 @@ const handleAutoResets = async function() {
         }
     });
     //Loop through the locks
+
+    const NotiMessages = [];
+
     for(const Lock of CurrentlyRunningLocks) {
         //Check if a autoreset should have happened and action it if it should have
         console.log(`Auto Reset Job: Working on LoadedLockID: ${Lock.LoadedLock_ID}`)
@@ -53,6 +57,9 @@ const handleAutoResets = async function() {
 
                         });
                         await LoadedOriginalLockRecord.save()
+                        addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock was just reset! 🤯`, {Screen: "myLoadedLocks"} )
+
+
                     } else {
                         console.log(`Auto Reset Job: No need to reset... yet 👿`);
                     }
@@ -63,6 +70,9 @@ const handleAutoResets = async function() {
             }
         }
         
+    }
+    if(NotiMessages.length > 0) {
+        sendMessages(NotiMessages);
     }
 }
 module.exports = handleAutoResets;

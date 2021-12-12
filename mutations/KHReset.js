@@ -1,6 +1,8 @@
 const { AuthenticationError, ApolloError, UserInputError } = require('apollo-server-express');
 const { hardResetLock } = require('../helpers/lockModifyingFunctions');
-const { LoadedLock } = require('../models')
+const { LoadedLock } = require('../models');
+const { addMessagesForSingleUser, sendMessages } = require('../helpers/notifications');
+
 
 // TODO: If/when trust structure is changed, then the trust code below will need to be revised.
 
@@ -47,6 +49,11 @@ async function KHReset(inputs, models, req) {
     await hardResetLock(LockSearch)
     LockSearch.Last_KH_Change = Date.now()
     await LockSearch.save()
+
+    const NotiMessages = [];
+    NotiMessages = await addMessagesForSingleUser(LockSearch.Lockee, NotiMessages, `Your lock has been reset by your KH`, {view: "myLoadedLocks"});
+    sendMessages(NotiMessages);
+
 
     return LockSearch
 }

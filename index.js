@@ -33,7 +33,6 @@ app.use(rateLimiter);
 app.use(CheckApp);
 app.use(CheckAuth);
 
-
 app.set('views', './web/views');
 app.set('view engine', 'pug');
 
@@ -45,9 +44,11 @@ app.use('/activate/:code', async function(req, res) {
   await activateemail(req, res);
 })
 
+app.use("/static", express.static('public'))
+
 server.applyMiddleware({ app });
 
-app.use((req, res) => {
+app.use("/", (req, res) => {
   res.status(200).send('Hello from GraphQL server! 👋🏻');
   res.end();
 });

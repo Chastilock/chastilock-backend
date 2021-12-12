@@ -100,7 +100,8 @@ const typeDefs = gql`
     Session_ID: Int!
     User: User!
     Token: String!
-    App: App!
+    App: App!,
+    Notification_Token: String
   }
 
   type LoadedLock {
@@ -286,6 +287,8 @@ const typeDefs = gql`
     fetchChastikeyData(CKUsername: String!, TransferCode: String!): ChastikeyImport!
     importChastikeyData(LockeeImportActiveLocks: Boolean!, KeyholderImportActiveLocks: Boolean!, LockeeImportRating: Boolean!, KeyholderImportRating: Boolean!, LockeeImportStats: Boolean!, KeyholderImportStats: Boolean!, ImportLoadedLocksWithMissingKH: Boolean!): ChastikeyImport!
     restartChastikeyImport: String!
+    registerNotifictions(NotificationToken: String!): Session!
+    deregisterNotifictions: Session!
   }`;
 
 module.exports = typeDefs

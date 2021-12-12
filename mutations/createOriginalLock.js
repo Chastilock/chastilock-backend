@@ -11,7 +11,7 @@ async function createOriginalLock(inputs, models, req) {
             Setting_Value: "true"
         }
     });
-    if ( !CreateLockEnabled) {
+    if (!CreateLockEnabled) {
         throw new ForbiddenError("We are currently not allowing new locks to be created. Please try again later")
     }
 

@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
       App_ID: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      Notification_Token: {
+        type: Sequelize.STRING,
+        allowNull: true
       }
       
     }, {sequelize}
