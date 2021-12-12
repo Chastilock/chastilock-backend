@@ -6,6 +6,11 @@ This is a GraphQL API for the Chastilock App. This will be used for the App at f
 The easiest way to run it in a development environment is using docker compose. You will need to have Docker and Docker compose installed on your system. That way
 you don't have to manually install a database (MySQL / MariaDB).
 
+Before running it in docker for the first time, you will need to create the Chasilock network within docker by executing:
+```bash
+docker network create chastilock-network
+```
+
 To run it inside docker compose, simply execute (will run in background):
 ```bash
 docker-compose up -d

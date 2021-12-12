@@ -6,7 +6,10 @@
   "scripts": {
     "test": "mocha --recursive",
     "start": "node index.js",
-    "dev": "nodemon -r dotenv/config index.js"
+    "dev": "nodemon -r dotenv/config index.js",
+    "lint": "eslint",
+    "setuphooks": "git config --local core.hooksPath .hooks",
+    "hooks:pre-commit": "yarn lint && yarn build"
   },
   "repository": {
     "type": "git",
