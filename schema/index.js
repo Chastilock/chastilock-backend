@@ -249,6 +249,11 @@ const typeDefs = gql`
     Lockee_Longest_Lock: Int
     Lockee_Completed_Locks: Int
   }
+  type PasswordReset {
+    PasswordReset_ID: Int!
+    User: User!
+    Expires: String!
+  }
 
   type Query {
     allUsers: [User!]!
@@ -258,6 +263,7 @@ const typeDefs = gql`
     Session(id: Int!): Session
     LoadedLock(id: Int!): LoadedLock
     getSharedLockByShareCode(ShareCode: String!): CreatedLock!
+    PasswordReset(id: Int!): PasswordReset
     #Prod Queries!!
     myLoadedLocks: [LoadedLock!]!
     myCreatedLocks: [CreatedLock!]!
@@ -289,6 +295,7 @@ const typeDefs = gql`
     restartChastikeyImport: String!
     registerNotifictions(NotificationToken: String!): Session!
     deregisterNotifictions: Session!
+    requestPasswordChange(Email: String!): PasswordReset!
   }`;
 
 module.exports = typeDefs
