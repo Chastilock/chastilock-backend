@@ -1,6 +1,8 @@
 const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 const { ValidateEmail } = require('../helpers/validation');
 const { v4: uuidv4 } = require('uuid');
+const sendemail = require("../helpers/email.js")
+
 async function requestPasswordChange(inputs, models, req) {
 
     if (req.AppFound === false) {
@@ -22,14 +24,13 @@ async function requestPasswordChange(inputs, models, req) {
         const Expiry = new Date();
         Expiry.setHours(Expiry.getHours() + 2);
 
-        const record = models.PasswordReset.create({
+        const record = await models.PasswordReset.create({
             User_ID: UserSearch.User_ID,
             Code: uuidv4(),
             Expires: Expiry
         });
 
-        //Need to send the password reset email here!!!
-        
+        sendemail(UserSearch.User_ID, "ForgottenPassword", {code: record.Code});
         return record;
     } else {
         throw new UserInputError("Email address not found");

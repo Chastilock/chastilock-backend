@@ -13,8 +13,9 @@ const CheckApp = require('./middleware/CheckApp');
 const CheckAuth = require('./middleware/CheckAuth');
 const rateLimiter = require('./middleware/rateLimiter') 
 const bodyParser = require('body-parser');
-const loadlock = require('./web/resolvers/loadlock');
-const activateemail = require('./web/resolvers/activateemail');
+const loadLock = require('./web/resolvers/loadLock');
+const activateEmail = require('./web/resolvers/activateEmail');
+const passwordReset = require('./web/resolvers/passwordReset');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -37,11 +38,15 @@ app.set('views', './web/views');
 app.set('view engine', 'pug');
 
 app.use('/lock/:lockid', async function(req, res) {
-  await loadlock(req, res);
+  await loadLock(req, res);
 })
 
 app.use('/activate/:code', async function(req, res) {
-  await activateemail(req, res);
+  await activateEmail(req, res);
+})
+
+app.use('/passwordreset/:code/:email', async function(req, res) {
+  await passwordReset(req, res);
 })
 
 app.use("/static", express.static('public'))
