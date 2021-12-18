@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      Last_Emailed: {
+        type: Sequelize.DATE,
+        allowNull: false
+      }
       
     },
     {sequelize}

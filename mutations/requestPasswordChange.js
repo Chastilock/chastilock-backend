@@ -22,8 +22,22 @@ async function requestPasswordChange(inputs, models, req) {
 
     if(UserSearch) {
 
-        const now = new Date();
+        const Time5MinsAgo = new Date();
+        Time5MinsAgo.setMinutes(Time5MinsAgo.getMinutes() - 5);
 
+        const Last5Mins = await models.PasswordReset.findOne({
+            where: {
+                Last_Emailed: {
+                    [Op.gt]: Time5MinsAgo
+                }
+            }
+        });
+
+        if(Last5Mins) {
+            throw new UserInputError("We sent you an email within the last 5 minutes, please wait a little before retrying!");
+        }
+
+        const now = new Date();
         const PasswordResetSearch = await models.PasswordReset.findOne({
             where: {
                 [Op.and]: {
@@ -41,6 +55,10 @@ async function requestPasswordChange(inputs, models, req) {
 
         if(PasswordResetSearch) {
             record = PasswordResetSearch
+            record.set({
+                Last_Emailed: now
+            });
+            record.save();
         } else {
             const Expiry = new Date();
             Expiry.setHours(Expiry.getHours() + 2);
@@ -48,7 +66,8 @@ async function requestPasswordChange(inputs, models, req) {
             record = await models.PasswordReset.create({
                 User_ID: UserSearch.User_ID,
                 Code: uuidv4(),
-                Expires: Expiry
+                Expires: Expiry,
+                Last_Emailed: now
             });
         }
         sendemail(UserSearch.User_ID, "ForgottenPassword", {code: record.Code});
@@ -57,7 +76,6 @@ async function requestPasswordChange(inputs, models, req) {
         throw new UserInputError("Email address not found");
         //TODO: Need to think about if this needs improving in any way
     }
-
 }
 
 module.exports = requestPasswordChange;

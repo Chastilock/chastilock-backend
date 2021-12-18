@@ -252,7 +252,8 @@ const typeDefs = gql`
   type PasswordReset {
     PasswordReset_ID: Int!
     User: User!
-    Expires: String!
+    Expires: String!,
+    Last_Emailed: String!
   }
 
   type Query {
