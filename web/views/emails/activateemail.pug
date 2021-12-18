@@ -1,20 +1,10 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="utf-8")
-    meta(name="viewport" content="width=device-width")
-  body(style="padding: 3%; align-items: center; display: block")
-    div#wrapper(style="width: 98%; padding: 10px; margin: auto;")
-      div#logowrapper(style="height: 150px; vertical-align: middle;")
-        img#logo(src="https://chastilock.org/static/chastilock-logo.png" style="width: 150px; height: 150px; vertical-align: middle;")
-        span#logoname(style="font-size: 36px; vertical-align: middle;") Chastilock
-      
-      div#text(style="font-size: 19px;")
-        p Hey there #{Username}, 
-          
-        p 
-          | Thanks for joining Chastilock! Please click 
-          a(href=`https://api.chastilock.org/activate/${Validation_Code}`) here to activate your account.
-          |  This will allow us to send you emails. Currently this is just used to reset your password should you forget it. As always your date is kept sucurely and is never shared with 3rd parties.
-        p We hope you have fun!
-        p Chastilock Team!
+extends template.pug
+
+block content
+  p Hey there #{Username},  
+  p 
+    | Thanks for joining Chastilock! Please click 
+    a(href=`https://api.chastilock.org/activate/${Validation_Code}`) here to activate your account.
+    |  This will allow us to send you emails. Currently this is just used to reset your password should you forget it. As always your data is kept securely and is never shared with 3rd parties.
+  p We hope you have fun!
+  p Chastilock Team!

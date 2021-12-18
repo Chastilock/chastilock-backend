@@ -17,7 +17,7 @@ const bree = new Bree({
             name: 'updateChancesLeft',
             timeout: '1s',
             interval: '20s'
-        },
+        }
         {
             name: 'deleteExpiredImports',
             timeout: '10m',

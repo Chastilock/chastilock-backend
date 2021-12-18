@@ -64,7 +64,7 @@ const DataToSet = {
 }
 authenticatedUser.set(DataToSet);
 await authenticatedUser.save();
-sendemail(authenticatedUser.User_ID, "ActivateEmail");
+sendemail(authenticatedUser.User_ID, "ActivateEmail", {});
 return authenticatedUser;
 
 }

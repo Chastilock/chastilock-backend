@@ -23,6 +23,7 @@ const importChastikeyData = require('../mutations/importChastikeyData');
 const restartChastikeyImport = require('../mutations/restartChastikeyImport');
 const registerNotifictions = require('../mutations/registerNotifications');
 const deregisterNotifictions = require('../mutations/deregisterNotifications');
+const requestPasswordChange = require('../mutations/requestPasswordChange');
 
 //Import queries
 const myLoadedLocks = require('../queries/myLoadedLocks');
@@ -34,7 +35,6 @@ const me = require('../queries/me');
 const resolvers = {
   Query: {     
     async allUsers (root, args, { req, models }) {
-      console.log(req.AppFound);
       return models.User.findAll();
     },
     async allCreatedLocks (root, args, { models }) {
@@ -52,6 +52,10 @@ const resolvers = {
     async LoadedLock (root, { id }, { models }) {
       return models.LoadedLock.findByPk(id);
     },
+    async PasswordReset (root, { id }, { models }) {
+      return models.PasswordReset.findByPk(id);
+    },
+
     //Prod Queries
     async myLoadedLocks(root, args, { models, req }) {
       return myLoadedLocks(models, req);
@@ -137,6 +141,9 @@ const resolvers = {
     },
     async deregisterNotifictions(root, args, {models, req}) {
       return deregisterNotifictions(args, models, req);
+    },
+    async requestPasswordChange(root, args, {models, req}) {
+      return requestPasswordChange(args, models, req);
     }
   },
 
@@ -205,6 +212,11 @@ const resolvers = {
   ChastikeyImport: {
     async User (ChastikeyImport) {
       return ChastikeyImport.getUser();
+    }
+  },
+  PasswordReset: {
+    async User(PasswordReset) {
+      return PasswordReset.getUser();
     }
   }
 }

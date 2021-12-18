@@ -81,6 +81,7 @@ module.exports = (sequelize) => {
     User.associate = (models) => {
       User.hasMany(models.CreatedLock, {foreignKey: "User_ID"});
       User.hasMany(models.Session, {foreignKey: "User_ID"});
+      User.hasMany(models.PasswordReset, {foreignKey: "User_ID"});
     };
 
     return User;
