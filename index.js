@@ -16,6 +16,7 @@ const bodyParser = require('body-parser');
 const loadLock = require('./web/resolvers/loadLock');
 const activateEmail = require('./web/resolvers/activateEmail');
 const passwordReset = require('./web/resolvers/passwordReset');
+const actionPasswordReset = require('./web/resolvers/actionPasswordReset');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -30,6 +31,7 @@ const server = new ApolloServer({
 );
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(rateLimiter);
 app.use(CheckApp);
 app.use(CheckAuth);
@@ -45,8 +47,12 @@ app.use('/activate/:code', async function(req, res) {
   await activateEmail(req, res);
 })
 
-app.use('/passwordreset/:code/:email', async function(req, res) {
+app.get('/passwordreset/:code/:email', async function(req, res) {
   await passwordReset(req, res);
+})
+
+app.post('/passwordreset/:code/:email', async function(req, res) {
+  await actionPasswordReset(req, res);
 })
 
 app.use("/static", express.static('public'))

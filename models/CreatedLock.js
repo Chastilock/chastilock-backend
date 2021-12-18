@@ -125,7 +125,6 @@ module.exports = (sequelize) => {
       CreatedLock.hasMany(models.LoadedLock, {foreignKey: "CreatedLock_ID"})
       CreatedLock.hasOne(models.OriginalLockType, {foreignKey: "Original_Deck_ID"})
       CreatedLock.hasOne(models.TimerLockType, {foreignKey: "Timer_Type_ID"})
-
     };
 
     return CreatedLock;

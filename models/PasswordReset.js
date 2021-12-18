@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
     );
 
     PasswordReset.associate = (models) => {
-      PasswordReset.hasOne(models.User, {foreignKey: "User_ID"});
+      PasswordReset.belongsTo(models.User, {foreignKey: "User_ID"});
     };
 
     return PasswordReset;
