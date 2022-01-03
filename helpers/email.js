@@ -2,16 +2,16 @@ const nodemailer = require("nodemailer");
 const { User } = require("../models");
 const pug = require("pug")
 
-
 const fromAddress = process.env.FromAddress
+const fromName = process.env.FromName
 
 let transporter = nodemailer.createTransport({
     host: process.env.SMTPHost,
     port: process.env.SMTPPort,
     secure: true, // true for 465, false for other ports
     auth: {
-        user: process.env.SMTPUser, // generated ethereal user
-        pass: process.env.SMTPPass, // generated ethereal password
+        user: process.env.SMTPUser,
+        pass: process.env.SMTPPass,
     },
 });
 
@@ -41,7 +41,7 @@ async function sendEmail(UserID, Template, Data) {
 const sendActivationEmail = async (User) => {
     
     let info = await transporter.sendMail({
-        from: fromAddress, // sender address
+        from: `"${fromName}" <${fromAddress}>`, // sender address
         to: User.Email, // list of receivers
         subject: "Activate your email!", // Subject line
         text: `Hey there ${User.Username}, 
@@ -58,7 +58,7 @@ const sendForgotenPassword = async (User, Data) => {
     if(User.Email_Validated) {
 
         let info = await transporter.sendMail({
-            from: fromAddress, // sender address
+            from: `"${fromName}" <${fromAddress}>`, // sender address
             to: User.Email, // list of receivers
             subject: "Reset your password!", // Subject line
             text: `Hey there ${User.Username}, 
