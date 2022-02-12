@@ -47,7 +47,7 @@ const linkLockeesToTransferedKH = async function() {
             });
             await SingleLoadedLock.save();
 
-            NotiMessages = await addMessagesForSingleUser(Keyholder, NotiMessages, `Your lockee ${GetUsername(i.Lockee)} has transfered a running lock to chastilock and it has been linked to you. You are back in control! 😈`, {view: "LoadedLockees", createdLock: i.CreatedLock_ID})
+            NotiMessages = await addMessagesForSingleUser(Keyholder, NotiMessages, `Your lockee ${GetUsername(i.Lockee)} has transfered a running lock to ChastiLock and it has been linked to you. You are back in control! 😈`, {view: "LoadedLockees", createdLock: i.CreatedLock_ID})
         }
     }
     

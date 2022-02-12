@@ -62,7 +62,7 @@ const sendForgotenPassword = async (User, Data) => {
             to: User.Email, // list of receivers
             subject: "Reset your password!", // Subject line
             text: `Hey there ${User.Username}, 
-            Someone (hopefully you!) has requested to reset your chastikey password! Please click the following link to reset your password: https://api.chastilock.org/passwordreset/${Data.code}/${User.Email}
+            Someone (hopefully you!) has requested to reset your chastilock password! Please click the following link to reset your password: https://api.chastilock.org/passwordreset/${Data.code}/${User.Email}
             
             If this wasn't you, please ignore this email. If this happens reguarly, please get in touch!
             Best wishes!
