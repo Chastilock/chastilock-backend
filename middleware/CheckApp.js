@@ -4,10 +4,13 @@ const CheckApp = async (req, res, next) => {
   
   const AppSearch = await App.findOne({
     where: {
-      API_Key: req.body.APIKey || "",
-      API_Secret: req.body.APISecret || "" 
+      API_Key: req.headers['x-api-key'] || "",
+      API_Secret: req.headers['x-api-secret'] || "" 
     }
   });
+
+  console.log(req.headers)
+
   if(AppSearch) {
     req.AppFound = true;
     req.AppID = AppSearch.App_ID;
