@@ -1,9 +1,12 @@
-const { Expo } = require('expo-server-sdk');
+const { initializeApp, applicationDefault } = require('firebase-admin/app');
 const { Session } = require("../models");
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op
 
-let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
+initializeApp({
+    credential: applicationDefault()
+});
+
 
 async function NotifyAllUsers(body, data) {
 
