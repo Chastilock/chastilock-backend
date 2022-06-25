@@ -52,7 +52,9 @@ app.use('/passwordreset/:code/:email', async function(req, res) {
 
 app.use("/static", express.static('public'))
 
-server.applyMiddleware({ app });
+server.start().then(() => {
+  server.applyMiddleware({ app });
+});
 
 app.use("/", (req, res) => {
   res.status(200).send('Hello from GraphQL server! 👋🏻');

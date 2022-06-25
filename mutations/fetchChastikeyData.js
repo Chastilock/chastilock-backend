@@ -1,5 +1,5 @@
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
-const fetch = require("node-fetch");
+const fetch = import("node-fetch");
 
 async function fetchChastikeyData(inputs, models, req) {
 
