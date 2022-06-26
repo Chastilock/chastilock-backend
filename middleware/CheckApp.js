@@ -9,8 +9,6 @@ const CheckApp = async (req, res, next) => {
     }
   });
 
-  console.log(req.headers)
-
   if(AppSearch) {
     req.AppFound = true;
     req.AppID = AppSearch.App_ID;

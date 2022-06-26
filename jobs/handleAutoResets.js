@@ -57,7 +57,7 @@ const handleAutoResets = async function() {
 
                         });
                         await LoadedOriginalLockRecord.save()
-                        addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock was just reset! 🤯`, {Screen: "myLoadedLocks"} )
+                        addMessagesForSingleUser(Lock.Lockee, NotiMessages, `Your lock was just reset! 🤯`, `An auto reset just occurred on your lock and now you need to start over 😈`);
 
 
                     } else {

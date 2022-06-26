@@ -19,50 +19,59 @@ const passwordReset = require('./web/resolvers/passwordReset');
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const app = express();
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req }) => {
-    return {req, models}
-  }
-  }
-);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(rateLimiter);
-app.use(CheckApp);
-app.use(CheckAuth);
+async function startServer() {
+  
+  const app = express();
 
-app.set('views', './web/views');
-app.set('view engine', 'pug');
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => {
+      return {req, models}
+    }
+    }
+  );
 
-app.use('/lock/:lockid', async function(req, res) {
-  await loadLock(req, res);
-})
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({extended : true}));
+  app.use(rateLimiter);
+  app.use(CheckApp);
+  app.use(CheckAuth);
 
-app.use('/activate/:code', async function(req, res) {
-  await activateEmail(req, res);
-})
+  app.set('views', './web/views');
+  app.set('view engine', 'pug');
 
-app.use('/passwordreset/:code/:email', async function(req, res) {
-  await passwordReset(req, res);
-})
+  app.use('/lock/:lockid', async function(req, res) {
+    await loadLock(req, res);
+  })
 
-app.use("/static", express.static('public'))
+  app.use('/activate/:code', async function(req, res) {
+    await activateEmail(req, res);
+  })
 
-server.start().then(() => {
+  app.use('/passwordreset/:code/:email', async function(req, res) {
+    await passwordReset(req, res);
+  })
+
+  app.use("/static", express.static('public'));
+
+  app.use("/", (req, res) => {
+    res.status(200).send('Hello from GraphQL server! 👋🏻');
+    res.end();
+  });
+
+  app.use("/test/", (req, res) => {
+    res.status(200).send('Booo!');
+    res.end();
+  });
+
+  app.listen({ port }, () => {
+    console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
+  });
+  await server.start();
   server.applyMiddleware({ app });
-});
+}
 
-app.use("/", (req, res) => {
-  res.status(200).send('Hello from GraphQL server! 👋🏻');
-  res.end();
-});
-
-app.listen({ port }, () =>
-  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
-)
-
+startServer();
 bree.start();
