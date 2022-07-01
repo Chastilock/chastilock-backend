@@ -42,27 +42,26 @@ async function startServer() {
   app.set('views', './web/views');
   app.set('view engine', 'pug');
 
-  app.use('/lock/:lockid', async function(req, res) {
+  app.get('/lock/:lockid', async function(req, res) {
     await loadLock(req, res);
   })
 
-  app.use('/activate/:code', async function(req, res) {
+  app.get('/activate/:code', async function(req, res) {
     await activateEmail(req, res);
   })
 
-  app.use('/passwordreset/:code/:email', async function(req, res) {
+  app.get('/passwordreset/:code/:email', async function(req, res) {
+    await passwordReset(req, res);
+  })
+
+  app.post('/passwordreset/:code/:email', async function(req, res) {
     await passwordReset(req, res);
   })
 
   app.use("/static", express.static('public'));
 
-  app.use("/", (req, res) => {
+  app.get("/", (req, res) => {
     res.status(200).send('Hello from GraphQL server! 👋🏻');
-    res.end();
-  });
-
-  app.use("/test/", (req, res) => {
-    res.status(200).send('Booo!');
     res.end();
   });
 
