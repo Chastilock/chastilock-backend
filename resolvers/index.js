@@ -18,9 +18,6 @@ const KHReset = require('../mutations/KHReset');
 const applyCard = require('../mutations/applyCard');
 const { remainingSeconds, earliestEndTime } = require('../helpers/timeFunctions');
 const KHEditCards = require('../mutations/KHEditCards');
-const fetchChastikeyData = require('../mutations/fetchChastikeyData');
-const importChastikeyData = require('../mutations/importChastikeyData');
-const restartChastikeyImport = require('../mutations/restartChastikeyImport');
 const registerNotifictions = require('../mutations/registerNotifications');
 const deregisterNotifictions = require('../mutations/deregisterNotifications');
 const requestPasswordChange = require('../mutations/requestPasswordChange');
@@ -127,15 +124,6 @@ const resolvers = {
     async KHEditCards(root, args, {models, req}) {
       return KHEditCards(args, models, req);
     },
-    async fetchChastikeyData(root, args, {models, req}) {
-      return fetchChastikeyData(args, models, req);
-    },
-    async importChastikeyData(root, args, {models, req}) {
-      return importChastikeyData(args, models, req);
-    },
-    async restartChastikeyImport(root, args, {models, req}) {
-      return restartChastikeyImport(args, models, req);
-    },
     async registerNotifictions(root, args, {models, req}) {
       return registerNotifictions(args, models, req);
     },
@@ -207,11 +195,6 @@ const resolvers = {
   UserSetting: {
     async User (UserSetting) {
       return UserSetting.getUser();
-    }
-  },
-  ChastikeyImport: {
-    async User (ChastikeyImport) {
-      return ChastikeyImport.getUser();
     }
   },
   PasswordReset: {
