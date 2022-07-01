@@ -17,16 +17,6 @@ const bree = new Bree({
             name: 'updateChancesLeft',
             timeout: '1s',
             interval: '20s'
-        },
-        {
-            name: 'deleteExpiredImports',
-            timeout: '10m',
-            interval: '10m'
-        },
-        {
-            name: 'linkLockeesToTransferedKH',
-            timeout: '60s',
-            interval: '2m'
         }
         // {
         //     //Looking to run this every 15 minutes in Prod
