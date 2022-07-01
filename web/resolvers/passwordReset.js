@@ -25,22 +25,27 @@ async function passwordReset(req, res) {
             if(req.body.code) {
 
                 if(User.Email === req.body.email) {
+                    let error = false;
                     //Atempt to reset the password!!
                     if(req.body.newpassword != req.body.newpasswordconfirm) {
-                        res.send("The passwords you have entered don't match")
+                        res.send("The passwords you have entered don't match");
+                        error = true;
                     }
         
                     if(req.body.newpassword.length < 8) {
-                        res.send("Your password needs to be at least 8 characters")
+                        res.send("Your password needs to be at least 8 characters");
+                        error = true;
                     }
-        
-                    const hashedPassword = Bcypt.hashSync(req.body.newpassword, 10);
-                    User.set({
-                        Password: hashedPassword
-                    });
-                    await User.save();
-                    PasswordResetSearch.destroy();
-                    res.send("Password changed successfully!")
+
+                    if(error === false) {
+                        const hashedPassword = Bcypt.hashSync(req.body.newpassword, 10);
+                        User.set({
+                            Password: hashedPassword
+                        });
+                        await User.save();
+                        PasswordResetSearch.destroy();
+                        res.send("Password changed successfully!");
+                    }
                 } else {
                     res.send("oh nose! Something has gone wrong!")
                 }
