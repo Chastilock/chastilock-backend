@@ -18,7 +18,7 @@
   "author": "SirHavok, Itsuki",
   "license": "ISC",
   "dependencies": {
-    "@ladjs/graceful": "^1.0.5",
+    "@ladjs/graceful": "^3.0.2",
     "apollo-server-express": "^3.9.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
