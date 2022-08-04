@@ -3,6 +3,6 @@
         "use_env_variable": "DATABASE"
     },
     "production": {
-        "use_env_variable": "Prod_DB"
+        "use_env_variable": "DATABASE_URL"
     }
 }
