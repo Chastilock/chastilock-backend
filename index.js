@@ -7,6 +7,7 @@ const bree = require('./jobSetup');
 const models = require('./models');
  
 const { ApolloServer } = require('apollo-server-express');
+const { ApolloServerPluginLandingPageDisabled, ApolloServerPluginLandingPageGraphQLPlayground } = require('apollo-server-core');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
 const CheckApp = require('./middleware/CheckApp');
@@ -29,7 +30,13 @@ async function startServer() {
     resolvers,
     context: ({ req }) => {
       return {req, models}
-    }
+    },
+    csrfPrevention: true,
+    plugins: [
+      process.env.NODE_ENV === "production"
+      ? ApolloServerPluginLandingPageDisabled()
+      : ApolloServerPluginLandingPageGraphQLPlayground()
+    ]
     }
   );
 
