@@ -35,12 +35,15 @@ const CheckAuth = async (req, res, next) => {
   });
 
   if(CheckToken) {
-    req.Authenticated = CheckToken.User_ID;
-    req.token = CheckToken.Token;
-    next();
-  } else {
+
+    if(CheckToken.App_ID === req.AppID) {
+      req.Authenticated = CheckToken.User_ID;
+      req.token = CheckToken.Token;
+      return next();
+    }
+  }
+
     req.Authenticated = false;
     return next();
-  }
 }
 module.exports = CheckAuth;
